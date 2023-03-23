@@ -1,0 +1,59 @@
+<app-header></app-header>
+<div class="">
+  <h3 class="bg-gray-400 font-extrabold px-60 text-2xl">
+    Edit your profile
+  </h3>
+  <div class="flex items-center justify-center pt-10">
+    <form [formGroup]="profileForm" (ngSubmit)="createProfile(profileForm?.value)">
+
+      <label for="">Profile Photo : </label>
+      <input class="w-30 rounded border bg-gray-100 p-2 text-xs mb-1" type="file" name="profile_img"
+        formControlName="profile_img"><br>
+
+      <label for="">username : </label>
+      <input class="w-30 rounded border bg-gray-100 p-2 text-xs mb-1" type="text" name="username"
+        formControlName="username" readonly><br>
+
+      <label for="">firstname : </label>
+      <input class="w-30 rounded border bg-gray-100 p-2 text-xs mb-1" type="text" name="firstname"
+        formControlName="firstname" readonly><br>
+
+      <label for="">lastname : </label>
+      <input class="w-30 rounded border bg-gray-100 p-2 text-xs mb-1" type="text" name="lastname"
+        formControlName="lastname" readonly><br>
+
+      <label for="">email : </label>
+      <input class="w-30 rounded border bg-gray-100 p-2 text-xs mb-1" type="text" name="email"
+        formControlName="email" readonly><br>
+
+      <label for="">mobile : </label>
+      <input class="w-30 rounded border bg-gray-100 p-2 text-xs mb-1" type="text" name="mobile"
+        formControlName="mobile" readonly><br>
+
+      <label for="">gender : </label>
+      <input class="w-30 rounded border bg-gray-100 p-2 text-xs mb-1" type="text" name="gender"
+        formControlName="gender"><br>
+
+      <label for="">DOB : </label>
+      <input class="w-30 rounded border bg-gray-100 p-2 text-xs mb-1" type="date" name="dob"
+        formControlName="dob"><br>
+
+      <label for="">Bio : </label>
+      <textarea class="w-30 rounded border bg-gray-100 p-2 text-xs mb-1" type="text" name="bio"
+        formControlName="bio"></textarea><br>
+
+      <label for="">city : </label>
+      <input class="w-30 rounded border bg-gray-100 p-2 text-xs mb-1" type="text" name="city"
+        formControlName="city"><br>
+
+      <label for="">country : </label>
+      <input class="w-30 rounded border bg-gray-100 p-2 text-xs mb-1" type="text" name="country"
+        formControlName="country"><br>
+
+      <button type="submit"
+        class="mt-2 text-sm text-center bg-blue-600 text-white p-2 rounded font-medium">Save</button>
+    </form>
+  </div>
+
+
+</div>

@@ -1,0 +1,51 @@
+const express = require("express");
+const router = express.Router();
+const authController = require("../controllers/authController");
+const userProfileController = require("../controllers/userProfileController");
+const postController = require("../controllers/postController");
+const likedPostController = require("../controllers/likedPostController")
+const { celebrate, Segments } = require("celebrate");
+const { signup, login } = require("../validators/auth.validator");
+const { comment } = require("../validators/comment.validator")
+const multer = require("multer");
+const cmtPostController = require("../controllers/cmtPostController");
+
+// local storage for save post images
+var storage = multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, "./public/posts");
+  },
+  filename: function (req, file, callback) {
+    callback(null, "Post" + Date.now() + file.originalname);
+  },
+});
+
+var upload = multer({ storage: storage });
+
+// auth routes
+router.post("/signup",celebrate({ [Segments.BODY]: signup }),authController.signup);
+router.post("/login",celebrate({ [Segments.BODY]: login }),authController.login);
+router.post("/otpverify", authController.otpverify);
+router.get("/userdetails/:userId", authController.userdetails);
+router.get("/getallusers", authController.getAllUsers);
+
+// profile routes
+router.get("/getuserprofile/:userId", userProfileController.getUserProfileInfo);
+router.post("/createprofile", userProfileController.createProfile);
+
+//post routes
+router.post("/createpost", upload.array("files", 4), postController.createPost);
+router.get("/getuserpost/:userId", postController.getAllPosts);
+router.get("/deletepost/:postId", postController.deletePost);
+//feed 
+router.get("/getfeeds", postController.getFeeds);
+router.get("/getsinglepost/:postId", postController.getSinglePost)
+
+//liked-disliked post routes
+router.get("/like-dislike-post/:postId/:userId", likedPostController.LikeDislikePost)
+
+
+// comment routes
+router.post("/add-comment", celebrate({ [Segments.BODY]: comment }), cmtPostController.createComment)
+
+module.exports = router;
