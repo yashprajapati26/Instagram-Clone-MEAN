@@ -15,7 +15,7 @@ import { ProfileService } from '../profile.service';
   styleUrls: ['./edit-profile.component.scss'],
 })
 export class EditProfileComponent {
-  user: any;
+  userProfile: any;
   userId:any;
   profileForm: FormGroup;
 
@@ -27,7 +27,7 @@ export class EditProfileComponent {
     private authservice: AuthService
   ) {
     let userID = this.activateRoute.snapshot.params['id'];
-    this.fatchUserDetails(userID);
+    this.fatchUserProfileDetails(userID);
     this.profileForm = this.formBuilder.group({
       userId: ['',Validators.required],
       profile_img: '',
@@ -45,38 +45,34 @@ export class EditProfileComponent {
 
   }
 
-  ngOnInit() {
-    this.patchValue()
-  }
+  ngOnInit() {}
 
-  patchValue(){
-    
-    this.profileForm.patchValue({
-      username: "test",
-      firstname: "test",
-      lastname: "test",
-      email: "test",
-      mobile: "test",
-    });
-  }
 
-  fatchUserDetails(userId: any) {
-    this.authservice.getUserDetails(userId).subscribe((res:any)=>{
-      this.user = res['user']
-      this.userId = this.user['id']
+  fatchUserProfileDetails(userId: any) {
+    this.profileservice.getUserProfileDetails(userId).subscribe((res:any)=>{
+      this.userProfile = res['userProfile']
+      this.profileForm.patchValue({
+        userId: this.userProfile?.user.id,
+        username: this.userProfile?.user.username,
+        firstname:this.userProfile?.user.firstName,
+        lastname:this.userProfile?.user.lastName,
+        email: this.userProfile?.user.email,
+        mobile: this.userProfile?.user.mobile,
+        bio:this.userProfile?.bio,
+        dob: this.userProfile?.dob,
+        gender: this.userProfile?.gender,
+        city: this.userProfile?.city,
+        country: this.userProfile?.country,
+      });
+      this.userId = this.userProfile['userId']
     })
   }
 
+ 
+
   createProfile(data: any) {
-    let profileData = {
-      'userId':this.user['id'],
-      'bio':data['bio'],
-      'dob': data['dob'],
-      'gender': data['gender'],
-      'city': data['city'],
-      'country': data['country'],
-    } 
-    this.profileservice.createProfile(profileData).subscribe(
+   
+    this.profileservice.createProfile(this.profileForm.value).subscribe(
       (res: any) => {
         console.log(res);
         this.router.navigate(['profile',this.userId])

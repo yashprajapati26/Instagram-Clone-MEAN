@@ -19,17 +19,17 @@ export class ProfileComponent {
 
   constructor(private router:Router, private activateRoute:ActivatedRoute, private profileservice:ProfileService){
     let userID = this.activateRoute.snapshot.params['id'];
-    this.fatchUserDetails(userID);
+    this.fatchUserProfileDetails(userID);
     this.fatchUserPost(userID)
   }
 
   ngOnInit(){
-
+    
   }
 
 
 
-  fatchUserDetails(userId: any) {
+  fatchUserProfileDetails(userId: any) {
     this.profileservice.getUserProfileDetails(userId).subscribe((res:any)=>{
       console.log(res['userProfile'])
       this.userProfile = res['userProfile']

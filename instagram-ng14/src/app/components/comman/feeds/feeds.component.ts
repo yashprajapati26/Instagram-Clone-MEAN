@@ -1,55 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment.development';
-import { FeedlistService } from './feedlist.service';
+import { FeedlistService } from '../../feedlist/feedlist.service';
 
 @Component({
-  selector: 'app-feedlist',
-  templateUrl: './feedlist.component.html',
-  styleUrls: ['./feedlist.component.scss']
+  selector: 'app-feeds',
+  templateUrl: './feeds.component.html',
+  styleUrls: ['./feeds.component.scss']
 })
-export class FeedlistComponent {
-  
-  feeds: any;
+export class FeedsComponent {
+
+  @Input('feeds') feeds:any;
+  @Input('user') user:any;
+
   imageUrl = environment.apiURL
-  user: any;
-  allUsers: any
-  replyToggle: boolean = false;
 
 
-  constructor(private router: Router, private feedlistservice: FeedlistService) { }
+  constructor(private router:Router, private feedlistservice:FeedlistService){}
 
-  ngOnInit() {
-    this.fatchFeed();
-    this.fatchUserDetails();
-    this.fatchAllUsers();
-
-    // this.allUsers = this.allUsers.filter((item:any) => item.id !== this.user.id);
-
-    console.log(this.allUsers)
-  }
-
-
-  fatchFeed() {
-    this.feedlistservice.getFeeds().subscribe((res: any) => {
-      console.log(res)
-      this.feeds = res['feeds']
-    })
-  }
-
-  fatchUserDetails() {
-    let userId = localStorage.getItem('userId')
-    this.feedlistservice.getUserDetails(userId).subscribe((res: any) => {
-      console.log(res)
-      this.user = res['user']
-    })
-  }
-
-  fatchAllUsers() {
-    this.feedlistservice.getAllUsers().subscribe((res: any) => {
-      this.allUsers = res['allusers']
-    })
-  }
 
   likedPost(event: any) {
 

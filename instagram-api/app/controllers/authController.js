@@ -149,7 +149,7 @@ const otpverify = async (req, res) => {
 const login = async (req, res) => {
   try {
     let user = await authService.findOne(
-      ["id", "username", "email", "password", "isActive"],
+      ["id", "username", "email", "password", "isActive","isFirstTime"],
       {
         [Op.or]: [
           { username: req.body.username },

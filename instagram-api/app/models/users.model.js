@@ -49,6 +49,10 @@ const Users = sequelize.define(
             field: "updated_at",
             type: Sequelize.DATE,
         },
+        isFirstTime:{
+            type: Sequelize.BOOLEAN,
+            defaultValue : 1
+        }
 
     }, {
         freezeTableName: true,

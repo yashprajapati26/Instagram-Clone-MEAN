@@ -11,37 +11,40 @@ import { AuthService } from '../auth.service';
 export class LoginComponent {
 
   loginForm = new FormGroup({
-    username : new FormControl("yashprajapati26", Validators.required),
-    password :new FormControl("Yash@123", Validators.required),
+    username: new FormControl("yashprajapati26", Validators.required),
+    password: new FormControl("Yash@123", Validators.required),
   })
-  submitted:boolean = false
+  submitted: boolean = false
 
 
-  constructor(private router:Router, private authservice:AuthService){}
+  constructor(private router: Router, private authservice: AuthService) { }
 
-  ngOnInit(){}
+  ngOnInit() { }
 
 
-  login(data:object){
+  login(data: object) {
     this.submitted = true
     console.log(data)
-    if(this.loginForm.valid){
-        this.authservice.doLogin(data).subscribe((res:any)=>{
-        if(res){
+    if (this.loginForm.valid) {
+      this.authservice.doLogin(data).subscribe((res: any) => {
+        if (res) {
           this.authservice.saveToken(res['data']['auth_token'])
           let userId = res['data']['user'].id
-          localStorage.setItem('userId',userId)
-          this.router.navigate(['edit-profile',userId]);
+          localStorage.setItem('userId', userId)
+          if (res['data']['user'].isFirstTime){
+            this.router.navigate(['edit-profile', userId]);
+          }
+          else{this.router.navigate(['profile', userId]);}
         }
       })
     }
   }
 
-  signup(){
+  signup() {
     this.router.navigate(['signup'])
   }
 
-  togglePassword(event:any){
-    console.log("called",event)
+  togglePassword(event: any) {
+    console.log("called", event)
   }
 }

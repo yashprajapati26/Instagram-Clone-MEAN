@@ -1,4 +1,5 @@
 const { STATUSCODE } = require("../config/constant");
+const authService = require("../services/auth.service");
 const userProfileService = require("../services/userProfile.service");
 
 const createProfile = async (req, res) => {
@@ -12,6 +13,10 @@ const createProfile = async (req, res) => {
         let user = await userProfileService.findOne({
           id: userprofile.id,
         });
+        await authService.update(
+          {id:req.body.userId},
+          {isFirstTime:false}
+        )
         return res.status(STATUSCODE.success).json({
           msg: "Profile created sucessfully",
         });
@@ -40,21 +45,27 @@ const createProfile = async (req, res) => {
 };
 
 const getUserProfileInfo = async (req, res) => {
-    try{
-        let userProfile = await userProfileService.findOne(
-            {userId :req.params.userId}
-        )
-        if(userProfile){
-            return res.status(STATUSCODE.success).json({msg:'Fatch userProfile sucessfull', userProfile:userProfile})
-        }
-        return res.status(STATUSCODE.failure).json({msg:'userProfile not found'})
+  try {
+    let userProfile = await userProfileService.findOne({
+      userId: req.params.userId,
+    });
+    if (userProfile) {
+      return res
+        .status(STATUSCODE.success)
+        .json({
+          msg: "Fatch userProfile sucessfull",
+          userProfile: userProfile,
+        });
     }
-    catch(e){
-        return res.status(STATUSCODE.internal).json({
-            msg: "something wrong",
-            error: e,
-          });
-    }
+    return res
+      .status(STATUSCODE.failure)
+      .json({ msg: "userProfile not found" });
+  } catch (e) {
+    return res.status(STATUSCODE.internal).json({
+      msg: "something wrong",
+      error: e,
+    });
+  }
 };
 
 module.exports = {

@@ -1,10 +1,11 @@
-'use strict';
+"use strict";
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable(
-      "otpStorage", {
+      "otpStorage",
+      {
         id: {
           type: Sequelize.INTEGER,
           primaryKey: true,
@@ -31,16 +32,15 @@ module.exports = {
           field: "updated_at",
           type: Sequelize.DATE,
         },
-
-      }, {
+      },
+      {
         freezeTableName: true,
         // disable the modification of tablenames; By default
-      });
+      }
+    );
   },
 
   async down(queryInterface, Sequelize) {
-
     await queryInterface.dropTable("otpStorage");
-
-  }
+  },
 };

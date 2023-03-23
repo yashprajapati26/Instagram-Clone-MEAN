@@ -16,6 +16,7 @@ import { FeedlistComponent } from './components/feedlist/feedlist.component';
 import { CreatePostComponent } from './components/posts/create-post/create-post.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AddCommentComponent } from './components/posts/add-comment/add-comment.component';
+import { FeedsComponent } from './components/comman/feeds/feeds.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { AddCommentComponent } from './components/posts/add-comment/add-comment.
     FeedlistComponent,
     CreatePostComponent,
     NotFoundComponent,
-    AddCommentComponent
+    AddCommentComponent,
+    FeedsComponent
   ],
   imports: [
     BrowserModule,
