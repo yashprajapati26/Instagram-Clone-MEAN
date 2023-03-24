@@ -15,7 +15,7 @@ export class FeedlistComponent {
   user: any;
   allUsers: any
   replyToggle: boolean = false;
-
+  btnName:string = "follow"
 
   constructor(private router: Router, private feedlistservice: FeedlistService) { }
 
@@ -91,5 +91,18 @@ export class FeedlistComponent {
     }
 
     console.log("reply on comment ")
+  }
+
+  
+
+  doUndoFollowing(userId:any,event:any){
+    event.target.textContent = "unfollow"
+    let data = {
+      userId : userId, 
+      followerId : this.user.id
+    }
+    this.feedlistservice.doFollowing(data).subscribe((res)=>{
+      console.log(res)
+    })
   }
 }

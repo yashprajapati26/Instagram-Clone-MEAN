@@ -36,7 +36,8 @@
           <p class="font-bold text-sm">{{ singleuser.username }}</p>
         </a>
       </div>
-      <button class="text-xs font-bold text-blue-700">Follow</button>
+      <button (click)="doUndoFollowing(singleuser.id,$event)" id="user-{{singleuser.id}}" class="text-xs font-bold text-blue-700">{{btnName}}</button>
+
     </div>
   </div>
 </div>

@@ -26,4 +26,8 @@ export class HeaderComponent {
     this.router.navigate(['login'])
   }
 
+  notifications(){
+    this.router.navigate(['notification'])
+  }
+
 }

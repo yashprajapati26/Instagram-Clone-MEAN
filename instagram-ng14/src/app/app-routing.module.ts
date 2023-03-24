@@ -5,6 +5,7 @@ import { OtpVerifyComponent } from './components/auth/otp-verify/otp-verify.comp
 import { SignupComponent } from './components/auth/signup/signup.component';
 import { FeedlistComponent } from './components/feedlist/feedlist.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { NotificationComponent } from './components/notification/notification.component';
 import { AddCommentComponent } from './components/posts/add-comment/add-comment.component';
 import { CreatePostComponent } from './components/posts/create-post/create-post.component';
 import { EditProfileComponent } from './components/profile/edit-profile/edit-profile.component';
@@ -53,6 +54,10 @@ const routes: Routes = [
     path:'add-comment/:id',
     canActivate:[AuthguardGuard],
     component: AddCommentComponent
+  },
+  {
+    path: 'notification',
+    component: NotificationComponent
   },
   {
     path:'**',

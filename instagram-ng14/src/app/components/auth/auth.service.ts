@@ -40,13 +40,20 @@ export class AuthService {
 
   removeToken(): void {
     localStorage.removeItem('AUTH_TOKEN');
-    localStorage.removeItem('usrId');
+    localStorage.removeItem('userId');
 
   }
 
   getToken(): string | null {
     if (localStorage.getItem('AUTH_TOKEN')) {
       return localStorage.getItem('AUTH_TOKEN');
+    }
+    return null;
+  }
+
+  getUserId(): string | null {
+    if (localStorage.getItem('userId')) {
+      return localStorage.getItem('userId');
     }
     return null;
   }
