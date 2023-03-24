@@ -3,12 +3,13 @@ const router = express.Router();
 const authController = require("../controllers/authController");
 const userProfileController = require("../controllers/userProfileController");
 const postController = require("../controllers/postController");
-const likedPostController = require("../controllers/likedPostController")
+const likedPostController = require("../controllers/likedPostController");
 const { celebrate, Segments } = require("celebrate");
 const { signup, login } = require("../validators/auth.validator");
-const { comment } = require("../validators/comment.validator")
+const { comment } = require("../validators/comment.validator");
 const multer = require("multer");
 const cmtPostController = require("../controllers/cmtPostController");
+const userFollowerController = require("../controllers/userFollowerController");
 
 // local storage for save post images
 var storage = multer.diskStorage({
@@ -23,8 +24,16 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 // auth routes
-router.post("/signup",celebrate({ [Segments.BODY]: signup }),authController.signup);
-router.post("/login",celebrate({ [Segments.BODY]: login }),authController.login);
+router.post(
+  "/signup",
+  celebrate({ [Segments.BODY]: signup }),
+  authController.signup
+);
+router.post(
+  "/login",
+  celebrate({ [Segments.BODY]: login }),
+  authController.login
+);
 router.post("/otpverify", authController.otpverify);
 router.get("/userdetails/:userId", authController.userdetails);
 router.get("/getallusers", authController.getAllUsers);
@@ -37,15 +46,27 @@ router.post("/createprofile", userProfileController.createProfile);
 router.post("/createpost", upload.array("files", 4), postController.createPost);
 router.get("/getuserpost/:userId", postController.getAllPosts);
 router.get("/deletepost/:postId", postController.deletePost);
-//feed 
+//feed
 router.get("/getfeeds", postController.getFeeds);
-router.get("/getsinglepost/:postId", postController.getSinglePost)
+router.get("/getsinglepost/:postId", postController.getSinglePost);
 
 //liked-disliked post routes
-router.get("/like-dislike-post/:postId/:userId", likedPostController.LikeDislikePost)
-
+router.get(
+  "/like-dislike-post/:postId/:userId",
+  likedPostController.LikeDislikePost
+);
+router.get("/getliked/:userId", likedPostController.getAllLiked);
 
 // comment routes
-router.post("/add-comment", celebrate({ [Segments.BODY]: comment }), cmtPostController.createComment)
+router.post(
+  "/add-comment",
+  celebrate({ [Segments.BODY]: comment }),
+  cmtPostController.createComment
+);
+
+// userFollowers routes
+router.post("/do-undo-following", userFollowerController.do_undo_Following);
+router.get("/getfollowers/:userId", userFollowerController.getAllFollowers);
+router.get("/getfollowing/:userId", userFollowerController.getAllFollowing);
 
 module.exports = router;

@@ -7,11 +7,17 @@ const LikeDislikePost = async (req, res) => {
   try {
     let userId = req.params.userId;
     let postId = req.params.postId;
-    console.log(userId,postId)
+    console.log(userId, postId);
     if (userId && postId) {
-      let isAlreadyLiked = await likedPostService.findOne({ postId: postId, likedBy: userId });
+      let isAlreadyLiked = await likedPostService.findOne({
+        postId: postId,
+        likedBy: userId,
+      });
       if (isAlreadyLiked) {
-        await likedPostService.deleteRecord({ postId: postId, likedBy: userId });
+        await likedPostService.deleteRecord({
+          postId: postId,
+          likedBy: userId,
+        });
       } else {
         await likedPostService.create({ postId: postId, likedBy: userId });
       }
@@ -27,6 +33,25 @@ const LikeDislikePost = async (req, res) => {
   }
 };
 
+const getAllLiked = async (req, res) => {
+  try {
+    let allLiked = await likedPostService.findAll(req.params.userId);
+    if (allLiked) {
+      return res
+        .status(STATUSCODE.success)
+        .json({ msg: "get all Liked", allLiked: allLiked });
+    }
+    return res.status(STATUSCODE.failure).json({ msg: "No data found" });
+  } catch (e) {
+    console.log(e);
+    return res.status(STATUSCODE.internal).json({
+      msg: "something wrong",
+      error: e,
+    });
+  }
+};
+
 module.exports = {
   LikeDislikePost: LikeDislikePost,
+  getAllLiked: getAllLiked,
 };

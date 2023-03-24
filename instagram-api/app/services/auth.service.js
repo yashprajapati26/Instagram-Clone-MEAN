@@ -1,3 +1,4 @@
+const userFollowers = require('../models/userFollowers.model');
 const Users = require('../models/users.model')
 
 const create =  async (data) => {
@@ -45,6 +46,10 @@ deleteRecord = async (condition) => {
 const findAll = async(condition) => {
 	return await Users.findAll({
 		where: condition,
+		include :{
+			model : userFollowers,
+			attributes : ["id","userId","followerId","status"]
+		}
 	}).then((res)=>{
 		return res;
 	}).catch((err)=>{
@@ -52,6 +57,9 @@ const findAll = async(condition) => {
 		throw err;
 	})
 }
+
+Users.hasMany(userFollowers);
+
 
 module.exports = {
 	create: create,

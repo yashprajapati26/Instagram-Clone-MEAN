@@ -1,6 +1,8 @@
 const post = require('../models/post.model');
 const likedPost = require('../models/likedPost.model');
-const Users = require('../models/users.model') 
+const Users = require('../models/users.model'); 
+const Post = require('../models/post.model');
+const postImages = require('../models/postImages.model');
 
 const create =  async (data) => {
 	return await likedPost.create(data)
@@ -48,14 +50,22 @@ const deleteRecord = async (condition) => {
 		});
 };
 
-const findAll = async(condition) => {
+const findAll = async(userId) => {
 	return await likedPost.findAll({
-		where: condition,
+		// where: condition,
 		include: [
 			{
 				model: Users,
+				as: "user",
 				attributes: ["id","username"],
 			},
+			{
+				model:Post,
+				where : {userId :userId },
+				include: {
+					model : postImages,
+				}
+			}
 		]
 	}).then((res)=>{
 		return res;
@@ -65,9 +75,12 @@ const findAll = async(condition) => {
 	})
 }
 
-likedPost.belongsTo(Users);
+likedPost.belongsTo(Users,{
+	foreignKey: "likedBy",
+    as: "user",
+});
 likedPost.belongsTo(post);
-
+post.hasMany(postImages)
 // likedPost.hasMany(post);
 
 module.exports = {
