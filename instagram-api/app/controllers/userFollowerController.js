@@ -121,7 +121,16 @@ const updateFollowingRequest = async (req, res) => {
       let userId = req.body.userId;
       let followerId = req.body.followerId;
 
-      // update in userId user
+      if(req.body.status=="Accept"){
+        let condition = { userId : userId, notificationId: req.body.requestId, type:"Follow Request"}
+        let message = "started following you"
+        await notificationController.updateNotification(condition, message)
+      }
+      else{
+          await notificationController.deleteNotification("Follow Request",req.body.requestId,userId)
+      }
+
+      // update in userId followers user
 
       const noOfFollower = await userFollowersService.findAndCountAll(
         ["id", "userId", "followerId", "status"],

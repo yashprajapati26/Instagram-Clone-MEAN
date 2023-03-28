@@ -9,13 +9,13 @@ export class NotificationService {
 
   constructor(private http:HttpClient) { }
 
-  getFollowRequest(userId:any){
-    let url = environment.apiURL + "/getfollowers/" + userId
+  getFollowNotification(userId:any){
+    let url = environment.apiURL + "/getfollowerNotification/" + userId
     return this.http.get(url)
   }
 
   getLikedNotification(userId:any){
-    let url = environment.apiURL + "/getliked/" + userId
+    let url = environment.apiURL + "/getlikedNotification/" + userId
     return this.http.get(url)
   }
   

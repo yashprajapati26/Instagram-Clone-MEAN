@@ -26,7 +26,7 @@ export class EditProfileComponent {
     private activateRoute: ActivatedRoute,
     private authservice: AuthService
   ) {
-    let userID = this.activateRoute.snapshot.params['id'];
+    let userID = this.authservice.getUserId()
     this.fatchUserProfileDetails(userID);
     this.profileForm = this.formBuilder.group({
       userId: ['',Validators.required],

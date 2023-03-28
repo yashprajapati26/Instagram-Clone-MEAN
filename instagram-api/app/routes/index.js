@@ -10,6 +10,7 @@ const { comment } = require("../validators/comment.validator");
 const multer = require("multer");
 const cmtPostController = require("../controllers/cmtPostController");
 const userFollowerController = require("../controllers/userFollowerController");
+const notificationController = require("../controllers/notificationController");
 
 // local storage for save post images
 var storage = multer.diskStorage({
@@ -70,5 +71,13 @@ router.get("/getfollowers/:userId", userFollowerController.getAllFollowers);
 router.get("/getfollowing/:userId", userFollowerController.getAllFollowing);
 router.post("/updateFollowingRequest", userFollowerController.updateFollowingRequest)
 router.get("/getuser_accepted_followers_following/:userId", userFollowerController.getuser_accepted_followers_following)
+
+
+// notication routes
+
+router.get("/getfollowerNotification/:userId",notificationController.getFollowNotification)
+router.get("/getlikedNotification/:userId",notificationController.getLikedNotification)
+
+
 
 module.exports = router;

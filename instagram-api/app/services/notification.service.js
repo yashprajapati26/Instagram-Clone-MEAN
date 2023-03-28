@@ -1,4 +1,8 @@
 const Notification = require("../models/notification.model");
+const likedPost = require("../models/likedPost.model");
+const CmtPost = require("../models/cmtPost.model");
+const userFollowers = require("../models/userFollowers.model");
+const Users = require("../models/users.model");
 
 const create = async (data) => {
   return await Notification.create(data)
@@ -15,12 +19,6 @@ const findOne = async (data) => {
   return await Notification.findOne({
     // attributes: attributes,
     where: data,
-    include: [
-      {
-        model: Post,
-        attributes: ["id", "content", "userId"],
-      },
-    ],
   });
 };
 
@@ -46,10 +44,20 @@ const deleteRecord = async (condition) => {
     });
 };
 
-const findAll = async (condition) => {
+const findAll = async (condition, modelname) => {
   return await Notification.findAll({
-      where: condition,
-    })
+    where: condition,
+    include: [
+      {
+        model: modelname,
+        include: [
+          {
+            model: Users,
+          },
+        ],
+      },
+    ],
+  })
     .then((res) => {
       return res;
     })
@@ -59,12 +67,32 @@ const findAll = async (condition) => {
     });
 };
 
+Notification.belongsTo(likedPost, {
+  foreignKey: "notificationId",
+});
+Notification.belongsTo(CmtPost, {
+  foreignKey: "notificationId",
+});
+Notification.belongsTo(userFollowers, {
+  foreignKey: "notificationId",
+});
 
+userFollowers.belongsTo(Users, {
+  foreignKey: "followerId",
+});
+
+likedPost.belongsTo(Users, {
+  foreignKey: "likedBy",
+});
+
+CmtPost.belongsTo(Users, {
+  foreignKey: "cmtBy",
+});
 
 module.exports = {
-	create: create,
-    findOne:findOne,
-    update:update,
-    deleteRecord:deleteRecord,
-    findAll:findAll
-}
+  create: create,
+  findOne: findOne,
+  update: update,
+  deleteRecord: deleteRecord,
+  findAll: findAll,
+};

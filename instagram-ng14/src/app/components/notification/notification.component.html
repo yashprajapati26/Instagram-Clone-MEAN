@@ -12,11 +12,11 @@
 
       <div class="flex items-center">
         <img class="rounded-full w-8 flex mr-3" src="../../../assets/Logo-facebook.png" />
-        <p *ngIf="object.status == 'Pending'"><span class="font-bold">{{object.asfollower.username}}</span> requested to follow you. <span class="text-gray-400">{{object.createdAt | date}}</span></p>
-        <p *ngIf="object.status == 'Accept'"><span class="font-bold">{{object.asfollower.username}}</span> started following you. <span class="text-gray-400">{{object.createdAt | date}}</span></p>
+        <p *ngIf="object.userFollower.status == 'Pending'"><span class="font-bold"> {{object.userFollower.user.username }} </span> {{object.message }}<span class="text-gray-400">{{object.createdAt | date}}</span></p>
+        <p *ngIf="object.userFollower.status == 'Accept'"><span class="font-bold"> {{object.userFollower.user.username }} </span> {{object.message}} <span class="text-gray-400">{{object.createdAt | date}}</span></p>
       </div>
 
-      <div *ngIf="object.status == 'Pending'" class="flex" id="action-{{object.id}}">
+      <div *ngIf="object.userFollower.status == 'Pending'" class="flex" id="action-{{object.id}}">
         <button (click)="actionFollowRequest(object.id,object.followerId,'Accept',$event)" id="accept-{{object.id}}" class="text-sm m-1 px-2 py-1 bg-blue-600 rounded-md text-white">
           confirm
         </button>
@@ -24,7 +24,7 @@
           Delete
         </button>
       </div>
-      <div *ngIf="object.status == 'Accept'" class="flex">
+      <div *ngIf="object.userFollower.status == 'Accept'" class="flex">
         <button class="text-sm m-1 px-2 py-1 bg-gray-600 rounded-md text-white">
           Following
         </button>
@@ -41,9 +41,9 @@
 
       <div class="flex items-center">
         <img class="rounded-full w-8 flex mr-3" src="../../../assets/Logo-facebook.png" />
-        <p><span class="font-bold">{{like.user.username}}</span> liked your post. <span class="text-gray-400">{{like.createdAt | date}}</span></p>
+        <p><span class="font-bold">{{like.likedPost.user.username}}</span> {{like.message}}<span class="text-gray-400">{{like.createdAt | date}}</span></p>
       </div>
-      <img class="rounded w-8 flex mr-3" src="{{imageUrl}}/{{like.post.postImages[0].imagePath}}" />
+      <!-- <img class="rounded w-8 flex mr-3" src="{{imageUrl}}/{{like.likedPost.post.postImages[0].imagePath}}" /> -->
       
     </div>
   </div>
