@@ -24,5 +24,9 @@ export class ProfileService {
     return this.http.get(url)
   }
 
+  getUserFollowersFollowing(data:any){
+    let url = environment.apiURL + "/getuser_accepted_followers_following/" + data
+    return this.http.get(url)
+  }
 
 }

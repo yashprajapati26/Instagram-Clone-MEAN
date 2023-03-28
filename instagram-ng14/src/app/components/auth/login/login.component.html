@@ -1,7 +1,7 @@
 <div class="h-screen bg-gray-200 flex flex-col justify-center items-center">
     
     <div class="bg-white mb-3 border border-gray-300 w-80 pt-8 pb-4 flex flex-col items-center">
-        <img class="instagram-logo" src="../../../../assets/Logo-Instagram.png">
+        <img class="h-20 w-30" src="../../../../assets/Logo-Instagram.png">
         <h5 class="text-sm">Login</h5>
         <form [formGroup]="loginForm" (ngSubmit)="login(loginForm.value)" class="w-64 flex flex-col gap-1 mt-8" method="post">
             <input type="text" class="w-full rounded border bg-gray-100 p-2 text-xs mb-1" placeholder="Enter Username or Email" formControlName="username">

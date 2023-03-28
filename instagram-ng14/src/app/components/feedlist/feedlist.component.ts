@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment.development';
+import { CommanService } from '../comman/comman.service';
 import { FeedlistService } from './feedlist.service';
 
 @Component({
@@ -16,8 +17,9 @@ export class FeedlistComponent {
   allUsers: any
   replyToggle: boolean = false;
   btnName:string = "follow"
+  searchUsers:any
 
-  constructor(private router: Router, private feedlistservice: FeedlistService) { }
+  constructor(private router: Router, private feedlistservice: FeedlistService, private commanservice:CommanService) { }
 
   ngOnInit() {
     this.fatchFeed();
@@ -27,8 +29,16 @@ export class FeedlistComponent {
     // this.allUsers = this.allUsers.filter((item:any) => item.id !== this.user.id);
 
     console.log(this.allUsers)
+    this.commanservice.reciveSearchKey().subscribe((res:any)=>{
+      this.searchUsers = this.allUsers.filter((user:any)=> user.username.includes(res))
+      console.log(this.searchUsers)
+    })
   }
 
+  closemodel() {
+    let model = document.querySelector('.searchmodel');
+    model?.classList.add('hidden')
+  }
 
   fatchFeed() {
     this.feedlistservice.getFeeds().subscribe((res: any) => {
@@ -96,7 +106,12 @@ export class FeedlistComponent {
   
 
   doUndoFollowing(userId:any,event:any){
+    if(event.target.textContent == "follow"){
     event.target.textContent = "unfollow"
+    }else{
+    event.target.textContent = "follow"
+
+    }
     let data = {
       userId : userId, 
       followerId : this.user.id

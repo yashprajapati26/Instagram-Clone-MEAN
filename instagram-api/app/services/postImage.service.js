@@ -19,7 +19,7 @@ const findOne = async(data)=>{
 		include: [
 			{
 				model: Post,
-				attributes: ["id","content","usrId"],
+				attributes: ["id","content","userId"],
 			},
 		]
     })
@@ -83,5 +83,6 @@ module.exports = {
 	create: create,
     findOne:findOne,
     update:update,
-    deleteRecord:deleteRecord
+    deleteRecord:deleteRecord,
+	findAll:findAll
 }

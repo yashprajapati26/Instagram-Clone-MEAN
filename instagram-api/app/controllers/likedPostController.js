@@ -1,6 +1,7 @@
 const { STATUSCODE } = require("../config/constant");
 const likedPostService = require("../services/likedPost.service");
 const Sequelize = require("sequelize");
+const notificationController = require("./notificationController");
 const Op = Sequelize.Op;
 
 const LikeDislikePost = async (req, res) => {
@@ -18,8 +19,26 @@ const LikeDislikePost = async (req, res) => {
           postId: postId,
           likedBy: userId,
         });
+        await notificationController.deleteNotification(
+          "Like",
+          isAlreadyLiked.id,
+          isAlreadyLiked.post.userId
+        );
       } else {
         await likedPostService.create({ postId: postId, likedBy: userId });
+        let likeObj = await likedPostService.findOne({
+          postId: postId,
+          likedBy: userId,
+        });
+
+  
+        let message = "liked your post.";
+        await notificationController.createNotification(
+          "Like",
+          likeObj.id,
+          likeObj.post.userId,
+          message
+        );
       }
       return res.status(STATUSCODE.success).json({ msg: "Action Complted" });
     }

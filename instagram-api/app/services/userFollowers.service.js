@@ -84,6 +84,22 @@ const findAll = async (condition) => {
         });
 };
 
+const findAndCountAll = async (attributes, condition, limit, offset, sorting) => {
+    return await userFollowers.findAndCountAll({
+            attributes: attributes,
+            where: condition,
+            order: sorting,
+        })
+        .then((res) => {
+            return res;
+        })
+        .catch((err) => {
+            console.error(err);
+            throw err;
+        });
+};
+
+
 userFollowers.hasMany(Users);
 
 userFollowers.belongsTo(Users, {
@@ -101,4 +117,5 @@ module.exports = {
     update: update,
     deleteRecord: deleteRecord,
     findAll: findAll,
+    findAndCountAll: findAndCountAll
 };

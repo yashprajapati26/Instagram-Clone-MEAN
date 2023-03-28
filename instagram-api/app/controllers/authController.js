@@ -123,16 +123,16 @@ const otpverify = async (req, res) => {
 
     if (otpObj.otp === user_otp) {
       let userObj = await authService.update(
-        {
-          id: req.body.userId,
-        },
-        {
-          isActive: true,
-        }
+        { id: req.body.userId },
+        { isActive: true }
       );
-      return res.status(STATUSCODE.success).json({
-        msg: "Verification is Complate. Your Account is Activate now.",
-      });
+      if (userObj) {
+        return res.status(STATUSCODE.success).json({
+          msg: "Verification is Complate. Your Account is Activate now.",
+        });
+      } else {
+        return res.status(STATUSCODE.failure);
+      }
     } else {
       return res.status(STATUSCODE.notAcceptable).json({
         msg: "OTP is wrong. Please Enter Correct OTP",
@@ -149,7 +149,7 @@ const otpverify = async (req, res) => {
 const login = async (req, res) => {
   try {
     let user = await authService.findOne(
-      ["id", "username", "email", "password", "isActive","isFirstTime"],
+      ["id", "username", "email", "password", "isActive", "isFirstTime"],
       {
         [Op.or]: [
           { username: req.body.username },
@@ -199,48 +199,50 @@ const login = async (req, res) => {
   }
 };
 
-
-const userdetails = async(req,res)=>{
-    try{
-        let user = await UserService.findOne(
-            ["id","username","firstname","lastname","email","mobile"],
-            {id :req.params.userId}
-        )
-        if(user){
-            return res.status(STATUSCODE.success).json({msg:'Fatch User sucessfull', user:user})
-        }
-        return res.status(STATUSCODE.failure).json({msg:'User not found'})
+const userdetails = async (req, res) => {
+  try {
+    let user = await UserService.findOne(
+      ["id", "username", "firstname", "lastname", "email", "mobile"],
+      { id: req.params.userId }
+    );
+    if (user) {
+      return res
+        .status(STATUSCODE.success)
+        .json({ msg: "Fatch User sucessfull", user: user });
     }
-    catch(e){
-        console.log(e);
-        return res.status(STATUSCODE.internal).json({
-        msg: "something wrong",
-        error: e,
-    });
-    }
-}
-
-const getAllUsers = async(req,res)=>{
-  try{
-    let allusers = await UserService.findAll({
-      isActive : 1
-    })
-    if(allusers) return res.status(STATUSCODE.success).json({msg:'Fatch All users',allusers:allusers})
-    return res.status(STATUSCODE.failure).json({msg:'Font found Users'})
-  }catch(e){
+    return res.status(STATUSCODE.failure).json({ msg: "User not found" });
+  } catch (e) {
     console.log(e);
     return res.status(STATUSCODE.internal).json({
-    msg: "something wrong",
-    error: e,
-    })
+      msg: "something wrong",
+      error: e,
+    });
   }
-}
+};
 
+const getAllUsers = async (req, res) => {
+  try {
+    let allusers = await UserService.findAll({
+      isActive: 1,
+    });
+    if (allusers)
+      return res
+        .status(STATUSCODE.success)
+        .json({ msg: "Fatch All users", allusers: allusers });
+    return res.status(STATUSCODE.failure).json({ msg: "Font found Users" });
+  } catch (e) {
+    console.log(e);
+    return res.status(STATUSCODE.internal).json({
+      msg: "something wrong",
+      error: e,
+    });
+  }
+};
 
 module.exports = {
   signup: signup,
   login: login,
   otpverify: otpverify,
-  userdetails:userdetails,
-  getAllUsers:getAllUsers
+  userdetails: userdetails,
+  getAllUsers: getAllUsers,
 };

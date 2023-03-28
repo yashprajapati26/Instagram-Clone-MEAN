@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 import { AuthService } from '../../auth/auth.service';
+import { CommanService } from '../comman.service';
 
 @Component({
   selector: 'app-header',
@@ -9,16 +11,33 @@ import { AuthService } from '../../auth/auth.service';
 })
 export class HeaderComponent {
 
-  constructor(private router:Router,private authservice:AuthService){}
+
+  searchKey:string | undefined;
+  searchUsers: any;
+
+  constructor(private router:Router,private authservice:AuthService, private commanservice:CommanService){}
+
+  ngOnInit(){
+    console.log("helolo")
+  }
+
+  searchUser(){
+    console.log(this.searchKey)
+    // this.authservice.searchUser(this.searchKey).subscribe((res:any)=>{
+    //   this.searchUsers = res['users']
+    // })
+    let model = document.querySelector('.searchmodel');
+    model?.classList.remove('hidden')
+    this.commanservice.sendSearchKey(this.searchKey)
+  }
+
 
   createPost(){
     this.router.navigate(['create-post'])
   }
 
   gotoProfile(){
-    let userId = localStorage.getItem('userId')
-    if(userId) this.router.navigate(['profile',userId])
-    else this.router.navigate(['login'])
+    this.router.navigate(['profile'])
   }
 
   logout(){

@@ -68,6 +68,7 @@ const getUserProfileInfo = async (req, res) => {
   }
 };
 
+
 module.exports = {
   getUserProfileInfo: getUserProfileInfo,
   createProfile: createProfile,

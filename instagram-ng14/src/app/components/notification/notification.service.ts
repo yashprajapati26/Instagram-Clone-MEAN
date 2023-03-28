@@ -18,4 +18,9 @@ export class NotificationService {
     let url = environment.apiURL + "/getliked/" + userId
     return this.http.get(url)
   }
+  
+  requestAccept(data:any){
+    let url = environment.apiURL + "/updateFollowingRequest/"
+    return this.http.post(url,data)
+  }
 }

@@ -16,11 +16,11 @@
         <p *ngIf="object.status == 'Accept'"><span class="font-bold">{{object.asfollower.username}}</span> started following you. <span class="text-gray-400">{{object.createdAt | date}}</span></p>
       </div>
 
-      <div *ngIf="object.status == 'Pending'" class="flex">
-        <button class="text-sm m-1 px-2 py-1 bg-blue-600 rounded-md text-white">
+      <div *ngIf="object.status == 'Pending'" class="flex" id="action-{{object.id}}">
+        <button (click)="actionFollowRequest(object.id,object.followerId,'Accept',$event)" id="accept-{{object.id}}" class="text-sm m-1 px-2 py-1 bg-blue-600 rounded-md text-white">
           confirm
         </button>
-        <button class="text-sm m-1 px-2 py-1 bg-gray-600 rounded-md text-white">
+        <button (click)="actionFollowRequest(object.id,object.followerId,'Reject',$event)" id="delete-{{object.id}}" class="text-sm m-1 px-2 py-1 bg-gray-600 rounded-md text-white">
           Delete
         </button>
       </div>

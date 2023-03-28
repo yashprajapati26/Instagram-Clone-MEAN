@@ -38,4 +38,31 @@ export class NotificationComponent {
     })
   }
 
+  actionFollowRequest(requestId:any,followerId:any, status:any, event:any){
+
+    let userId = this.authservice.getUserId()
+
+    let data = {
+      requestId: requestId,
+      status : status,
+      userId: userId,
+      followerId : followerId
+    }
+    
+
+    if(status=="Accept"){
+      event.target.textContent = "following"
+      document.getElementById("delete-"+requestId)?.setAttribute('hidden','true')
+
+    }
+    else{
+      document.getElementById("action-"+requestId)?.setAttribute('hidden','true')
+    }
+    
+    
+    this.notificationservice.requestAccept(data).subscribe((res:any)=>{
+      console.log(res)
+    })
+  }
+
 }

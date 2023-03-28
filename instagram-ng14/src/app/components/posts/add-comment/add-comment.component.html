@@ -3,7 +3,7 @@
 <div *ngIf="post" class="grid grid-cols-4 gap-4 mb-6">
   <div class="overflow-y-scroll max-h-screen col-span-4">
     <!-- post -->
-    <div class="bg-gray-100 p-4 px-32">
+    <div class="bg-gray-100 p-4 md:px-32">
       <div class="bg-white border rounded-sm">
         <div class="flex items-center px-4 py-3">
           <img class="h-8 w-8 rounded-full" src="../../../assets/Logo-facebook.png" />
@@ -67,7 +67,7 @@
           VIEW ALL COMMENTS
         </div>
 
-        <div *ngFor="let cmt of post.cmtPosts" class="px-4 flex justify-between">
+        <div *ngFor="let cmt of post.cmtPosts; let i=index" class="px-4 flex justify-between">
           <div class="w-full">
             <span class="font-semibold mr-1 text-sm">{{
               cmt.byUser.username

@@ -31,12 +31,12 @@ const routes: Routes = [
     component: OtpVerifyComponent
   },
   {
-    path:'edit-profile/:id',
+    path:'edit-profile',
     canActivate:[AuthguardGuard],
     component: EditProfileComponent
   },
   {
-    path:'profile/:id',
+    path:'profile',
     canActivate:[AuthguardGuard],
     component: ProfileComponent
   },
@@ -57,6 +57,7 @@ const routes: Routes = [
   },
   {
     path: 'notification',
+    canActivate:[AuthguardGuard],
     component: NotificationComponent
   },
   {

@@ -100,6 +100,9 @@ const findAll = async (condition) => {
     });
 };
 
+
+
+
 post.belongsTo(Users);
 // CmtPost.belongsTo(Users);
 CmtPost.belongsTo(Users,{

@@ -28,13 +28,13 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.authservice.doLogin(data).subscribe((res: any) => {
         if (res) {
+          console.log(res)
+          localStorage.setItem('userId',res['data']['user'].id)
           this.authservice.saveToken(res['data']['auth_token'])
-          let userId = res['data']['user'].id
-          localStorage.setItem('userId', userId)
           if (res['data']['user'].isFirstTime){
-            this.router.navigate(['edit-profile', userId]);
+            this.router.navigate(['edit-profile']);
           }
-          else{this.router.navigate(['profile', userId]);}
+          else{this.router.navigate(['profile']);}
         }
       })
     }

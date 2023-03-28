@@ -68,5 +68,7 @@ router.post(
 router.post("/do-undo-following", userFollowerController.do_undo_Following);
 router.get("/getfollowers/:userId", userFollowerController.getAllFollowers);
 router.get("/getfollowing/:userId", userFollowerController.getAllFollowing);
+router.post("/updateFollowingRequest", userFollowerController.updateFollowingRequest)
+router.get("/getuser_accepted_followers_following/:userId", userFollowerController.getuser_accepted_followers_following)
 
 module.exports = router;
