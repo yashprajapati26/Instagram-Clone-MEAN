@@ -18,6 +18,10 @@ export class FeedsComponent {
 
   constructor(private router:Router, private feedlistservice:FeedlistService){}
 
+  ngOnInit(){
+    
+  }
+
 
   likedPost(event: any) {
 

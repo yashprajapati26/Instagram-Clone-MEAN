@@ -10,27 +10,27 @@ import { FeedlistService } from './feedlist.service';
   styleUrls: ['./feedlist.component.scss']
 })
 export class FeedlistComponent {
-  
+
   feeds: any;
   imageUrl = environment.apiURL
   user: any;
   allUsers: any
   replyToggle: boolean = false;
-  btnName:string = "follow"
-  searchUsers:any
+  btnName: string = "follow"
+  searchUsers: any
 
-  constructor(private router: Router, private feedlistservice: FeedlistService, private commanservice:CommanService) { }
+  constructor(private router: Router, private feedlistservice: FeedlistService, private commanservice: CommanService) { }
 
   ngOnInit() {
-    this.fatchFeed();
     this.fatchUserDetails();
+    this.fatchFeed();
     this.fatchAllUsers();
 
     // this.allUsers = this.allUsers.filter((item:any) => item.id !== this.user.id);
 
     console.log(this.allUsers)
-    this.commanservice.reciveSearchKey().subscribe((res:any)=>{
-      this.searchUsers = this.allUsers.filter((user:any)=> user.username.includes(res))
+    this.commanservice.reciveSearchKey().subscribe((res: any) => {
+      this.searchUsers = this.allUsers.filter((user: any) => user.username.includes(res))
       console.log(this.searchUsers)
     })
   }
@@ -42,7 +42,7 @@ export class FeedlistComponent {
 
   fatchFeed() {
     this.feedlistservice.getFeeds().subscribe((res: any) => {
-      console.log(res)
+      console.log("feed:", res)
       this.feeds = res['feeds']
     })
   }
@@ -103,20 +103,20 @@ export class FeedlistComponent {
     console.log("reply on comment ")
   }
 
-  
 
-  doUndoFollowing(userId:any,event:any){
-    if(event.target.textContent == "follow"){
-    event.target.textContent = "unfollow"
-    }else{
-    event.target.textContent = "follow"
+
+  doUndoFollowing(userId: any, event: any) {
+    if (event.target.textContent == "follow") {
+      event.target.textContent = "unfollow"
+    } else {
+      event.target.textContent = "follow"
 
     }
     let data = {
-      userId : userId, 
-      followerId : this.user.id
+      userId: userId,
+      followerId: this.user.id
     }
-    this.feedlistservice.doFollowing(data).subscribe((res)=>{
+    this.feedlistservice.doFollowing(data).subscribe((res) => {
       console.log(res)
     })
   }
