@@ -1,6 +1,7 @@
 {
   "name": "instagram-api",
   "version": "0.0.0",
+  "main":"app.js",
   "engines": {
     "node":"14.x"
   },
