@@ -3,7 +3,6 @@
 <div class="grid grid-cols-4 gap-4 mb-6">
   <div class="overflow-y-scroll max-h-screen col-span-4 md:col-span-3">
     <!-- post -->
- 
 
     <app-feeds [feeds]="feeds" [user]="user">
     </app-feeds>
@@ -28,6 +27,7 @@
     <hr />
     <p class="text-sm font-bold mx-3 p-3">Suggetion for you</p>
     <hr />
+   
 
     <div *ngFor="let singleuser of allUsers" class="mx-2 flex flex-row items-center align-items justify-between pt-3">
       <div class="flex items-center justify-between">
@@ -36,7 +36,8 @@
           <p class="font-bold text-sm">{{ singleuser.username }}</p>
         </a>
       </div>
-      <button (click)="doUndoFollowing(singleuser.id,$event)" id="user-{{singleuser.id}}" class="text-xs font-bold text-blue-700">{{btnName}}</button>
+      <button *ngIf="singleuser.isAlreadyFollowed" (click)="doUndoFollowing(singleuser.id,$event)" id="user-{{singleuser.id}}" class="text-xs font-bold text-blue-700">unfollow</button>
+      <button *ngIf="!singleuser.isAlreadyFollowed" (click)="doUndoFollowing(singleuser.id,$event)" id="user-{{singleuser.id}}" class="text-xs font-bold text-blue-700">follow</button>
 
     </div>
   </div>

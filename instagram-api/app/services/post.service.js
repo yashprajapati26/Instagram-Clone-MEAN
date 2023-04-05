@@ -90,6 +90,7 @@ const findAll = async (condition) => {
           include: { model: Users,as:"byUser", attributes: ["id", "username"] },
         },
       ],
+     order : ['id','DESC']
     })
     .then((res) => {
       return res;

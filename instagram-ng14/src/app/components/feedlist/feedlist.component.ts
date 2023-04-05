@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { skipWhile } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 import { CommanService } from '../comman/comman.service';
 import { FeedlistService } from './feedlist.service';
@@ -7,19 +8,21 @@ import { FeedlistService } from './feedlist.service';
 @Component({
   selector: 'app-feedlist',
   templateUrl: './feedlist.component.html',
-  styleUrls: ['./feedlist.component.scss']
+  styleUrls: ['./feedlist.component.scss'],
 })
 export class FeedlistComponent {
-
   feeds: any;
-  imageUrl = environment.apiURL
+  imageUrl = environment.apiURL;
   user: any;
-  allUsers: any
+  allUsers: any;
   replyToggle: boolean = false;
-  btnName: string = "follow"
-  searchUsers: any
+  searchUsers: any;
 
-  constructor(private router: Router, private feedlistservice: FeedlistService, private commanservice: CommanService) { }
+  constructor(
+    private router: Router,
+    private feedlistservice: FeedlistService,
+    private commanservice: CommanService
+  ) {}
 
   ngOnInit() {
     this.fatchUserDetails();
@@ -28,96 +31,84 @@ export class FeedlistComponent {
 
     // this.allUsers = this.allUsers.filter((item:any) => item.id !== this.user.id);
 
-    console.log(this.allUsers)
     this.commanservice.reciveSearchKey().subscribe((res: any) => {
-      this.searchUsers = this.allUsers.filter((user: any) => user.username.includes(res))
-      console.log(this.searchUsers)
-    })
+      this.searchUsers = this.allUsers.filter((user: any) =>
+        user.username.includes(res)
+      );
+      console.log(this.searchUsers);
+    });
   }
 
   closemodel() {
     let model = document.querySelector('.searchmodel');
-    model?.classList.add('hidden')
+    model?.classList.add('hidden');
   }
 
   fatchFeed() {
     this.feedlistservice.getFeeds().subscribe((res: any) => {
-      console.log("feed:", res)
-      this.feeds = res['feeds']
-    })
+      console.log('feed:', res);
+      this.feeds = res['feeds'];
+    });
   }
 
   fatchUserDetails() {
-    let userId = localStorage.getItem('userId')
+    let userId = localStorage.getItem('userId');
     this.feedlistservice.getUserDetails(userId).subscribe((res: any) => {
-      console.log(res)
-      this.user = res['user']
-    })
+      console.log(res);
+      this.user = res['user'];
+    });
   }
 
   fatchAllUsers() {
     this.feedlistservice.getAllUsers().subscribe((res: any) => {
-      this.allUsers = res['allusers']
-    })
-  }
-
-  likedPost(event: any) {
-
-    let Id = event.target.id || event.srcElement.id || event.currentTarget.id;
-    let btn = document.getElementById(Id);
-
-    let splitArray = Id.split("-");
-    let postId = splitArray[1]
-
-    if (btn?.getAttribute("fill") != "red") {
-      btn?.setAttribute("fill", "red")
-    } else {
-      btn?.setAttribute("fill", "gray")
-    }
-
-    let userId = localStorage.getItem('userId')
-    let data = { userId: userId, postId: postId }
-
-    this.feedlistservice.likedDislikePost(data).subscribe((res: any) => {
-      console.log(res)
-    })
+      console.log(res['allusers'])
+      this.allUsers = res['allusers'].map((user:any)=>{
+        user.userFollowers.find((element:any)=>{
+          if(element.followerId == this.user.id){
+            user.isAlreadyFollowed = true
+          }
+        })
+        return user
+      })
+      this.allUsers= this.allUsers.filter((user:any)=>{
+        if(user.id !== this.user.id){
+          return user
+        }
+      })
+    });
   }
 
   addComment(postId: any) {
-    console.log(postId)
-    this.router.navigate(['add-comment', postId])
+    console.log(postId);
+    this.router.navigate(['add-comment', postId]);
   }
 
   openReplySection(cmtId: any) {
-    let replyBox = document.getElementById(cmtId)
-    console.log(replyBox)
-    if (replyBox?.hasAttribute("hidden")) {
-      console.log(1)
-      replyBox?.removeAttribute("hidden")
-    }
-    else {
-      console.log(2)
-      replyBox?.setAttribute("hidden", "true")
+    let replyBox = document.getElementById(cmtId);
+    console.log(replyBox);
+    if (replyBox?.hasAttribute('hidden')) {
+      console.log(1);
+      replyBox?.removeAttribute('hidden');
+    } else {
+      console.log(2);
+      replyBox?.setAttribute('hidden', 'true');
     }
 
-    console.log("reply on comment ")
+    console.log('reply on comment ');
   }
 
-
-
   doUndoFollowing(userId: any, event: any) {
-    if (event.target.textContent == "follow") {
-      event.target.textContent = "unfollow"
+    if (event.target.textContent == 'follow') {
+      event.target.textContent = 'unfollow';
     } else {
-      event.target.textContent = "follow"
-
+      event.target.textContent = 'follow';
     }
     let data = {
       userId: userId,
-      followerId: this.user.id
-    }
-    this.feedlistservice.doFollowing(data).subscribe((res) => {
-      console.log(res)
-    })
+      followerId: this.user.id,
+    };
+    this.feedlistservice.doUndoFollowing(data).subscribe((res) => {
+      console.log(res);
+    });
   }
 }

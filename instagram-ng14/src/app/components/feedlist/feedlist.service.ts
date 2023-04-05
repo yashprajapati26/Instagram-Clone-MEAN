@@ -30,7 +30,7 @@ export class FeedlistService {
     return this.http.get(url)
   }
 
-  doFollowing(data:any){
+  doUndoFollowing(data:any){
     let url = environment.apiURL + "/do-undo-following";
     return this.http.post(url,data)
   }

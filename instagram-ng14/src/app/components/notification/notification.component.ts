@@ -76,6 +76,7 @@ export class NotificationComponent {
       userId: userId,
       followerId: followerId
     }
+    console.log("data : ",data)
 
     if (status == "Accept") {
       event.target.textContent = "following"

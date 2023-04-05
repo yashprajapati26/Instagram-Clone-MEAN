@@ -17,10 +17,10 @@
       </div>
 
       <div *ngIf="object.userFollower.status == 'Pending'" class="flex" id="action-{{object.id}}">
-        <button (click)="actionFollowRequest(object.id,object.followerId,'Accept',$event)" id="accept-{{object.id}}" class="text-sm m-1 px-2 py-1 bg-blue-600 rounded-md text-white">
+        <button (click)="actionFollowRequest(object.userFollower.id,object.userFollower.followerId,'Accept',$event)" id="accept-{{object.userFollower.id}}" class="text-sm m-1 px-2 py-1 bg-blue-600 rounded-md text-white">
           confirm
         </button>
-        <button (click)="actionFollowRequest(object.id,object.followerId,'Reject',$event)" id="delete-{{object.id}}" class="text-sm m-1 px-2 py-1 bg-gray-600 rounded-md text-white">
+        <button (click)="actionFollowRequest(object.userFollower.id,object.userFollower.followerId,'Reject',$event)" id="delete-{{object.userFollower.id}}" class="text-sm m-1 px-2 py-1 bg-gray-600 rounded-md text-white">
           Delete
         </button>
       </div>
