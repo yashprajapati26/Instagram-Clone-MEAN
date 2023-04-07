@@ -14,14 +14,13 @@
         >
       </div>
     </div>
-    <div class="flex justify-center items-center">
-      <!-- <img src="{{imageUrl}}/{{feed.postImages[0].imagePath}}" /> -->
-      <div class="flex">
-        <div class="m-2" *ngFor="let image of feed.postImages">
-          <img class="h-80" src="{{ imageUrl }}/{{ image.imagePath }}" />
-        </div>
-      </div>
-    </div>
+    <ng-image-slider
+     class="img-responsive"
+      [images]="feed.imageObject"
+      [imageSize]="{ width: sliderImageWidth, height: sliderImageHeight }"
+      #nav
+    ></ng-image-slider>
+
     <div class="flex items-center justify-between mx-4 mt-3 mb-2">
       <div class="flex gap-5">
         <svg

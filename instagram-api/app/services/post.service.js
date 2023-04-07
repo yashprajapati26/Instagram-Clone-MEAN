@@ -36,8 +36,7 @@ const findOne = async (data) => {
       {
         model: CmtPost,
         attributes: ["id", "postId", "cmtBy", "comment", "parentId"],
-		include: { model: Users,as:"byUser", attributes: ["id", "username"] },
-
+        include: { model: Users, as: "byUser", attributes: ["id", "username"] },
       },
     ],
   });
@@ -87,10 +86,13 @@ const findAll = async (condition) => {
         {
           model: CmtPost,
           attributes: ["id", "postId", "cmtBy", "comment", "parentId"],
-          include: { model: Users,as:"byUser", attributes: ["id", "username"] },
+          include: {
+            model: Users,
+            as: "byUser",
+            attributes: ["id", "username"],
+          },
         },
       ],
-     order : ['id','DESC']
     })
     .then((res) => {
       return res;
@@ -101,15 +103,12 @@ const findAll = async (condition) => {
     });
 };
 
-
-
-
 post.belongsTo(Users);
 // CmtPost.belongsTo(Users);
-CmtPost.belongsTo(Users,{
-	foreignKey: "cmtBy",
-	as : "byUser"
-})
+CmtPost.belongsTo(Users, {
+  foreignKey: "cmtBy",
+  as: "byUser",
+});
 post.hasMany(postImages);
 post.hasMany(LikedPost);
 post.hasMany(CmtPost);

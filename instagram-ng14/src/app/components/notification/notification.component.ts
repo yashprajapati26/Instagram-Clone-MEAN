@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { environment } from 'src/environments/environment.development';
 import { AuthService } from '../auth/auth.service';
 import { NotificationService } from './notification.service';
+import { NgImageSliderComponent } from 'ng-image-slider';
 
 @Component({
   selector: 'app-notification',
@@ -24,15 +25,15 @@ export class NotificationComponent {
   ngOnInit() {
     // this.getFollowRequest()
     // this.getliked()
-
     this.getLikedNotification();
     this.getFollowNotification()
-
-
   }
+
+ 
 
   getLikedNotification() {
     this.notificationservice.getLikedNotification(this.userId).subscribe((res: any) => {
+      console.log("like notification : ", res)
       this.allLiked = res['likesNotifications']
       console.log(res)
     })
@@ -40,6 +41,7 @@ export class NotificationComponent {
 
   getFollowNotification() {
     this.notificationservice.getFollowNotification(this.userId).subscribe((res: any) => {
+      console.log("comment notification : ", res)
       this.allFollowers = res['followNotifications']
       console.log(res)
 
@@ -76,7 +78,7 @@ export class NotificationComponent {
       userId: userId,
       followerId: followerId
     }
-    console.log("data : ",data)
+    console.log("data : ", data)
 
     if (status == "Accept") {
       event.target.textContent = "following"

@@ -20,6 +20,7 @@ export class ProfileComponent {
   userFollowing: any;
   title: any
   data: any
+  self: boolean = true;
 
 
   constructor(private router: Router, private activateRoute: ActivatedRoute, private profileservice: ProfileService) {
@@ -30,7 +31,6 @@ export class ProfileComponent {
   }
 
   ngOnInit() {
-
   }
 
   show(title: any) {
@@ -60,7 +60,7 @@ export class ProfileComponent {
       // console.log(this.userFollowing)
 
 
-      if (title == "following") {
+      if (title == "Following") {
         this.data = this.userFollowing
       } else {
         this.data = this.userFollowers

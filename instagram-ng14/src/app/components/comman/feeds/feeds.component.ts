@@ -21,26 +21,42 @@ export class FeedsComponent implements OnChanges {
   @Input('user') user: any;
 
   imageUrl = environment.apiURL;
+  sliderImageWidth: Number = 600;
+  sliderImageHeight: Number = 500;
 
   cmtForm = new FormGroup({
-    postId: new FormControl("", Validators.required),
-    cmtBy: new FormControl("", Validators.required),
-    comment: new FormControl("", Validators.required),
+    postId: new FormControl('', Validators.required),
+    cmtBy: new FormControl('', Validators.required),
+    comment: new FormControl('', Validators.required),
     parentId: new FormControl(null, Validators.required),
-  })
+  });
   msg: any;
 
   constructor(
     private router: Router,
     private feedlistservice: FeedlistService,
-    private postservice:PostService
-  ) { }
+    private postservice: PostService
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     // throw new Error('Method not implemented.');
     if (changes['feeds']) {
       this.checkLiked();
+      this.SetSliderImages();
     }
+  }
+
+  SetSliderImages() {
+    // {{feed.postImages[0].imagePath | json}}
+    this.feeds = this.feeds.map((feed: any) => {
+      feed.imageObject = [];
+      feed.postImages.map((obj: any) => {
+        let image = this.imageUrl + '/' + obj.imagePath;
+        let thumbImage = image;
+        feed.imageObject.push({ image, thumbImage });
+      });
+      return feed;
+    });
   }
 
   checkLiked() {
@@ -80,16 +96,16 @@ export class FeedsComponent implements OnChanges {
     this.router.navigate(['add-comment', postId]);
   }
 
-  addReply(postId:any,cmtId: any) {
+  addReply(postId: any, cmtId: any) {
     this.cmtForm.patchValue({
       postId: postId,
       cmtBy: this.user.id,
-      parentId: cmtId
-    })
-    console.log(this.cmtForm.value)
+      parentId: cmtId,
+    });
+    console.log(this.cmtForm.value);
     this.postservice.createComment(this.cmtForm.value).subscribe((res: any) => {
-      this.msg = res['msg']
-    })
+      this.msg = res['msg'];
+    });
     this.cmtForm.reset();
   }
 

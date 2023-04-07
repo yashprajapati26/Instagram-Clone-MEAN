@@ -1,118 +1,197 @@
 <app-header></app-header>
-<div class="overflow-y-scroll" *ngIf="userProfile">
-  <div class=" pt-8 md:pt-16 md:px-72">
-    <div class="flex justify-center space-x-4 md:space-x-24">
-      <div class="rounded-full p-1 h-36 flex items-center">
-        <img class="rounded-full border border-gray-300 p-1 shadow-sm"
-          src="https://randomuser.me/api/portraits/women/81.jpg" alt="user image" />
-      </div>
-      <div>
-        <div class="flex items-center justify-center">
-          <div class="flex space-x-8">
-            <span class="font semibold text-lg">
-              {{userProfile.user.username}}
-            </span>
-            <a class="border border-gray-400 text-xs rounded py-1 px-2" routerLink="/edit-profile">
-              Edit
-            </a>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="currentColor" class="w-6 h-6">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
 
-          </div>
-        </div>
-        <div class="pt-3 flex space-x-3 md:space-x-10">
-          <span class="text-sm font-semibold">{{userPost?.length}} posts</span>
-          <span (click)="show('followers')" class="showFollower text-sm font-semibold">{{userProfile.no_of_followers}} followers</span>
-          <span (click)="show('following')" class="text-sm font-semibold">{{userProfile.no_of_following}} following</span>
-        </div>
-        <div class="pt-6 grid">
-          <span class="text-lg font-semibold"> {{userProfile.user.firstName}} {{userProfile.user.lastName}} </span>
-          <span class="text-xs">{{userProfile.city}}, {{userProfile.country}}</span>
-          <span class="w-64">
-            {{userProfile.bio}}
+<main class="bg-gray-100 bg-opacity-25">
+  <div class="lg:w-8/12 lg:mx-auto mb-8">
+    <header class="flex flex-wrap items-center p-4 md:py-8">
+      <div class="md:w-3/12 md:ml-16">
+        <!-- profile image -->
+        <img class="w-20 h-20 md:w-40 md:h-40 object-cover rounded-full border-2 border-pink-600 p-1"
+          src="https://www.bytewebster.com/img/logo.png" alt="profile" />
+      </div>
+
+      <!-- profile meta -->
+      <div class="w-8/12 md:w-7/12 ml-4">
+        <div class="md:flex md:flex-wrap md:items-center mb-4">
+          <h2 class="text-xl md:text-3xl inline-block font-light md:mr-2 mb-2 sm:mb-0">
+            {{ userProfile.user.username }}
+          </h2>
+
+          <!-- badge -->
+          <span
+            class="inline-block fas fa-certificate fa-lg text-blue-500 relative mr-6 text-xl transform -translate-y-2"
+            aria-hidden="true">
+            <i class="fas fa-check text-white text-xs absolute inset-x-0 ml-1 mt-px"></i>
           </span>
 
+          <!-- follow button -->
+          <a *ngIf="self" routerLink="/edit-profile"
+            class="bg-blue-500 px-2 py-1 text-white font-semibold text-sm rounded block text-center sm:inline-block block">Edit</a>
+          <a *ngIf="!self"
+            class="bg-blue-500 px-2 py-1 text-white font-semibold text-sm rounded block text-center sm:inline-block block">Follow</a>
+        </div>
+
+        <!-- post, following, followers list for medium screens -->
+        <ul class="hidden md:flex space-x-8 mb-4">
+          <li>
+            <span class="font-semibold">{{ userPost.length }}</span>
+            posts
+          </li>
+
+          <li (click)="show('Followers')">
+            <span class="font-semibold">{{ userProfile.no_of_followers }}</span>
+            followers
+          </li>
+          <li (click)="show('Following')">
+            <span class="font-semibold">{{ userProfile.no_of_following }}</span>
+            following
+          </li>
+        </ul>
+
+        <!-- user meta form medium screens -->
+        <div class="hidden md:block">
+          <h1 class="font-semibold">
+            {{ userProfile.user.firstName }} {{ userProfile.user.lastName }}
+          </h1>
+          <span class="bioclass">{{ userProfile.city }}, {{ userProfile.country }}</span>
+          <p>{{ userProfile.bio }}🌍</p>
+          <span><strong>www.radixweb.com</strong></span>
+        </div>
+      </div>
+
+      <!-- user meta form small screens -->
+      <div class="md:hidden text-sm my-2">
+        <h1 class="font-semibold">{{ userProfile.user.username }}</h1>
+        <span class="bioclass">{{ userProfile.city }}, {{ userProfile.country }}</span>
+        <p>{{ userProfile.bio }}🌍</p>
+        <span><strong>www.radixweb.com</strong></span>
+      </div>
+    </header>
+
+    <!-- posts -->
+    <div class="px-px md:px-3">
+      <!-- user following for mobile only -->
+      <ul class="flex md:hidden justify-around space-x-8 border-t text-center p-2 text-gray-600 leading-snug text-sm">
+        <li>
+          <span class="font-semibold text-gray-800 block">{{
+            userPost.length
+          }}</span>
+          posts
+        </li>
+
+        <li>
+          <span class="font-semibold text-gray-800 block">{{
+            userProfile.no_of_followers
+          }}</span>
+          followers
+        </li>
+        <li>
+          <span class="font-semibold text-gray-800 block">{{
+            userProfile.no_of_following
+          }}</span>
+          following
+        </li>
+      </ul>
+      <br />
+      <br />
+      <!-- insta freatures -->
+      <ul
+        class="flex items-center justify-around md:justify-center space-x-12 uppercase tracking-widest font-semibold text-xs text-gray-600 border-t">
+        <!-- posts tab is active -->
+        <li class="md:border-t md:border-gray-700 md:-mt-px md:text-gray-700">
+          <a class="inline-block p-3" href="#">
+            <i class="fas fa-th-large text-xl md:text-xs"></i>
+            <span class="hidden md:inline">post</span>
+          </a>
+        </li>
+        <li>
+          <a class="inline-block p-3" href="#">
+            <i class="far fa-square text-xl md:text-xs"></i>
+            <span class="hidden md:inline">igtv</span>
+          </a>
+        </li>
+        <li>
+          <a class="inline-block p-3" href="#">
+            <i class="fas fa-user border border-gray-500 px-1 pt-1 rounded text-xl md:text-xs"></i>
+            <span class="hidden md:inline">tagged</span>
+          </a>
+        </li>
+      </ul>
+      <!-- flexbox grid -->
+      <div *ngIf="userPost"class="flex flex-wrap -mx-px md:-mx-3">
+        <!-- column -->
+
+        <div class="w-1/3 p-px md:px-3" *ngFor="let post of userPost">
+          <!-- post 1-->
+          <a href="#">
+            <article class="post bg-gray-100 text-white relative pb-full md:mb-6">
+              <!-- post images-->
+              <img class="w-full h-full absolute left-0 top-0 object-cover"
+                src="{{ imageUrl }}/{{ post.postImages[0].imagePath }}" alt="image" />
+
+              <i class="fas fa-square absolute right-0 top-0 m-1"></i>
+              <!-- overlay-->
+              <div class="overlay bg-gray-800 bg-opacity-25 w-full h-full absolute left-0 top-0 hidden">
+                <div class="flex justify-center items-center space-x-4 h-full">
+                  <span class="p-2">
+                    <i class="fas fa-heart"></i>
+                    412K
+                  </span>
+
+                  <span class="p-2">
+                    <i class="fas fa-comment"></i>
+                    2,909
+                  </span>
+                </div>
+              </div>
+            </article>
+          </a>
         </div>
       </div>
     </div>
-
-    <div class="pt-4"></div>
-    <div class="border border-gray-400"></div>
-    <div class="pt-3 flex items-center justify-center">
-      <div class="flex space-x-12">
-        <span class="font semibold text-xs  border-b-black">POSTS</span>
-        <span class="font semibold text-xs">SAVED</span>
-        <span class="font semibold text-xs">TEGS</span>
-      </div>
-    </div>
-    <div class="pt-6 flex flex-wrap col-03 space-x-4 space-y-4 justify-center items-center">
-
-      <!-- <div class="h-48 w-60" *ngFor="let post of userPost">
-        <div class="flex">
-          <div class="" *ngFor="let image of post.postImages">
-            <img class="h-48" src="{{imageUrl}}/{{image.imagePath}}">
-          </div>
-        </div>
-      </div> -->
-
-
-      <div class="h-24 w-24 md:h-48 md:w-60" *ngFor="let post of userPost">
-        <div class="relative">
-          <img class="h-24 md:h-48" src="{{imageUrl}}/{{post.postImages[0].imagePath}}">
-
-          <div *ngIf="post.postImages.length > 1"
-            class="bg-white flex justify-center items-center text-black text-xs uppercase font-bold rounded-full p-1 md:p-2 absolute top-0 right-1 ml-2 mt-2">
-            <svg class="inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-              stroke-width="1.5" stroke="currentColor" class="w-3 md:w-5 md:h-5">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" />
-            </svg>
-            <span>3</span>
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
   </div>
-</div>
+</main>
 
-
-<div class="model bg-gray-400 hidden">
+<div *ngIf="data" class="model bg-gray-400 hidden">
   <div class="h-screen w-full fixed left-0 top-0 pt-10 flex justify-center items-start bg-black bg-opacity-50">
     <div class="bg-white rounded shadow-lg md:w-1/3 w-64">
       <div class="border-b px-4 py-2">
-        <h3>{{title}}</h3>
+        <h3>{{ title }}</h3>
       </div>
 
       <div class="p-3">
+        <p *ngIf="data.length==0"> No Records</p>
+
         <div *ngFor="let item of data" class="mx-2 flex flex-row items-center align-items justify-between pt-3">
           <div class="flex items-center justify-between">
-            <img class="rounded-full w-8 flex mr-3" src="../../../assets/Logo-facebook.png" />
-            <a>
-              <p *ngIf="title=='followers'" class="font-bold text-sm"> {{item.asfollower.username}}</p>
-              <p *ngIf="title=='following'" class="font-bold text-sm"> {{item.asuser.username}} </p>
+            <a class="flex">
+              <img class="rounded-full w-8 flex mr-3" src="../../../assets/Logo-facebook.png" />
 
+              <p *ngIf="title == 'Followers'" class="font-bold text-sm">
+                {{ item.asfollower.username }}
+              </p>
+              <p *ngIf="title == 'Following'" class="font-bold text-sm">
+                {{ item.asuser.username }}
+              </p>
             </a>
           </div>
-          <button *ngIf="item.isFollowing==false" class="text-xs font-bold text-blue-700"> follow </button>
-          <button *ngIf="item.isFollowing==true" class="text-xs font-bold text-blue-700"> unfollow </button>
+          <button *ngIf="item.isFollowing == false" class="text-xs font-bold text-blue-700">
+            follow
+          </button>
+          <button *ngIf="item.isFollowing == true" class="text-xs font-bold text-blue-700">
+            unfollow
+          </button>
 
-          <button *ngIf="title=='following'" class="text-xs font-bold text-blue-700"> unfollow </button>
-          
+          <button *ngIf="title == 'following'" class="text-xs font-bold text-blue-700">
+            unfollow
+          </button>
         </div>
       </div>
 
       <div class="flex justify-end items-center w-100 border-t p-3">
-        <button (click)="closemodel()" class="bg-red-600 hover:bg-red-800 px-3 py-1 rounded text-white mr-1">cancel</button>
+        <button (click)="closemodel()" class="bg-red-600 hover:bg-red-800 px-3 py-1 rounded text-white mr-1">
+          cancel
+        </button>
       </div>
-
     </div>
-
+  </div>
 </div>
