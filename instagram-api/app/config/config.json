@@ -1,10 +1,10 @@
 
 {
 	"development": {
-	  "username": "mitesh_sathvara",
-	  "password": "deep70",
-	  "database": "mitesh_sathvara3",
-	  "host": "radixusers2.com",
+	  "username": "freedb_yash-prajapati",
+	  "password": "4T2cvEE7#F5XBnw",
+	  "database": "freedb_instagramDB",
+	  "host": "sql.freedb.tech",
 	  "dialect": "mysql"
 	},
 	"test": {
