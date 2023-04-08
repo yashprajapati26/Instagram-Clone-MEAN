@@ -24,6 +24,10 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage });
 
+router.get("/", async (req, res) => {
+  res.send("connected sucessfully");
+});
+
 // auth routes
 router.post(
   "/signup",
@@ -69,15 +73,24 @@ router.post(
 router.post("/do-undo-following", userFollowerController.do_undo_Following);
 router.get("/getfollowers/:userId", userFollowerController.getAllFollowers);
 router.get("/getfollowing/:userId", userFollowerController.getAllFollowing);
-router.post("/updateFollowingRequest", userFollowerController.updateFollowingRequest)
-router.get("/getuser_accepted_followers_following/:userId", userFollowerController.getuser_accepted_followers_following)
-
+router.post(
+  "/updateFollowingRequest",
+  userFollowerController.updateFollowingRequest
+);
+router.get(
+  "/getuser_accepted_followers_following/:userId",
+  userFollowerController.getuser_accepted_followers_following
+);
 
 // notication routes
 
-router.get("/getfollowerNotification/:userId",notificationController.getFollowNotification)
-router.get("/getlikedNotification/:userId",notificationController.getLikedNotification)
-
-
+router.get(
+  "/getfollowerNotification/:userId",
+  notificationController.getFollowNotification
+);
+router.get(
+  "/getlikedNotification/:userId",
+  notificationController.getLikedNotification
+);
 
 module.exports = router;
