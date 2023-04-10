@@ -18,6 +18,11 @@ export class NotificationService {
     let url = environment.apiURL + "/getlikedNotification/" + userId
     return this.http.get(url)
   }
+
+  getCmtsNotification(userId:any){
+    let url = environment.apiURL + "/getcmtsNotification/" + userId
+    return this.http.get(url)
+  }
   
   requestAccept(data:any){
     let url = environment.apiURL + "/updateFollowingRequest/"

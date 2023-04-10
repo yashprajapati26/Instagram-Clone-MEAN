@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, SimpleChanges, ViewChild } from '@angular/core';
 import { environment } from 'src/environments/environment.development';
 import { AuthService } from '../auth/auth.service';
 import { NotificationService } from './notification.service';
@@ -16,7 +16,8 @@ export class NotificationComponent {
   allFollowers: any;
   allLiked: any
   imageUrl = environment.apiURL
-
+  allCmts: any;
+  allnotifications:any;
 
   constructor(private notificationservice: NotificationService, private authservice: AuthService) {
     this.userId = this.authservice.getUserId()
@@ -27,9 +28,15 @@ export class NotificationComponent {
     // this.getliked()
     this.getLikedNotification();
     this.getFollowNotification()
+    this.getCmtsNotification();
   }
 
- 
+  ngOnChanges(changes: SimpleChanges){
+    // if(changes){
+    //   this.allnotifications = this.allLiked.concat(this.allCmts)
+    // }
+  }
+
 
   getLikedNotification() {
     this.notificationservice.getLikedNotification(this.userId).subscribe((res: any) => {
@@ -38,10 +45,16 @@ export class NotificationComponent {
       console.log(res)
     })
   }
-
+  getCmtsNotification() {
+    this.notificationservice.getCmtsNotification(this.userId).subscribe((res: any) => {
+      console.log("cmts notification : ", res)
+      this.allCmts = res['cmtsNotifications']
+      console.log(res)
+    })
+  }
   getFollowNotification() {
     this.notificationservice.getFollowNotification(this.userId).subscribe((res: any) => {
-      console.log("comment notification : ", res)
+      console.log("follow notification : ", res)
       this.allFollowers = res['followNotifications']
       console.log(res)
 

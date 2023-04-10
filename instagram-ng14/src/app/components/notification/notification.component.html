@@ -58,6 +58,19 @@
 
   <hr />
   <div class="p-2 m-2 font-bold">Other Notifications</div>
+  <!-- <div *ngFor="let cmt of allCmts" class="p-3 m-3 border border-gray-300 rounded-md">
+    <h3>New Notifications</h3>
+    <div class="flex justify-between items-center">
+      <div class="flex items-center">
+        <img class="rounded-full w-8 flex mr-3" src="../../../assets/Logo-facebook.png" />
+        <p>
+          <span class="font-bold">{{ cmt.cmtPost.user.username }}</span>
+          {{ cmt.message }}<span class="text-gray-400">{{ cmt.createdAt | date }}</span>
+        </p>
+      </div>
+      <img class="rounded w-8 flex mr-3" src="{{imageUrl}}/{{like.likedPost.post.postImages[0].imagePath}}" />
+    </div>
+  </div> -->
   <div *ngFor="let like of allLiked" class="p-3 m-3 border border-gray-300 rounded-md">
     <h3>New Notifications</h3>
     <div class="flex justify-between items-center">

@@ -75,8 +75,10 @@ router.get("/getuser_accepted_followers_following/:userId", userFollowerControll
 
 // notication routes
 
+router.get("/getcmtsNotification/:userId",notificationController.getCmtsNotification)
 router.get("/getfollowerNotification/:userId",notificationController.getFollowNotification)
 router.get("/getlikedNotification/:userId",notificationController.getLikedNotification)
+
 
 
 

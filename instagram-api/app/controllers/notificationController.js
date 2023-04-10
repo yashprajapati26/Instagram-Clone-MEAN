@@ -48,12 +48,11 @@ const likedPost = require("../models/likedPost.model");
 const CmtPost = require("../models/cmtPost.model");
 const userFollowers = require("../models/userFollowers.model");
 
-
 const getLikedNotification = async (req, res) => {
   try {
     let condition = { type: "Like", userId: req.params.userId };
     let modelname = likedPost;
-    
+
     let likes = await notificationService.findAll(condition, modelname);
     console.log(likes);
     if (likes) {
@@ -67,17 +66,41 @@ const getLikedNotification = async (req, res) => {
   }
 };
 
+const getCmtsNotification = async (req, res) => {
+  try {
+    console.log("----------------->");
+    let condition = { type: "Comment", userId: req.params.userId };
+    let modelname = CmtPost;
+
+    let cmts = await notificationService.findAll(condition, modelname);
+    console.log("-->", cmts);
+    if (cmts) {
+      return res
+        .status(STATUSCODE.success)
+        .json({ msg: "Fatch cmts Notification", cmtsNotifications: cmts });
+    }
+  } catch (e) {
+    console.log("------1212-----");
+    console.log(e);
+    return e;
+  }
+};
+
 const getFollowNotification = async (req, res) => {
   try {
     let condition = { type: "Follow Request", userId: req.params.userId };
     let modelname = userFollowers;
-    
-    let followNotifications = await notificationService.findAll(condition, modelname);
+
+    let followNotifications = await notificationService.findAll(
+      condition,
+      modelname
+    );
     console.log(followNotifications);
     if (followNotifications) {
-      return res
-        .status(STATUSCODE.success)
-        .json({ msg: "Fatch follow Notification", followNotifications: followNotifications });
+      return res.status(STATUSCODE.success).json({
+        msg: "Fatch follow Notification",
+        followNotifications: followNotifications,
+      });
     }
   } catch (e) {
     console.log(e);
@@ -90,5 +113,6 @@ module.exports = {
   deleteNotification: deleteNotification,
   updateNotification: updateNotification,
   getLikedNotification: getLikedNotification,
+  getCmtsNotification: getCmtsNotification,
   getFollowNotification: getFollowNotification,
 };
