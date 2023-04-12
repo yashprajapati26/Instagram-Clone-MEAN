@@ -21,6 +21,13 @@ export class LoginComponent {
 
   ngOnInit() { }
 
+  githubLogin() {
+    console.log("login with github")
+    this.authservice.doLoginViaGithub().subscribe((res:any)=>{
+      console.log("------github login----------",res);
+      
+    })
+  }
 
   login(data: object) {
     this.submitted = true

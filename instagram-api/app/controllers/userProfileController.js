@@ -27,6 +27,7 @@ const createProfile = async (req, res) => {
       }
     } else {
       // update
+      console.log("body:------------------------------------------------------------------------------------------- ",req.body)
       let userprofile = await userProfileService.update(
         { userId: req.body.userId },
         req.body

@@ -56,6 +56,11 @@ const routes: Routes = [
     component: AddCommentComponent
   },
   {
+    path:'view-post/:id',
+    canActivate:[AuthguardGuard],
+    component: AddCommentComponent
+  },
+  {
     path: 'notification',
     canActivate:[AuthguardGuard],
     component: NotificationComponent

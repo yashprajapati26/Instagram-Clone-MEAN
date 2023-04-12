@@ -1,24 +1,35 @@
-<div class="h-screen bg-gray-200 flex flex-col justify-center items-center">
-    <div class="w-full max-w-xs">
+<app-header></app-header>
+<div class="h-screen bg-gray-200 flex flex-col  items-center">
+    <div class="w-full max-w-2xl mt-10">
         <h3 class="p-3 bg-white shadow-md rounded my-3">Create New Post </h3>
         <h3 *ngIf="msg" class="p-3 bg-green-500 shadow-md rounded my-3">{{msg}} </h3>
 
         <form [formGroup]="postForm" (ngSubmit)="createPost(postForm.value)" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" enctype="multipart/form-data">
+          <div class="mb-6 flex items-center">
+            
+  
+            <img [hidden]="isHidden" (click)="file_input.click()" id="defaultimg" src="../../../../assets/image.png" class="opacity-25 h-20 mx-auto">
+            <!-- <img *ngIf" src="../../../../assets/image.png" class="opacity-25 h-20 mx-auto"> -->
+            <div *ngFor="let url of imageUrls; let i=index" class="">
+              
+              <img [src]="url" class="border border-2	h-20 mx-auto">
+            </div>
+            
+          </div>
+          <div class="flex">
+            <label (click)="file_input.click()" class="block text-gray-700 text-sm font-bold mb-2" for="password">
+              Select
+            </label>
+            <svg (click)="file_input.click()" class="mx-2 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13" />
+            </svg>
+            <input (change)="selectFiles($event)" formControlName="files" name="files" type="file" multiple #file_input  hidden>
+          </div>
           <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
               Content
             </label>
             <textarea formControlName="content" name="content" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"  placeholder="content"></textarea>
-          </div>
-          <div class="mb-6 flex">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
-              Attach
-            </label>
-            <svg (click)="file_input.click()" class="mx-2 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13" />
-            </svg>
-            
-            <input (change)="selectFiles($event)" formControlName="files" name="files" type="file" multiple #file_input  hidden>
           </div>
           <div class="flex items-center justify-between">
             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
@@ -30,5 +41,5 @@
 
         <a class="text-sm text-blue-600" routerLink="/profile">Back to home !</a>
         
-      </div>
+    </div>
 </div>

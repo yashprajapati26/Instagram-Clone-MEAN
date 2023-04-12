@@ -7,7 +7,7 @@
     <form [formGroup]="profileForm" (ngSubmit)="createProfile(profileForm?.value)">
 
       <label for="">Profile Photo : </label>
-      <input class="w-30 rounded border bg-gray-100 p-2 text-xs mb-1" type="file" name="profile_img"
+      <input (change)="selectFiles($event)" class="w-30 rounded border bg-gray-100 p-2 text-xs mb-1" type="file" name="profile_img"
         formControlName="profile_img"><br>
 
       <label for="">username : </label>
