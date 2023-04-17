@@ -1,4 +1,5 @@
 const userFollowers = require("../models/userFollowers.model");
+const userProfile = require("../models/userProfile.model");
 const Users = require("../models/users.model");
 
 const create = async (data) => {
@@ -16,6 +17,12 @@ const findOne = async (attributes, data) => {
   return await Users.findOne({
     attributes: attributes,
     where: data,
+    include: [
+      {
+        model: userProfile,
+        attributes: ["id", "userId", "profile_img"],
+      },
+      ],
   });
 };
 
@@ -41,14 +48,21 @@ deleteRecord = async (condition) => {
     });
 };
 
-const findAll = async (condition) => {
+const findAll = async (attributes, condition) => {
   return await Users.findAll({
+    attributes: attributes,
     where: condition,
-    include: {
-      model: userFollowers,
-      attributes: ["id", "userId", "followerId", "status"],
-    },
-    order: [["id", "ASC"]],
+    include: [
+      {
+        model: userFollowers,
+        attributes: ["id", "userId", "followerId", "status"],
+      },
+      {
+        model: userProfile,
+        attributes: ["id", "userId", "profile_img"],
+      },
+    ],
+    // order: [["created_at", "DESC"]],
   })
     .then((res) => {
       return res;
@@ -60,6 +74,9 @@ const findAll = async (condition) => {
 };
 
 Users.hasMany(userFollowers);
+Users.hasOne(userProfile, {
+  forignkey: "userId",
+});
 
 module.exports = {
   create: create,

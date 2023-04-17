@@ -3,7 +3,6 @@ const postService = require("../services/post.service");
 const postImages = require("../services/postImage.service");
 
 const createPost = async (req, res) => {
-  console.log("files", req.files);
   try {
     let data = { userId: req.body.userId, content: req.body.content };
     let post = await postService.create(data);
@@ -87,6 +86,7 @@ const getSinglePost = async(req,res)=>{
         });
     }
 }
+
 
 module.exports = {
   createPost: createPost,

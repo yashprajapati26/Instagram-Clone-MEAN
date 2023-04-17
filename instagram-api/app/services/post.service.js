@@ -3,7 +3,7 @@ const LikedPost = require("../models/likedPost.model");
 const post = require("../models/post.model");
 const postImages = require("../models/postImages.model");
 const Users = require("../models/users.model");
-
+const userProfile = require("../models/userProfile.model");
 const create = async (data) => {
   return await post
     .create(data)
@@ -28,6 +28,10 @@ const findOne = async (data) => {
       {
         model: Users,
         attributes: ["id", "username", "firstName", "lastName"],
+        include: {
+          model: userProfile,
+          attributes: ["id", "profile_img"],
+        },
       },
       {
         model: LikedPost,
@@ -78,6 +82,10 @@ const findAll = async (condition) => {
         {
           model: Users,
           attributes: ["id", "username", "firstName", "lastName"],
+          include: {
+            model: userProfile,
+            attributes: ["id", "profile_img"],
+          },
         },
         {
           model: LikedPost,
@@ -93,6 +101,7 @@ const findAll = async (condition) => {
           },
         },
       ],
+      order: [["created_at", "DESC"]],
     })
     .then((res) => {
       return res;
@@ -104,15 +113,21 @@ const findAll = async (condition) => {
 };
 
 post.belongsTo(Users);
-// CmtPost.belongsTo(Users);
+
 CmtPost.belongsTo(Users, {
   foreignKey: "cmtBy",
   as: "byUser",
 });
+
 post.hasMany(postImages);
 post.hasMany(LikedPost);
 post.hasMany(CmtPost);
 
+Users.hasOne(userProfile, {
+  foreignKey: "userId",
+});
+
+// userProfile.belongsTo(Users);
 module.exports = {
   create: create,
   findOne: findOne,

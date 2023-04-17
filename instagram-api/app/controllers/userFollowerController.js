@@ -104,8 +104,6 @@ const getAllFollowing = async (req, res) => {
 
 const updateFollowingRequest = async (req, res) => {
   try {
-    console.log(req.body);
-
     let updateStatus = await userFollowersService.update(
       {
         id: req.body.requestId,
@@ -115,19 +113,25 @@ const updateFollowingRequest = async (req, res) => {
       }
     );
 
-    console.log(updateStatus);
     if (updateStatus) {
       // update count
       let userId = req.body.userId;
       let followerId = req.body.followerId;
 
-      if(req.body.status=="Accept"){
-        let condition = { userId : userId, notificationId: req.body.requestId, type:"Follow Request"}
-        let message = "started following you"
-        await notificationController.updateNotification(condition, message)
-      }
-      else{
-          await notificationController.deleteNotification("Follow Request",req.body.requestId,userId)
+      if (req.body.status == "Accept") {
+        let condition = {
+          userId: userId,
+          notificationId: req.body.requestId,
+          type: "Follow Request",
+        };
+        let message = "started following you";
+        await notificationController.updateNotification(condition, message);
+      } else {
+        await notificationController.deleteNotification(
+          "Follow Request",
+          req.body.requestId,
+          userId
+        );
       }
 
       // update in userId followers user
@@ -144,7 +148,6 @@ const updateFollowingRequest = async (req, res) => {
         { userId: userId },
         { no_of_followers: noOfFollower["count"] }
       );
-      console.log(result);
       // update in followingId user
       const noOfFollowing = await userFollowersService.findAndCountAll(
         ["id", "userId", "followerId", "status"],
@@ -158,10 +161,6 @@ const updateFollowingRequest = async (req, res) => {
         { userId: followerId },
         { no_of_following: noOfFollowing["count"] }
       );
-      console.log(result2);
-
-      console.log(noOfFollower);
-      console.log(noOfFollowing);
 
       return res.status(STATUSCODE.success).json({
         msg: "Action Complated Sucessfully",

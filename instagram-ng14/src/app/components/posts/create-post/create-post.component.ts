@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PostService } from '../post.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-post',
@@ -18,7 +19,7 @@ export class CreatePostComponent {
   userId: any = localStorage.getItem('userId')
   imageUrls:Array<string> = []
   isHidden = false
-  constructor(private postservice: PostService) { }
+  constructor(private postservice: PostService, private router : Router) { }
 
 
   createPost(data: any) {
@@ -36,6 +37,7 @@ export class CreatePostComponent {
       this.postservice.createPost(formData).subscribe((res: any) => {
         console.log(res)
         this.msg = res['msg']
+        this.router.navigate(['feed']);
       },
         (err) => {
           console.log(err)

@@ -4,9 +4,7 @@
   <div class="overflow-y-scroll max-h-screen col-span-4 md:col-span-3">
     <!-- post -->
 
-    <app-feeds [feeds]="feeds" [user]="user">
-    </app-feeds>
-
+    <app-feeds [feeds]="feeds" [user]="user"> </app-feeds>
   </div>
 
   <!-- username -->
@@ -14,8 +12,17 @@
   <div class="hidden md:block col-span-1 justify-center items-center">
     <div class="flex">
       <div class="rounded-full p-1 flex items-center">
-        <img class="h-16 rounded-full border border-gray-100 shadow-sm"
-          src="https://randomuser.me/api/portraits/women/81.jpg" alt="user image" />
+        <img
+          *ngIf="user.userProfile.profile_img; else elseBlock"
+          class="h-16 w-16 rounded-full border border-gray-100 shadow-sm"
+          src="{{ imageUrl }}/{{ user.userProfile.profile_img }}"
+          alt="user image"
+        />
+        <ng-template #elseBlock
+          ><img
+            class="h-8 w-8 rounded-full"
+            src="../../../../assets/default.png"
+        /></ng-template>
       </div>
       <div class="m-3">
         <p *ngIf="user" class="font-bold text-sm">{{ user.username }}</p>
@@ -27,47 +34,81 @@
     <hr />
     <p class="text-sm font-bold mx-3 p-3">Suggetion for you</p>
     <hr />
-   
 
-    <div *ngFor="let singleuser of allUsers" class="mx-2 flex flex-row items-center align-items justify-between pt-3">
+    <div
+      *ngFor="let singleuser of allUsers"
+      class="mx-2 flex flex-row items-center align-items justify-between pt-3"
+    >
       <div class="flex items-center justify-between">
-        <img class="rounded-full w-8 flex mr-3" src="../../../assets/Logo-facebook.png" />
+        <img
+          *ngIf="singleuser.userProfile.profile_img; else elseBlock"
+          class="rounded-full w-8 h-7 flex mr-3"
+          src="{{ imageUrl }}/{{ singleuser.userProfile.profile_img }}"
+        />
+        <ng-template #elseBlock
+          ><img
+            class="rounded-full w-8 h-7 flex mr-3"
+            src="../../../../assets/default.png"
+        /></ng-template>
         <a>
           <p class="font-bold text-sm">{{ singleuser.username }}</p>
         </a>
       </div>
-      <button *ngIf="singleuser.isAlreadyFollowed" (click)="doUndoFollowing(singleuser.id,$event)" id="user-{{singleuser.id}}" class="text-xs font-bold text-blue-700">unfollow</button>
-      <button *ngIf="!singleuser.isAlreadyFollowed" (click)="doUndoFollowing(singleuser.id,$event)" id="user-{{singleuser.id}}" class="text-xs font-bold text-blue-700">follow</button>
-
+      <button
+        *ngIf="singleuser.isAlreadyFollowed"
+        (click)="doUndoFollowing(singleuser.id, $event)"
+        id="user-{{ singleuser.id }}"
+        class="text-xs font-bold text-blue-700"
+      >
+        unfollow
+      </button>
+      <button
+        *ngIf="!singleuser.isAlreadyFollowed"
+        (click)="doUndoFollowing(singleuser.id, $event)"
+        id="user-{{ singleuser.id }}"
+        class="text-xs font-bold text-blue-700"
+      >
+        follow
+      </button>
     </div>
   </div>
 </div>
 
 <div class="searchmodel hidden">
-  <div class="h-screen w-full fixed left-0 top-0 pt-28 flex justify-center items-start bg-black bg-opacity-20">
+  <div
+    class="h-screen w-full fixed left-0 top-0 pt-28 flex justify-center items-start bg-black bg-opacity-20"
+  >
     <div class="bg-white rounded shadow-lg md:w-1/3 w-64">
       <div class="border-b px-4 py-2">
         <h3>Search Results</h3>
       </div>
 
       <div class="p-3">
-        <div *ngFor="let user of searchUsers" class="mx-2 flex flex-row items-center align-items justify-between pt-3">
+        <div
+          *ngFor="let user of searchUsers"
+          class="mx-2 flex flex-row items-center align-items justify-between pt-3"
+        >
           <div class="flex items-center justify-between">
-            <img class="rounded-full w-8 flex mr-3" src="../../../assets/Logo-facebook.png" />
+            <img
+              class="rounded-full w-8 flex mr-3"
+              src="../../../assets/Logo-facebook.png"
+            />
             <a>
-              <p class="font-bold text-sm"> {{user.username}}</p>
-
+              <p class="font-bold text-sm">{{ user.username }}</p>
             </a>
           </div>
-          <button class="text-xs font-bold text-blue-700"> follow </button>
-         
+          <button class="text-xs font-bold text-blue-700">follow</button>
         </div>
       </div>
 
       <div class="flex justify-end items-center w-100 border-t p-3">
-        <button (click)="closemodel()" class="bg-red-600 hover:bg-red-800 px-3 py-1 rounded text-white mr-1">cancel</button>
+        <button
+          (click)="closemodel()"
+          class="bg-red-600 hover:bg-red-800 px-3 py-1 rounded text-white mr-1"
+        >
+          cancel
+        </button>
       </div>
-
     </div>
-
+  </div>
 </div>

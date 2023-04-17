@@ -2,9 +2,14 @@
   <div class="bg-white border rounded-sm">
     <div class="flex items-center px-4 py-3">
       <img
+        *ngIf="feed.user.userProfile.profile_img; else elseBlock"
         class="h-8 w-8 rounded-full"
-        src="../../../assets/Logo-facebook.png"
+        src="{{ imageUrl }}/{{ feed.user.userProfile.profile_img }}"
       />
+      <ng-template #elseBlock
+        ><img class="h-8 w-8 rounded-full" src="../../../../assets/default.png"
+      /></ng-template>
+
       <div class="ml-3">
         <span class="text-sm font-semibold antialiased block leading-tight">{{
           feed.user.username
@@ -15,7 +20,7 @@
       </div>
     </div>
     <ng-image-slider
-     class="img-responsive"
+      class="img-responsive"
       [images]="feed.imageObject"
       [imageSize]="{ width: sliderImageWidth, height: sliderImageHeight }"
       #nav

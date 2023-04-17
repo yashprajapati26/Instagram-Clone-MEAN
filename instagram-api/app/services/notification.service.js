@@ -15,9 +15,9 @@ const create = async (data) => {
     });
 };
 
-const findOne = async (data) => {
+const findOne = async (attributes,data) => {
   return await Notification.findOne({
-    // attributes: attributes,
+    attributes: attributes,
     where: data,
   });
 };

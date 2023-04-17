@@ -119,7 +119,6 @@ const otpverify = async (req, res) => {
     let user_otp = req.body.otp;
     let userId = req.body.userId;
     let otpObj = await otpStorageService.findOne(["otp"], { userId: userId });
-    console.log("otp :", otpObj, userId);
 
     if (otpObj.otp === user_otp) {
       let userObj = await authService.update(
@@ -222,9 +221,12 @@ const userdetails = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
   try {
-    let allusers = await UserService.findAll({
-      isActive: 1,
-    });
+    let allusers = await UserService.findAll(
+      ["id","username", "firstname", "lastname"],
+      {
+        isActive: 1,
+      }
+    );
     if (allusers)
       return res
         .status(STATUSCODE.success)

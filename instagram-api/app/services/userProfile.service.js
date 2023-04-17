@@ -47,6 +47,10 @@ deleteRecord = async (condition) => {
 };
 
 
+Users.hasOne(userProfile,{
+	forignkey: "userId",
+});
+
 userProfile.belongsTo(Users);
 
 module.exports = {

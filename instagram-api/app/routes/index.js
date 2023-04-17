@@ -60,7 +60,7 @@ router.post(
 //post routes
 router.post("/createpost", upload.array("files", 4), postController.createPost);
 router.get("/getuserpost/:userId", postController.getAllPosts);
-router.get("/deletepost/:postId", postController.deletePost);
+router.delete("/deletepost/:postId", postController.deletePost);
 //feed
 router.get("/getfeeds", postController.getFeeds);
 router.get("/getsinglepost/:postId", postController.getSinglePost);

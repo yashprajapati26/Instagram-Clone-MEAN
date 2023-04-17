@@ -8,7 +8,6 @@ const LikeDislikePost = async (req, res) => {
   try {
     let userId = req.params.userId;
     let postId = req.params.postId;
-    console.log(userId, postId);
     if (userId && postId) {
       let isAlreadyLiked = await likedPostService.findOne({
         postId: postId,

@@ -17,8 +17,8 @@ export class AddCommentComponent {
   imageUrl = environment.apiURL
   loggedUser: any | undefined;
   msg: any
-  replies:any;
-
+  replies: any;
+  postId: any;
   cmtForm = new FormGroup({
     postId: new FormControl("", Validators.required),
     cmtBy: new FormControl("", Validators.required),
@@ -30,8 +30,8 @@ export class AddCommentComponent {
   constructor(private postservice: PostService, private activateRoute: ActivatedRoute, private authservice: AuthService) { }
 
   ngOnInit() {
-    let postId = this.activateRoute.snapshot.params['id']
-    this.fatchPost(postId)
+    this.postId = this.activateRoute.snapshot.params['id']
+    this.fatchPost(this.postId)
     this.fatchLoginUserDetails()
   }
 
@@ -40,7 +40,7 @@ export class AddCommentComponent {
       console.log(res)
       this.post = res['post']
     })
-    
+
   }
 
   fatchLoginUserDetails(): void {
@@ -58,6 +58,8 @@ export class AddCommentComponent {
     console.log(this.cmtForm.value)
     this.postservice.createComment(this.cmtForm.value).subscribe((res: any) => {
       this.msg = res['msg']
+      this.fatchPost(this.postId)
+
     })
     this.cmtForm.reset();
   }
@@ -94,14 +96,12 @@ export class AddCommentComponent {
 
   }
 
-  fatchReplies(cmtId:any){
+  fatchReplies(cmtId: any) {
     let cmt_id = cmtId
-    console.log("-->",this.post)
-    let replies = this.post.cmtPosts.filter((comment:any) => comment.parentId === cmt_id).sort((a:any, b:any) =>
+    console.log("-->", this.post)
+    let replies = this.post.cmtPosts.filter((comment: any) => comment.parentId === cmt_id).sort((a: any, b: any) =>
       new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
     );
-    console.log("------------------replies------------------------")
-    console.log(replies)
   }
 
 }

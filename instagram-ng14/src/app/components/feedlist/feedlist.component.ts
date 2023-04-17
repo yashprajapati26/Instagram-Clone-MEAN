@@ -54,7 +54,7 @@ export class FeedlistComponent {
   fatchUserDetails() {
     let userId = localStorage.getItem('userId');
     this.feedlistservice.getUserDetails(userId).subscribe((res: any) => {
-      console.log(res);
+      console.log("user : ",res);
       this.user = res['user'];
     });
   }
@@ -70,9 +70,11 @@ export class FeedlistComponent {
         })
         return user
       })
-      this.allUsers= this.allUsers.filter((user:any)=>{
-        if(user.id !== this.user.id){
-          return user
+      console.log(this.allUsers ,"------------------------")
+      this.allUsers= this.allUsers.filter((obj:any)=>{
+        console.log(obj.id, this.user.id)
+        if(obj.id !== this.user.id){
+          return obj
         }
       })
     });

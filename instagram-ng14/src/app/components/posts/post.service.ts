@@ -25,4 +25,9 @@ export class PostService {
     return this.http.post(url,data)
   }
 
+  deletePost(postId:any):Observable<any>{
+    let url = environment.apiURL + "/deletepost/" + postId;
+    return this.http.delete(url);
+  }
+
 }

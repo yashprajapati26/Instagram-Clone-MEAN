@@ -52,9 +52,8 @@ const getLikedNotification = async (req, res) => {
   try {
     let condition = { type: "Like", userId: req.params.userId };
     let modelname = likedPost;
-
+    console.log("=======================================================================")
     let likes = await notificationService.findAll(condition, modelname);
-    console.log(likes);
     if (likes) {
       return res
         .status(STATUSCODE.success)
@@ -68,19 +67,17 @@ const getLikedNotification = async (req, res) => {
 
 const getCmtsNotification = async (req, res) => {
   try {
-    console.log("----------------->");
     let condition = { type: "Comment", userId: req.params.userId };
     let modelname = CmtPost;
+    console.log("=======================================================================")
 
     let cmts = await notificationService.findAll(condition, modelname);
-    console.log("-->", cmts);
     if (cmts) {
       return res
         .status(STATUSCODE.success)
         .json({ msg: "Fatch cmts Notification", cmtsNotifications: cmts });
     }
   } catch (e) {
-    console.log("------1212-----");
     console.log(e);
     return e;
   }
@@ -90,6 +87,7 @@ const getFollowNotification = async (req, res) => {
   try {
     let condition = { type: "Follow Request", userId: req.params.userId };
     let modelname = userFollowers;
+    console.log("=======================================================================")
 
     let followNotifications = await notificationService.findAll(
       condition,

@@ -8,6 +8,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 import { ProfileService } from '../profile.service';
+import { environment } from 'src/environments/environment.development';
 
 @Component({
   selector: 'app-edit-profile',
@@ -20,6 +21,8 @@ export class EditProfileComponent {
   profileForm: FormGroup;
   file: any;
   defaultImg = "src/assets/Logo-facebook.png";
+  imageUrl = environment.apiURL;
+  profile_img: any = undefined;
 
   constructor(
     private profileservice: ProfileService,
@@ -51,20 +54,29 @@ export class EditProfileComponent {
 
 
   fatchUserProfileDetails(userId: any) {
-    this.profileservice.getUserProfileDetails(userId).subscribe((res: any) => {
-      this.userProfile = res['userProfile']
+    this.profileservice.getUserDetails(userId).subscribe((res: any) => {
+      let userDetails = res['user']
       this.profileForm.patchValue({
-        userId: this.userProfile?.user.id,
-        username: this.userProfile?.user.username,
-        firstname: this.userProfile?.user.firstName,
-        lastname: this.userProfile?.user.lastName,
-        email: this.userProfile?.user.email,
-        mobile: this.userProfile?.user.mobile,
+        userId: userDetails.id,
+        username: userDetails.username,
+        firstname: userDetails.firstname,
+        lastname: userDetails.lastname,
+        email: userDetails.email,
+        mobile: userDetails.mobile,
+      })
+    })
+
+    this.profileservice.getUserProfileDetails(userId).subscribe((res: any) => {
+      console.log(res)
+      this.userProfile = res['userProfile']
+      this.profile_img = this.userProfile.profile_img;
+      this.profileForm.patchValue({
         bio: this.userProfile?.bio,
         dob: this.userProfile?.dob,
         gender: this.userProfile?.gender,
         city: this.userProfile?.city,
         country: this.userProfile?.country,
+        profile_img: this.userProfile?.profile_img,
       });
       this.userId = this.userProfile['userId']
     })
@@ -78,24 +90,19 @@ export class EditProfileComponent {
   }
 
   createProfile(data: any) {
-    if (this.file) {
-      this.profileForm.patchValue({
-        profile_img: this.file.name
-      })
-    }
     const formData = new FormData();
     const formValues = this.profileForm.getRawValue();
     console.log("formValues", formValues)
     Object.keys(formValues).forEach(key => {
       formData.append(key, formValues[key]);
     });
-    formData.append("file",this.file)
-    
-    
+    if (this.file) {
+      formData.append('file', this.file, this.file.name);
+    }
     this.profileservice.createProfile(formData).subscribe(
       (res: any) => {
         console.log(res);
-        this.router.navigate(['profile'])
+        this.router.navigate(['feed'])
       },
       (err: any) => {
         console.log(err);

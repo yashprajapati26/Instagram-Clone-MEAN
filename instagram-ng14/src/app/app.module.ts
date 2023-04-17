@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgImageSliderModule } from 'ng-image-slider';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/auth/login/login.component';
@@ -18,7 +19,6 @@ import { CreatePostComponent } from './components/posts/create-post/create-post.
 import { EditProfileComponent } from './components/profile/edit-profile/edit-profile.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { InterceptorService } from './interceptor/interceptor.service';
-import { NgImageSliderModule } from 'ng-image-slider';
 
 @NgModule({
   declarations: [

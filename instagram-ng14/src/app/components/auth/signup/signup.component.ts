@@ -14,7 +14,7 @@ export class SignupComponent {
     username : new FormControl("yashprajapati26", Validators.required),
     firstname : new FormControl("yash", Validators.required),
     lastname : new FormControl("prajapati", Validators.required),
-    email: new FormControl('yash260801agmail.com', [Validators.required, Validators.email]),
+    email: new FormControl('yash260801agmail.com', [Validators.required, Validators.email, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
     mobile: new FormControl('9327561065', [Validators.required, Validators.minLength(10),Validators.maxLength(10), Validators.pattern("^[0-9]*$")]),
     password: new FormControl('Yash@123', [Validators.required, Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,12}$")])
   })
