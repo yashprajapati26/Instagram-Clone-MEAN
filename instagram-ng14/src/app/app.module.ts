@@ -19,7 +19,22 @@ import { CreatePostComponent } from './components/posts/create-post/create-post.
 import { EditProfileComponent } from './components/profile/edit-profile/edit-profile.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { InterceptorService } from './interceptor/interceptor.service';
+import { NgxUiLoaderConfig, NgxUiLoaderModule, PB_DIRECTION, POSITION, SPINNER } from "ngx-ui-loader";
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+const ngxUiLoaderConfig: NgxUiLoaderConfig = {
+  bgsPosition: POSITION.bottomCenter,
+  bgsSize: 40,
+  bgsType: SPINNER.rectangleBounce, // background spinner type
+  // fgsType: SPINNER.chasingDots, // foreground spinner type
+  pbDirection: PB_DIRECTION.leftToRight, // progress bar direction
+  pbThickness: 5, // progress bar thickness
+  // pbColor: "red",
+  bgsColor: "red",
+
+};
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,7 +57,11 @@ import { InterceptorService } from './interceptor/interceptor.service';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgImageSliderModule
+    NgImageSliderModule,
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
+    InfiniteScrollModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(), // ToastrModule added
 
   ],
   providers: [{

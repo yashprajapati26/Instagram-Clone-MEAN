@@ -48,6 +48,7 @@ router.post(
 router.post("/otpverify", authController.otpverify);
 router.get("/userdetails/:userId", authController.userdetails);
 router.get("/getallusers", authController.getAllUsers);
+router.get("/searchuser/:searchKey", authController.searchUser);
 
 // profile routes
 router.get("/getuserprofile/:userId", userProfileController.getUserProfileInfo);
@@ -62,7 +63,7 @@ router.post("/createpost", upload.array("files", 4), postController.createPost);
 router.get("/getuserpost/:userId", postController.getAllPosts);
 router.delete("/deletepost/:postId", postController.deletePost);
 //feed
-router.get("/getfeeds", postController.getFeeds);
+router.post("/getfeeds", postController.getFeeds);
 router.get("/getsinglepost/:postId", postController.getSinglePost);
 
 //liked-disliked post routes

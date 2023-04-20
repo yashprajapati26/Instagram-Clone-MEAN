@@ -1,5 +1,8 @@
 <div class="h-screen bg-gray-200 flex flex-col justify-center items-center">
-    
+    <div *ngIf="msg" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 text-xs rounded relative my-2" role="alert">
+        <strong class="font-bold mr-1">Error!</strong>
+        <span class="block sm:inline">{{msg}}</span>
+      </div>
     <div class="bg-white mb-3 border border-gray-300 w-80 pt-8 pb-4 flex flex-col items-center">
         <img class="h-20 w-30" src="../../../../assets/Logo-Instagram.png">
         <h5 class="text-sm">Login</h5>

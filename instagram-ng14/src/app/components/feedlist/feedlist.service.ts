@@ -9,9 +9,9 @@ export class FeedlistService {
 
   constructor(private http:HttpClient) { }
 
-  getFeeds(){
+  getFeeds(params:any){
     let url = environment.apiURL + "/getfeeds/"
-    return this.http.get(url)
+    return this.http.post(url,params)
   }
 
   likedDislikePost(data:any){

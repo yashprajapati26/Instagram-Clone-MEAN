@@ -21,8 +21,8 @@ export class FeedsComponent implements OnChanges {
   @Input('user') user: any;
 
   imageUrl = environment.apiURL;
-  sliderImageWidth: Number = 600;
-  sliderImageHeight: Number = 500;
+  sliderImageWidth: Number = 525;
+  sliderImageHeight: Number = 425;
 
   cmtForm = new FormGroup({
     postId: new FormControl('', Validators.required),
@@ -36,7 +36,10 @@ export class FeedsComponent implements OnChanges {
     private router: Router,
     private feedlistservice: FeedlistService,
     private postservice: PostService
-  ) {}
+  ) {
+
+    console.log("feeds : ",this.feeds)
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     // throw new Error('Method not implemented.');
@@ -48,7 +51,7 @@ export class FeedsComponent implements OnChanges {
 
   SetSliderImages() {
     // {{feed.postImages[0].imagePath | json}}
-    this.feeds = this.feeds.map((feed: any) => {
+    this.feeds = this.feeds?.map((feed: any) => {
       feed.imageObject = [];
       feed.postImages.map((obj: any) => {
         let image = this.imageUrl + '/' + obj.imagePath;
@@ -60,8 +63,11 @@ export class FeedsComponent implements OnChanges {
   }
 
   checkLiked() {
-    this.feeds = this.feeds.map((element: any) => {
+    console.log(this.user)
+
+    this.feeds = this.feeds?.map((element: any) => {
       element.likedPosts.find((ele: any) => {
+        // console.log(ele , "ele")
         if (ele.likedBy == this.user['id']) {
           element.isAlreadyLiked = true;
         }
@@ -107,6 +113,8 @@ export class FeedsComponent implements OnChanges {
       this.msg = res['msg'];
     });
     this.cmtForm.reset();
+    this.router.navigate(['add-comment', postId]);
+
   }
 
   openReplySection(cmtId: any) {

@@ -3,6 +3,7 @@ const likedPost = require("../models/likedPost.model");
 const CmtPost = require("../models/cmtPost.model");
 const userFollowers = require("../models/userFollowers.model");
 const Users = require("../models/users.model");
+const userProfile = require("../models/userProfile.model");
 
 const create = async (data) => {
   return await Notification.create(data)
@@ -53,6 +54,11 @@ const findAll = async (condition, modelname) => {
         include: [
           {
             model: Users,
+            attributes : ["id","firstName","lastName","username"],
+            include : {
+              model : userProfile,
+              attributes : ["id","profile_img"]
+            }
           },
         ],
       },
@@ -88,6 +94,11 @@ likedPost.belongsTo(Users, {
 CmtPost.belongsTo(Users, {
   foreignKey: "cmtBy",
 });
+
+Users.hasOne(userProfile, {
+  foreignKey: "userId",
+});
+
 
 module.exports = {
   create: create,

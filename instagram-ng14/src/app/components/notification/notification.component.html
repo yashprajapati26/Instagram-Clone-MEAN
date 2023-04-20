@@ -9,7 +9,7 @@
     <h3>New Notifications</h3>
     <div class="flex justify-between items-center">
       <div class="flex items-center">
-        <img class="rounded-full w-8 flex mr-3" src="../../../assets/Logo-facebook.png" />
+        <img class="rounded-full w-8 h-8 flex mr-3" src="{{imageUrl}}/{{object.userFollower.user.userProfile.profile_img}}" />
         <p *ngIf="object.userFollower.status == 'Pending'">
           <span class="font-bold">
             {{ object.userFollower.user.username }}
@@ -35,7 +35,7 @@
               $event
             )
           " id="accept-{{ object.userFollower.id }}" class="text-sm m-1 px-2 py-1 bg-blue-600 rounded-md text-white">
-          confirm
+          Confirm
         </button>
         <button (click)="
             actionFollowRequest(
@@ -75,7 +75,7 @@
     <h3>New Notifications</h3>
     <div class="flex justify-between items-center">
       <div class="flex items-center">
-        <img class="rounded-full w-8 flex mr-3" src="../../../assets/Logo-facebook.png" />
+        <img class="rounded-full w-8 h-8 flex mr-3" src="{{imageUrl}}/{{like.likedPost.user.userProfile.profile_img}}" />
         <p>
           <span class="font-bold">{{ like.likedPost.user.username }}</span>
           {{ like.message

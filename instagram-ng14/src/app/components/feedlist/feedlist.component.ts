@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { skipWhile } from 'rxjs';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { environment } from 'src/environments/environment.development';
 import { CommanService } from '../comman/comman.service';
 import { FeedlistService } from './feedlist.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-feedlist',
@@ -17,12 +18,15 @@ export class FeedlistComponent {
   allUsers: any;
   replyToggle: boolean = false;
   searchUsers: any;
+  limit :any = 0;
 
   constructor(
     private router: Router,
     private feedlistservice: FeedlistService,
-    private commanservice: CommanService
-  ) {}
+    private commanservice: CommanService,
+    private ngxLoader: NgxUiLoaderService,
+    private toastr: ToastrService
+  ) { }
 
   ngOnInit() {
     this.fatchUserDetails();
@@ -45,38 +49,45 @@ export class FeedlistComponent {
   }
 
   fatchFeed() {
-    this.feedlistservice.getFeeds().subscribe((res: any) => {
+    this.ngxLoader.start();
+    this.limit = this.limit + 3;
+    let params = {'offset':0,'limit':this.limit}
+    this.feedlistservice.getFeeds(params).subscribe((res: any) => {
       console.log('feed:', res);
       this.feeds = res['feeds'];
+      this.ngxLoader.stop();
     });
   }
 
   fatchUserDetails() {
     let userId = localStorage.getItem('userId');
     this.feedlistservice.getUserDetails(userId).subscribe((res: any) => {
-      console.log("user : ",res);
+      console.log("user : ", res);
       this.user = res['user'];
     });
   }
 
   fatchAllUsers() {
+    this.ngxLoader.start();
+
     this.feedlistservice.getAllUsers().subscribe((res: any) => {
       console.log(res['allusers'])
-      this.allUsers = res['allusers'].map((user:any)=>{
-        user.userFollowers.find((element:any)=>{
-          if(element.followerId == this.user.id){
+      this.allUsers = res['allusers'].map((user: any) => {
+        user.userFollowers.find((element: any) => {
+          if (element.followerId == this.user.id) {
             user.isAlreadyFollowed = true
           }
         })
         return user
       })
-      console.log(this.allUsers ,"------------------------")
-      this.allUsers= this.allUsers.filter((obj:any)=>{
+      this.allUsers = this.allUsers.filter((obj: any) => {
         console.log(obj.id, this.user.id)
-        if(obj.id !== this.user.id){
+        if (obj.id !== this.user.id) {
           return obj
         }
       })
+      this.ngxLoader.stop();
+
     });
   }
 
@@ -100,10 +111,16 @@ export class FeedlistComponent {
   }
 
   doUndoFollowing(userId: any, event: any) {
+    console.log(event.target.textContent)
     if (event.target.textContent == 'follow') {
       event.target.textContent = 'unfollow';
+      console.log("1")
+      this.toastr.success('Sent Follow request to user', 'Success!');
+
     } else {
       event.target.textContent = 'follow';
+      this.toastr.warning('unfollow user', 'Success!');
+
     }
     let data = {
       userId: userId,

@@ -1,9 +1,9 @@
 <app-header></app-header>
 
 <div class="grid grid-cols-4 gap-4 mb-6">
-  <div class="overflow-y-scroll max-h-screen col-span-4 md:col-span-3">
+  <div class="overflow-y-scroll max-h-screen col-span-4 md:col-span-3" infiniteScroll [infiniteScrollDistance]="0.5"
+    (scrolled)="fatchFeed()">
     <!-- post -->
-
     <app-feeds [feeds]="feeds" [user]="user"> </app-feeds>
   </div>
 
@@ -12,17 +12,10 @@
   <div class="hidden md:block col-span-1 justify-center items-center">
     <div class="flex">
       <div class="rounded-full p-1 flex items-center">
-        <img
-          *ngIf="user.userProfile.profile_img; else elseBlock"
+        <img *ngIf="user?.userProfile?.profile_img; else elseBlock"
           class="h-16 w-16 rounded-full border border-gray-100 shadow-sm"
-          src="{{ imageUrl }}/{{ user.userProfile.profile_img }}"
-          alt="user image"
-        />
-        <ng-template #elseBlock
-          ><img
-            class="h-8 w-8 rounded-full"
-            src="../../../../assets/default.png"
-        /></ng-template>
+          src="{{ imageUrl }}/{{ user?.userProfile?.profile_img }}" alt="user image" />
+        <ng-template #elseBlock><img class="h-8 w-8 rounded-full" src="../../../../assets/default.png" /></ng-template>
       </div>
       <div class="m-3">
         <p *ngIf="user" class="font-bold text-sm">{{ user.username }}</p>
@@ -35,45 +28,29 @@
     <p class="text-sm font-bold mx-3 p-3">Suggetion for you</p>
     <hr />
 
-    <div
-      *ngFor="let singleuser of allUsers"
-      class="mx-2 flex flex-row items-center align-items justify-between pt-3"
-    >
+    <div *ngFor="let singleuser of allUsers" class="mx-2 flex flex-row items-center align-items justify-between pt-3">
       <div class="flex items-center justify-between">
-        <img
-          *ngIf="singleuser.userProfile.profile_img; else elseBlock"
-          class="rounded-full w-8 h-7 flex mr-3"
-          src="{{ imageUrl }}/{{ singleuser.userProfile.profile_img }}"
-        />
-        <ng-template #elseBlock
-          ><img
-            class="rounded-full w-8 h-7 flex mr-3"
-            src="../../../../assets/default.png"
-        /></ng-template>
+        <img *ngIf="singleuser?.userProfile?.profile_img; else elseBlock2" class="rounded-full w-8 h-7 flex mr-3"
+          src="{{ imageUrl }}/{{ singleuser?.userProfile?.profile_img }}" />
+        <ng-template #elseBlock2><img class="rounded-full w-8 h-7 flex mr-3" src="../../../../assets/default.png" />
+        </ng-template>
         <a>
           <p class="font-bold text-sm">{{ singleuser.username }}</p>
         </a>
       </div>
-      <button
-        *ngIf="singleuser.isAlreadyFollowed"
-        (click)="doUndoFollowing(singleuser.id, $event)"
-        id="user-{{ singleuser.id }}"
-        class="text-xs font-bold text-blue-700"
-      >
+      <button *ngIf="singleuser.isAlreadyFollowed" (click)="doUndoFollowing(singleuser.id, $event)"
+        id="user-{{ singleuser.id }}" class="text-xs font-bold text-white bg-blue-600 p-1 rounded">
         unfollow
       </button>
-      <button
-        *ngIf="!singleuser.isAlreadyFollowed"
-        (click)="doUndoFollowing(singleuser.id, $event)"
-        id="user-{{ singleuser.id }}"
-        class="text-xs font-bold text-blue-700"
-      >
+      <button *ngIf="!singleuser.isAlreadyFollowed" (click)="doUndoFollowing(singleuser.id, $event)"
+        id="user-{{ singleuser.id }}" class="text-xs font-bold text-white bg-blue-600 p-1 rounded">
         follow
       </button>
     </div>
   </div>
 </div>
 
+<!-- 
 <div class="searchmodel hidden">
   <div
     class="h-screen w-full fixed left-0 top-0 pt-28 flex justify-center items-start bg-black bg-opacity-20"
@@ -111,4 +88,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->

@@ -1,4 +1,43 @@
+<ngx-ui-loader></ngx-ui-loader>
 <router-outlet></router-outlet>
+
+<div class="searchmodel hidden">
+  <div class="fixed left-0 top-0 right-0 bottom-0 pt-24 flex justify-center items-start">
+    <div class="block rounded-lg dark:bg-neutral-700 w-96 bg-white border bottom-4">
+      <div class="border-b-2 border-neutral-100 px-6 py-3 dark:border-neutral-600 dark:text-neutral-50 bg-slate-200">
+        Search Result
+      </div>
+      <div class="p-6">
+        <ul *ngIf="searchUsers; else noRecord">
+          <li *ngFor="let user of searchUsers">
+            <div class="flex items-center p-1">
+              <img *ngIf="user.userProfile?.profile_img; else elseBlock3" class="rounded-full h-8 w-8 flex mr-3"
+                src="{{ imageUrl }}/{{ user.userProfile.profile_img }}" />
+              <ng-template #elseBlock3><img class="rounded-full w-8 h-8 flex mr-3"
+                  src="../../../../assets/default.png" />
+              </ng-template>
+              <a>
+                <p class="font-bold text-sm">{{ user.username }}</p>
+              </a>
+              <button *ngIf="!user.isAlreadyFollowed; else unfollow" class="ml-auto text-xs font-bold text-blue-700">
+                follow 
+              </button>
+              <ng-template #unfollow>
+                <button  class="ml-auto text-xs font-bold text-blue-700">
+                  unfollow 
+                </button>
+            </ng-template>
+            </div>
+          </li>
+        </ul>
+        <ng-template #noRecord>
+          <p>No Records Found</p>
+        </ng-template>
+      </div>
+      
+    </div>
+  </div>
+</div>
 <!-- component -->
 <div class="md:hidden block w-full">
   <!-- <section id="bottom-navigation" class="md:hidden block fixed inset-x-0 bottom-0 z-10 bg-white shadow"> // if shown only tablet/mobile-->

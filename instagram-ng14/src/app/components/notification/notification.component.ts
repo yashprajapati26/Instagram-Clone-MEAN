@@ -1,9 +1,10 @@
-import { Component, SimpleChanges, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { environment } from 'src/environments/environment.development';
 import { AuthService } from '../auth/auth.service';
+import { CommanService } from '../comman/comman.service';
 import { NotificationService } from './notification.service';
-import { NgImageSliderComponent } from 'ng-image-slider';
-
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-notification',
   templateUrl: './notification.component.html',
@@ -17,25 +18,25 @@ export class NotificationComponent {
   allLiked: any
   imageUrl = environment.apiURL
   allCmts: any;
-  allnotifications:any;
+  allnotifications: any;
 
-  constructor(private notificationservice: NotificationService, private authservice: AuthService) {
+  constructor(
+    private notificationservice: NotificationService,
+    private authservice: AuthService,
+    private ngxLoader: NgxUiLoaderService,
+    private commanservice: CommanService,
+    private toastr: ToastrService) {
     this.userId = this.authservice.getUserId()
   }
 
-  ngOnInit() {
-    // this.getFollowRequest()
-    // this.getliked()
+  ngOnInit() {;
+    this.ngxLoader.start()
     this.getLikedNotification();
     this.getFollowNotification()
     this.getCmtsNotification();
+    this.ngxLoader.stop();
   }
 
-  ngOnChanges(changes: SimpleChanges){
-    // if(changes){
-    //   this.allnotifications = this.allLiked.concat(this.allCmts)
-    // }
-  }
 
 
   getLikedNotification() {
@@ -57,34 +58,18 @@ export class NotificationComponent {
       console.log("follow notification : ", res)
       this.allFollowers = res['followNotifications']
       console.log(res)
-
     })
+
   }
 
-
-  // getFollowRequest(){
-  //   let userId = this.authservice.getUserId()
-  //   this.notificationservice.getFollowRequest(userId).subscribe((res:any)=>{
-  //     console.log(res)
-  //     this.allFollowers = res['allFollowers']
-  //   })
-  // }
-
-  // getliked(){
-  //   let userId = this.authservice.getUserId()
-  //   this.notificationservice.getLikedNotification(userId).subscribe((res:any)=>{
-  //     console.log(res)
-  //     this.allLiked = res['allLiked']
-  //   })
-  // }
-
-
-
+  sendNotificationNo() {
+    let total = this.allLiked?.length + this.allCmts?.length + this.allFollowers?.length
+    console.log("----!!!! ", total)
+    this.commanservice.sendNotificationNo(total)
+  }
 
   actionFollowRequest(requestId: any, followerId: any, status: any, event: any) {
-
     let userId = this.authservice.getUserId()
-
     let data = {
       requestId: requestId,
       status: status,
@@ -94,13 +79,16 @@ export class NotificationComponent {
     console.log("data : ", data)
 
     if (status == "Accept") {
-      event.target.textContent = "following"
+      event.target.textContent = "Following"
+      event.target.setAttribute('disabled','true')
       document.getElementById("delete-" + requestId)?.setAttribute('hidden', 'true')
+      this.toastr.success('Request Accepted', 'Accepted!');
     }
     else {
       document.getElementById("action-" + requestId)?.setAttribute('hidden', 'true')
-    }
+      this.toastr.error('Request Rejected', 'Rejected!');
 
+    }
 
     this.notificationservice.requestAccept(data).subscribe((res: any) => {
       console.log(res)

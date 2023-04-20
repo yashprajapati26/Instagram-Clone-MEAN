@@ -70,7 +70,7 @@ const deleteRecord = async (condition) => {
     });
 };
 
-const findAll = async (condition) => {
+const findAll = async (condition, limit, offset) => {
   return await post
     .findAll({
       where: condition,
@@ -102,6 +102,8 @@ const findAll = async (condition) => {
         },
       ],
       order: [["created_at", "DESC"]],
+      limit,
+      offset,
     })
     .then((res) => {
       return res;

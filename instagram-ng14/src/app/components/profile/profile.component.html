@@ -2,7 +2,7 @@
 
 <main class="bg-gray-100 bg-opacity-25">
   <div class="lg:w-8/12 lg:mx-auto mb-8">
-    <header class="flex flex-wrap items-center p-4 md:py-8">
+    <header *ngIf="userProfile" class="flex flex-wrap items-center p-4 md:py-8">
       <div class="md:w-3/12 md:ml-16">
         <!-- profile image -->
         <img
@@ -55,16 +55,16 @@
         <!-- post, following, followers list for medium screens -->
         <ul class="hidden md:flex space-x-8 mb-4">
           <li>
-            <span class="font-semibold">{{ userPost.length }}</span>
+            <span class="font-semibold">{{ userPost?.length }}</span>
             posts
           </li>
 
           <li (click)="show('Followers')">
-            <span class="font-semibold">{{ userProfile.no_of_followers }}</span>
+            <span class="font-semibold">{{ userProfile?.no_of_followers }}</span>
             followers
           </li>
           <li (click)="show('Following')">
-            <span class="font-semibold">{{ userProfile.no_of_following }}</span>
+            <span class="font-semibold">{{ userProfile?.no_of_following }}</span>
             following
           </li>
         </ul>
@@ -101,20 +101,20 @@
       >
         <li>
           <span class="font-semibold text-gray-800 block">{{
-            userPost.length
+            userPost?.length
           }}</span>
           posts
         </li>
 
         <li>
           <span class="font-semibold text-gray-800 block">{{
-            userProfile.no_of_followers
+            userProfile?.no_of_followers
           }}</span>
           followers
         </li>
         <li>
           <span class="font-semibold text-gray-800 block">{{
-            userProfile.no_of_following
+            userProfile?.no_of_following
           }}</span>
           following
         </li>

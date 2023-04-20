@@ -222,7 +222,7 @@ const userdetails = async (req, res) => {
 const getAllUsers = async (req, res) => {
   try {
     let allusers = await UserService.findAll(
-      ["id","username", "firstname", "lastname"],
+      ["id", "username", "firstname", "lastname"],
       {
         isActive: 1,
       }
@@ -241,10 +241,37 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+searchUser = async (req, res) => {
+  try {
+    let key = req.params.searchKey;
+    console.log(key);
+    let users = await UserService.findAll(["id", "username"], {
+      [Op.or]: [
+        { username: { [Op.like]: "%" + key + "%" } },
+        { firstName: { [Op.like]: "%" + key + "%" } },
+      ],
+      isActive: 1,
+    });
+    if (users) {
+      return res
+        .status(STATUSCODE.success)
+        .json({ msg: "search users", users: users });
+    }
+    return res.status(STATUSCODE.failure).json({ msg: "not found users" });
+  } catch (e) {
+    console.log(e);
+    return res.status(STATUSCODE.internal).json({
+      msg: "something wrong",
+      error: e,
+    });
+  }
+};
+
 module.exports = {
   signup: signup,
   login: login,
   otpverify: otpverify,
   userdetails: userdetails,
   getAllUsers: getAllUsers,
+  searchUser: searchUser,
 };

@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment.development';
-import { PostService } from '../post.service';
-import jwt_decode from 'jwt-decode';
 import { AuthService } from '../../auth/auth.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { PostService } from '../post.service';
 
 @Component({
   selector: 'app-add-comment',
@@ -13,12 +12,14 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class AddCommentComponent {
 
+  html = ""
   post: any
   imageUrl = environment.apiURL
   loggedUser: any | undefined;
   msg: any
   replies: any;
   postId: any;
+  comments: any;
   cmtForm = new FormGroup({
     postId: new FormControl("", Validators.required),
     cmtBy: new FormControl("", Validators.required),
@@ -26,7 +27,8 @@ export class AddCommentComponent {
     parentId: new FormControl(null, Validators.required),
 
   })
-
+  nestedCmts: any[] = []
+  new: any;
   constructor(private postservice: PostService, private activateRoute: ActivatedRoute, private authservice: AuthService) { }
 
   ngOnInit() {
@@ -37,11 +39,27 @@ export class AddCommentComponent {
 
   fatchPost(postId: any) {
     this.postservice.getPostDetails(postId).subscribe((res: any) => {
-      console.log(res)
       this.post = res['post']
-    })
+      this.comments = this.post['cmtPosts']
+      this.comments.map((commit: any) => {
+        commit.reply = []
+        if (commit.parentId) {
+          let temp = this.comments.find((item: any) => item.id === commit.parentId);
+          temp.reply.push(commit);
+        }
+      });
 
+      this.comments = this.comments.filter((element: any) => {
+        if (element.parentId === null) {
+          console.log(element)
+          return element
+        }
+      });
+      console.log("new : ", this.comments)
+    })
   }
+
+
 
   fatchLoginUserDetails(): void {
     let userId = localStorage.getItem("userId")
@@ -55,11 +73,9 @@ export class AddCommentComponent {
       postId: this.post.id,
       cmtBy: this.loggedUser.id,
     })
-    console.log(this.cmtForm.value)
     this.postservice.createComment(this.cmtForm.value).subscribe((res: any) => {
       this.msg = res['msg']
       this.fatchPost(this.postId)
-
     })
     this.cmtForm.reset();
   }
@@ -78,10 +94,7 @@ export class AddCommentComponent {
   }
 
   openReplySection(cmtId: any) {
-
-    let replyBox = document.getElementById(cmtId)
-
-    console.log(replyBox)
+    let replyBox = document.getElementById("cmt-"+cmtId)
     if (replyBox?.hasAttribute("hidden")) {
       console.log(1)
       replyBox?.removeAttribute("hidden")
@@ -90,18 +103,15 @@ export class AddCommentComponent {
       console.log(2)
       replyBox?.setAttribute("hidden", "true")
     }
-
-    console.log("reply on comment ")
-    this.fatchReplies(7)
-
+    // this.fatchReplies(7)
   }
 
-  fatchReplies(cmtId: any) {
-    let cmt_id = cmtId
-    console.log("-->", this.post)
-    let replies = this.post.cmtPosts.filter((comment: any) => comment.parentId === cmt_id).sort((a: any, b: any) =>
-      new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-    );
-  }
+  // fatchReplies(cmtId: any) {
+  //   let cmt_id = cmtId
+  //   let replies = this.post.cmtPosts.filter((comment: any) => comment.parentId === cmt_id).sort((a: any, b: any) =>
+  //     new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+  //   );
+  // }
 
+  
 }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -15,36 +16,41 @@ export class LoginComponent {
     password: new FormControl("Yash@123", Validators.required),
   })
   submitted: boolean = false
+  msg:any
 
-
-  constructor(private router: Router, private authservice: AuthService) { }
+  constructor(private router: Router, private authservice: AuthService, private ngxLoader: NgxUiLoaderService) { }
 
   ngOnInit() { }
 
   githubLogin() {
     console.log("login with github")
-    this.authservice.doLoginViaGithub().subscribe((res:any)=>{
-      console.log("------github login----------",res);
-      
+    this.authservice.doLoginViaGithub().subscribe((res: any) => {
+      console.log("------github login----------", res);
+
     })
   }
 
   login(data: object) {
+    this.ngxLoader.start();
     this.submitted = true
     console.log(data)
     if (this.loginForm.valid) {
       this.authservice.doLogin(data).subscribe((res: any) => {
         if (res) {
           console.log(res)
-          localStorage.setItem('userId',res['data']['user'].id)
+          localStorage.setItem('userId', res['data']['user'].id)
           this.authservice.saveToken(res['data']['auth_token'])
-          if (res['data']['user'].isFirstTime){
+          if (res['data']['user'].isFirstTime) {
             this.router.navigate(['edit-profile']);
           }
-          else{this.router.navigate(['profile']);}
+          else { this.router.navigate(['profile']); }
         }
+      },(err:any)=>{
+        this.msg = err.error.msg
       })
     }
+    this.ngxLoader.stop();
+
   }
 
   signup() {

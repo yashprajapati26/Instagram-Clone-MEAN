@@ -1,5 +1,8 @@
-<div *ngFor="let feed of feeds" class="bg-gray-100 md:p-4">
-  <div class="bg-white border rounded-sm">
+<div
+  *ngFor="let feed of feeds"
+  class="bg-gray-100 md:p-4 md:flex md:items-center md:justify-center"
+>
+  <div class="bg-white border rounded-sm md:w-1/2">
     <div class="flex items-center px-4 py-3">
       <img
         *ngIf="feed.user.userProfile.profile_img; else elseBlock"
@@ -22,6 +25,11 @@
     <ng-image-slider
       class="img-responsive"
       [images]="feed.imageObject"
+      [infinite]="false"
+      [manageImageRatio]="true"
+      [autoSlide]="1"
+      [animationSpeed]="0.1"
+      slideImage="1"
       [imageSize]="{ width: sliderImageWidth, height: sliderImageHeight }"
       #nav
     ></ng-image-slider>
@@ -118,7 +126,7 @@
         <span class="text-sm font-normal">{{ cmt.comment }}</span>
         <span
           (click)="openReplySection(cmt.id)"
-          class="cursor-pointer float-right text-sm font-semibold p-1"
+          class="cursor-pointer float-right text-xs font-semibold p-1"
           >Reply</span
         >
         <!-- reply box -->
@@ -152,7 +160,7 @@
               type="submit"
               class="mr-6 border bg-gray-200 rounded p-2 my-4"
             >
-              ADD
+              POST
             </button>
           </form>
         </div>
@@ -162,7 +170,9 @@
     </div>
     <!-- end-show-comment -->
 
-    <div class="px-4 mt-2 text-gray-400 text-xs mb-4">2 DAYS AGO</div>
+    <div class="px-4 mt-2 text-gray-400 text-xs mb-4">
+      {{ feed.createdAt | date }}
+    </div>
     <hr />
   </div>
 </div>
