@@ -34,6 +34,11 @@ var storage2 = multer.diskStorage({
 var upload = multer({ storage: storage });
 var profile_upload = multer({ storage: storage2 });
 
+
+router.get("",async(req,res)=>{
+  return res.send("welcome to instagram backend")
+})
+
 // auth routes
 router.post(
   "/signup",
