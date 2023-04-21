@@ -112,7 +112,14 @@ router.get(
   "/getlikedNotification/:userId",
   notificationController.getLikedNotification
 );
+router.get("/readNotification/:userId", notificationController.readNotification);
+router.get("/newNotification/:userId", notificationController.newNotification);
 
+
+
+
+
+// Oauth routes
 router.get(
   "/auth/github",
   passport.authenticate("github", { scope: ["user:email"] })

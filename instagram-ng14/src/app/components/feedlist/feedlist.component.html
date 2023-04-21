@@ -1,7 +1,7 @@
 <app-header></app-header>
 
 <div class="grid grid-cols-4 gap-4 mb-6">
-  <div class="overflow-y-scroll max-h-screen col-span-4 md:col-span-3" infiniteScroll [infiniteScrollDistance]="0.5"
+  <div class="min-h-screen col-span-4 md:col-span-3" infiniteScroll [infiniteScrollDistance]="0.5"
     (scrolled)="fatchFeed()">
     <!-- post -->
     <app-feeds [feeds]="feeds" [user]="user"> </app-feeds>
@@ -9,8 +9,8 @@
 
   <!-- username -->
 
-  <div class="hidden md:block col-span-1 justify-center items-center">
-    <div class="flex">
+  <div class="hidden md:block col-span-1 justify-center items-center fixed right-0">
+    <div class="flex w-96 p-4">
       <div class="rounded-full p-1 flex items-center">
         <img *ngIf="user?.userProfile?.profile_img; else elseBlock"
           class="h-16 w-16 rounded-full border border-gray-100 shadow-sm"
@@ -28,7 +28,7 @@
     <p class="text-sm font-bold mx-3 p-3">Suggetion for you</p>
     <hr />
 
-    <div *ngFor="let singleuser of allUsers" class="mx-2 flex flex-row items-center align-items justify-between pt-3">
+    <div *ngFor="let singleuser of allUsers" class="mx-2 flex flex-row items-center align-items justify-between px-3 mt-2">
       <div class="flex items-center justify-between">
         <img *ngIf="singleuser?.userProfile?.profile_img; else elseBlock2" class="rounded-full w-8 h-7 flex mr-3"
           src="{{ imageUrl }}/{{ singleuser?.userProfile?.profile_img }}" />
@@ -39,11 +39,11 @@
         </a>
       </div>
       <button *ngIf="singleuser.isAlreadyFollowed" (click)="doUndoFollowing(singleuser.id, $event)"
-        id="user-{{ singleuser.id }}" class="text-xs font-bold text-white bg-blue-600 p-1 rounded">
+        id="user-{{ singleuser.id }}" class="text-xs font-bold text-white bg-gray-600 py-1 px-auto w-16 rounded">
         unfollow
       </button>
       <button *ngIf="!singleuser.isAlreadyFollowed" (click)="doUndoFollowing(singleuser.id, $event)"
-        id="user-{{ singleuser.id }}" class="text-xs font-bold text-white bg-blue-600 p-1 rounded">
+        id="user-{{ singleuser.id }}" class="text-xs font-bold text-white bg-blue-600 py-1 px-auto w-16 rounded">
         follow
       </button>
     </div>

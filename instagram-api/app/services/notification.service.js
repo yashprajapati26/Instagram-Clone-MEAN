@@ -23,8 +23,8 @@ const findOne = async (attributes,data) => {
   });
 };
 
-const update = async (params, data) => {
-  return await Notification.update(data, { where: params })
+const update = async (data,condition) => {
+  return await Notification.update(data, { where: condition })
     .then((res) => {
       return res;
     })
@@ -73,6 +73,23 @@ const findAll = async (condition, modelname) => {
     });
 };
 
+
+const findAndCountAll = async (attributes, condition, limit, offset, sorting) => {
+  return await Notification.findAndCountAll({
+          attributes: attributes,
+          where: condition,
+          order: sorting,
+      })
+      .then((res) => {
+          return res;
+      })
+      .catch((err) => {
+          console.error(err);
+          throw err;
+      });
+};
+
+
 Notification.belongsTo(likedPost, {
   foreignKey: "notificationId",
 });
@@ -106,4 +123,5 @@ module.exports = {
   update: update,
   deleteRecord: deleteRecord,
   findAll: findAll,
+  findAndCountAll:findAndCountAll
 };

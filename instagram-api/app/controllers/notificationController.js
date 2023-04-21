@@ -52,7 +52,6 @@ const getLikedNotification = async (req, res) => {
   try {
     let condition = { type: "Like", userId: req.params.userId };
     let modelname = likedPost;
-    console.log("=======================================================================")
     let likes = await notificationService.findAll(condition, modelname);
     if (likes) {
       return res
@@ -69,7 +68,6 @@ const getCmtsNotification = async (req, res) => {
   try {
     let condition = { type: "Comment", userId: req.params.userId };
     let modelname = CmtPost;
-    console.log("=======================================================================")
 
     let cmts = await notificationService.findAll(condition, modelname);
     if (cmts) {
@@ -87,8 +85,6 @@ const getFollowNotification = async (req, res) => {
   try {
     let condition = { type: "Follow Request", userId: req.params.userId };
     let modelname = userFollowers;
-    console.log("=======================================================================")
-
     let followNotifications = await notificationService.findAll(
       condition,
       modelname
@@ -106,6 +102,43 @@ const getFollowNotification = async (req, res) => {
   }
 };
 
+const readNotification = async (req, res) => {
+  try {
+    let userId = req.params.userId;
+    let readed = await notificationService.update(
+      { read: 1 },
+      { userId: userId }
+    );
+    if (readed) {
+      return res
+        .status(STATUSCODE.success)
+        .json({ msg: "Read Notification", readed: readed });
+    }
+  } catch (e) {
+    console.log(e);
+    return e;
+  }
+};
+
+const newNotification = async (req, res) => {
+  try {
+    let userId = req.params.userId;
+    let objects = await notificationService.findAndCountAll(
+      ["id", "type", "read"],
+      { userId: userId , read: 0}
+    );
+    if (objects) {
+      return res
+        .status(STATUSCODE.success)
+        .json({ msg: "new Notification", count: objects.count });
+    }
+  } catch (e) {
+    console.log(e);
+    return res.status(STATUSCODE.failure).send(e);
+
+  }
+};
+
 module.exports = {
   createNotification: createNotification,
   deleteNotification: deleteNotification,
@@ -113,4 +146,6 @@ module.exports = {
   getLikedNotification: getLikedNotification,
   getCmtsNotification: getCmtsNotification,
   getFollowNotification: getFollowNotification,
+  readNotification: readNotification,
+  newNotification: newNotification,
 };
