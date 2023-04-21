@@ -31,6 +31,9 @@ export class NotificationComponent {
   }
 
   ngOnInit() {
+  }
+  
+  ngOnDestroy() {
     this.readNorification();
   }
 

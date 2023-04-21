@@ -39,13 +39,9 @@
         </a>
       </div>
       <button *ngIf="singleuser.isAlreadyFollowed" (click)="doUndoFollowing(singleuser.id, $event)"
-        id="user-{{ singleuser.id }}" class="text-xs font-bold text-white bg-gray-600 py-1 px-auto w-16 rounded">
-        unfollow
-      </button>
+        id="user-{{ singleuser.id }}" class="text-xs font-bold text-white bg-gray-600 py-1 px-auto w-16 rounded">unfollow</button>
       <button *ngIf="!singleuser.isAlreadyFollowed" (click)="doUndoFollowing(singleuser.id, $event)"
-        id="user-{{ singleuser.id }}" class="text-xs font-bold text-white bg-blue-600 py-1 px-auto w-16 rounded">
-        follow
-      </button>
+        id="user-{{ singleuser.id }}" class="text-xs font-bold text-white bg-blue-600 py-1 px-auto w-16 rounded">follow</button>
     </div>
   </div>
 </div>

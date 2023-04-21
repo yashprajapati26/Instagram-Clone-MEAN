@@ -50,7 +50,7 @@ export class FeedlistComponent {
 
   fatchFeed() {
     this.ngxLoader.start();
-    this.limit = this.limit + 3;
+    this.limit = this.limit + 5;
     let params = {'offset':0,'limit':this.limit}
     this.feedlistservice.getFeeds(params).subscribe((res: any) => {
       console.log('feed:', res);
@@ -114,11 +114,14 @@ export class FeedlistComponent {
     console.log(event.target.textContent)
     if (event.target.textContent == 'follow') {
       event.target.textContent = 'unfollow';
+      event.target.style.backgroundColor = 'rgb(75 85 99)';
       console.log("1")
       this.toastr.success('Sent Follow request to user', 'Success!');
 
     } else {
       event.target.textContent = 'follow';
+      event.target.style.backgroundColor = 'rgb(37 99 235)';
+
       this.toastr.warning('unfollow user', 'Success!');
 
     }

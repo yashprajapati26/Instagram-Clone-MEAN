@@ -23,6 +23,8 @@ const do_undo_Following = async (req, res) => {
           isExist.id,
           isExist.userId
         );
+        countFollowers(data.userId,data.followerId);
+
         return res.status(STATUSCODE.success).json({
           msg: "remove follower",
           deleteRecord: deleteRecord,
@@ -102,6 +104,39 @@ const getAllFollowing = async (req, res) => {
   }
 };
 
+const countFollowers = async (userId, followerId) => {
+  const noOfFollower = await userFollowersService.findAndCountAll(
+    ["id", "userId", "followerId", "status"],
+    {
+      userId: userId,
+      status: "Accept",
+    },
+    "createdAt"
+  );
+  let result = await userProfileService.update(
+    { userId: userId },
+    { no_of_followers: noOfFollower["count"] }
+  );
+  // update in followingId user
+  const noOfFollowing = await userFollowersService.findAndCountAll(
+    ["id", "userId", "followerId", "status"],
+    {
+      followerId: followerId,
+      status: "Accept",
+    },
+    "createdAt"
+  );
+  let result2 = await userProfileService.update(
+    { userId: followerId },
+    { no_of_following: noOfFollowing["count"] }
+  );
+
+ return {
+    noOfFollower: noOfFollower,
+    noOfFollowing: noOfFollowing,
+ }
+};
+
 const updateFollowingRequest = async (req, res) => {
   try {
     let updateStatus = await userFollowersService.update(
@@ -133,40 +168,10 @@ const updateFollowingRequest = async (req, res) => {
           userId
         );
       }
-
       // update in userId followers user
+      let data = countFollowers(userId, followerId);
 
-      const noOfFollower = await userFollowersService.findAndCountAll(
-        ["id", "userId", "followerId", "status"],
-        {
-          userId: userId,
-          status: "Accept",
-        },
-        "createdAt"
-      );
-      let result = await userProfileService.update(
-        { userId: userId },
-        { no_of_followers: noOfFollower["count"] }
-      );
-      // update in followingId user
-      const noOfFollowing = await userFollowersService.findAndCountAll(
-        ["id", "userId", "followerId", "status"],
-        {
-          followerId: followerId,
-          status: "Accept",
-        },
-        "createdAt"
-      );
-      let result2 = await userProfileService.update(
-        { userId: followerId },
-        { no_of_following: noOfFollowing["count"] }
-      );
-
-      return res.status(STATUSCODE.success).json({
-        msg: "Action Complated Sucessfully",
-        noOfFollower: noOfFollower,
-        noOfFollowing: noOfFollowing,
-      });
+      return res.status(STATUSCODE.success).json(data)
     } else {
       return res.status(STATUSCODE.failure);
     }

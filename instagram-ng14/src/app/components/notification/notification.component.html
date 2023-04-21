@@ -5,8 +5,8 @@
 
 <div class="flex-col">
   <div class="p-2 m-2 font-bold">Follow requests</div>
-  <div *ngFor="let object of allFollowers" class="p-3 m-3 border border-gray-300 rounded-md">
-    <h3>New Notifications</h3>
+  <div *ngFor="let object of allFollowers" [ngClass]="{'border-gray-300': object.read==1, 'border-blue-600': object.read==0}" class="p-3 m-3 border border-gray-300 rounded-md">
+    <h3 *ngIf="!object.read">New Notifications</h3>
     <div class="flex justify-between items-center">
       <div class="flex items-center">
         <img class="rounded-full w-8 h-8 flex mr-3" src="{{imageUrl}}/{{object.userFollower.user.userProfile.profile_img}}" />
@@ -71,8 +71,8 @@
       <img class="rounded w-8 flex mr-3" src="{{imageUrl}}/{{like.likedPost.post.postImages[0].imagePath}}" />
     </div>
   </div> -->
-  <div *ngFor="let like of allLiked" class="p-3 m-3 border border-gray-300 rounded-md">
-    <h3>New Notifications</h3>
+  <div *ngFor="let like of allLiked" [ngClass]="{'border-gray-300': like.read==1, 'border-blue-600 shadow-sm shadow-blue-400': like.read==0}" class="p-3 m-3 border border-gray-300 rounded-md">
+    <h3 *ngIf="!like.read">New Notifications</h3>
     <div class="flex justify-between items-center">
       <div class="flex items-center">
         <img class="rounded-full w-8 h-8 flex mr-3" src="{{imageUrl}}/{{like.likedPost.user.userProfile.profile_img}}" />

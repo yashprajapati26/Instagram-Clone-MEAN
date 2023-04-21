@@ -63,6 +63,8 @@ const findAll = async (condition, modelname) => {
         ],
       },
     ],
+    order: [["created_at", "DESC"]],
+
   })
     .then((res) => {
       return res;

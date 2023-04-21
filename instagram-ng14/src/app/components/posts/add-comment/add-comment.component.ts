@@ -11,6 +11,8 @@ import { PostService } from '../post.service';
   styleUrls: ['./add-comment.component.scss']
 })
 export class AddCommentComponent {
+  sliderImageWidth: Number = 545;
+  sliderImageHeight: Number = 425;
 
   html = ""
   post: any
@@ -37,6 +39,18 @@ export class AddCommentComponent {
     this.fatchLoginUserDetails()
   }
 
+  SetSliderImages() {
+    // {{feed.postImages[0].imagePath | json}}
+    this.post.imageObject = [];
+    this.post.postImages.map((obj: any) => {
+      let image = this.imageUrl + '/' + obj.imagePath;
+      let thumbImage = image;
+      this.post.imageObject.push({ image, thumbImage });
+    });
+    console.log(this.post);
+
+  }
+
   fatchPost(postId: any) {
     this.postservice.getPostDetails(postId).subscribe((res: any) => {
       this.post = res['post']
@@ -56,6 +70,7 @@ export class AddCommentComponent {
         }
       });
       console.log("new : ", this.comments)
+      this.SetSliderImages();
     })
   }
 
@@ -94,7 +109,7 @@ export class AddCommentComponent {
   }
 
   openReplySection(cmtId: any) {
-    let replyBox = document.getElementById("cmt-"+cmtId)
+    let replyBox = document.getElementById("cmt-" + cmtId)
     if (replyBox?.hasAttribute("hidden")) {
       console.log(1)
       replyBox?.removeAttribute("hidden")
@@ -113,5 +128,5 @@ export class AddCommentComponent {
   //   );
   // }
 
-  
+
 }

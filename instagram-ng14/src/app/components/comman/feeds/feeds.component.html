@@ -57,7 +57,7 @@
     </div>
 
     <div class="font-semibold text-sm mx-4 mt-1">
-      {{ feed.likedPosts.length }} likes
+     <span id="like-{{feed.id}}"> {{ feed.likedPosts.length }} </span> likes
     </div>
     <div *ngIf="feed.cmtPosts.length > 0" class="px-4 my-1 text-gray-400 text-xs">
       VIEW ALL COMMENTS

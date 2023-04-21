@@ -21,7 +21,7 @@ export class FeedsComponent implements OnChanges {
   @Input('user') user: any;
 
   imageUrl = environment.apiURL;
-  sliderImageWidth: Number = 525;
+  sliderImageWidth: Number = 545;
   sliderImageHeight: Number = 425;
 
   cmtForm = new FormGroup({
@@ -37,8 +37,7 @@ export class FeedsComponent implements OnChanges {
     private feedlistservice: FeedlistService,
     private postservice: PostService
   ) {
-
-    console.log("feeds : ",this.feeds)
+    console.log("feeds : ", this.feeds)
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -79,14 +78,23 @@ export class FeedsComponent implements OnChanges {
   likedPost(event: any) {
     let Id = event.target.id || event.srcElement.id || event.currentTarget.id;
     let btn = document.getElementById(Id);
-
+    let count = document.getElementById("like-" + Id.split('-')[1]);
+    console.log("like : ", count?.innerText)
     let splitArray = Id.split('-');
     let postId = splitArray[1];
 
     if (btn?.getAttribute('fill') != 'red') {
       btn?.setAttribute('fill', 'red');
+      let no = null
+      no = count?.innerText
+      if (no) no = (parseInt(no) + 1).toString()
+      if (count) count.innerText = no ? no : ""
     } else {
       btn?.setAttribute('fill', 'none');
+      let no = null
+      no = count?.innerText
+      if (no) no = (parseInt(no) - 1).toString()
+      if (count) count.innerText = no ? no : ""
     }
 
     let userId = localStorage.getItem('userId');
