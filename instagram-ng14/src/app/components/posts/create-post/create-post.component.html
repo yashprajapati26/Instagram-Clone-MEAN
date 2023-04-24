@@ -10,8 +10,7 @@
   
             <img [hidden]="isHidden" (click)="file_input.click()" id="defaultimg" src="../../../../assets/image.png" class="opacity-25 h-20 mx-auto">
             <!-- <img *ngIf" src="../../../../assets/image.png" class="opacity-25 h-20 mx-auto"> -->
-            <div *ngFor="let url of imageUrls; let i=index" class="">
-              
+            <div *ngFor="let url of imageUrls; let i=index" class="">  
               <img [src]="url" class="border border-2	h-20 mx-auto">
             </div>
             

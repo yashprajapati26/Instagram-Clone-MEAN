@@ -23,28 +23,20 @@ export class OtpVerifyComponent {
 
   submit(data: any) {
     this.submitted = true
-    console.log(data)
-
-
     let mydata = {
       'otp': data['otp'],
       'userId': localStorage.getItem('userId')
     }
-
     if (this.otpForm.valid) {
       this.ngxLoader.start();
-
       this.authservice.doOtpVerify(mydata).subscribe((res: any) => {
         console.log(res)
         this.router.navigate(['login'])
-      },
-        (err: any) => {
+      },(err: any) => {
           console.log(err)
           this.msg = err.error.msg
-        })
+      })
     }
     this.ngxLoader.stop();
-
   }
-
 }

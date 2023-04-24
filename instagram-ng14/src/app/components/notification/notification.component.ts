@@ -3,7 +3,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { environment } from 'src/environments/environment.development';
 import { AuthService } from '../auth/auth.service';
-import { CommanService } from '../comman/comman.service';
+import { CommanService } from '../shared/comman.service';
 import { NotificationService } from './notification.service';
 @Component({
   selector: 'app-notification',

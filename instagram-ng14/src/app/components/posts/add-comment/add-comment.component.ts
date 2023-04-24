@@ -109,13 +109,14 @@ export class AddCommentComponent {
   }
 
   openReplySection(cmtId: any) {
+    console.log("cmt Id:",cmtId)
     let replyBox = document.getElementById("cmt-" + cmtId)
     if (replyBox?.hasAttribute("hidden")) {
-      console.log(1)
+      // console.log(1)
       replyBox?.removeAttribute("hidden")
     }
     else {
-      console.log(2)
+      // console.log(2)
       replyBox?.setAttribute("hidden", "true")
     }
     // this.fatchReplies(7)

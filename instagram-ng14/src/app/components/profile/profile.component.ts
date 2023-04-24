@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'src/environments/environment.development';
 import { ProfileService } from './profile.service';
 import { PostService } from '../posts/post.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-profile',
@@ -24,7 +25,8 @@ export class ProfileComponent {
   self: boolean = true;
 
 
-  constructor(private postService:PostService ,private router: Router, private activateRoute: ActivatedRoute, private profileservice: ProfileService) {
+  constructor(private postService: PostService, private toastr: ToastrService,
+    private router: Router, private activateRoute: ActivatedRoute, private profileservice: ProfileService) {
     // let userID = this.activateRoute.snapshot.params['id'];
     let userID = localStorage.getItem('userId')
     this.fatchUserProfileDetails(userID);
@@ -95,11 +97,12 @@ export class ProfileComponent {
   }
 
   deletePost(postId: any) {
-    console.log("delete...",postId)
-    this.postService.deletePost(postId).subscribe((res:any) => {
+    console.log("delete...", postId)
+    this.postService.deletePost(postId).subscribe((res: any) => {
       this.fatchUserPost(this.userId)
       this.router.navigate(['profile'])
     })
+    this.toastr.success('Post Deleted', 'Deleted!');
   }
 
 }

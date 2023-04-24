@@ -3,14 +3,16 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgImageSliderModule } from 'ng-image-slider';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { ToastrModule } from 'ngx-toastr';
+import { NgxUiLoaderConfig, NgxUiLoaderModule, PB_DIRECTION, POSITION, SPINNER } from "ngx-ui-loader";
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { OtpVerifyComponent } from './components/auth/otp-verify/otp-verify.component';
 import { SignupComponent } from './components/auth/signup/signup.component';
-import { FeedsComponent } from './components/comman/feeds/feeds.component';
-import { HeaderComponent } from './components/comman/header/header.component';
 import { FeedlistComponent } from './components/feedlist/feedlist.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { NotificationComponent } from './components/notification/notification.component';
@@ -18,11 +20,9 @@ import { AddCommentComponent } from './components/posts/add-comment/add-comment.
 import { CreatePostComponent } from './components/posts/create-post/create-post.component';
 import { EditProfileComponent } from './components/profile/edit-profile/edit-profile.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { FeedsComponent } from './components/shared/feeds/feeds.component';
+import { HeaderComponent } from './components/shared/header/header.component';
 import { InterceptorService } from './interceptor/interceptor.service';
-import { NgxUiLoaderConfig, NgxUiLoaderModule, PB_DIRECTION, POSITION, SPINNER } from "ngx-ui-loader";
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { ToastrModule } from 'ngx-toastr';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsPosition: POSITION.bottomCenter,

@@ -39,7 +39,7 @@ const findOne = async (data) => {
       },
       {
         model: CmtPost,
-        attributes: ["id", "postId", "cmtBy", "comment", "parentId"],
+        attributes: ["id", "postId", "cmtBy", "comment", "parentId","createdAt"],
         include: { model: Users, as: "byUser", attributes: ["id", "username"] },
       },
     ],
@@ -93,7 +93,7 @@ const findAll = async (condition, limit, offset) => {
         },
         {
           model: CmtPost,
-          attributes: ["id", "postId", "cmtBy", "comment", "parentId"],
+          attributes: ["id", "postId", "cmtBy", "comment", "parentId","createdAt"],
           include: {
             model: Users,
             as: "byUser",

@@ -12,6 +12,7 @@ const cmtPostController = require("../controllers/cmtPostController");
 const userFollowerController = require("../controllers/userFollowerController");
 const notificationController = require("../controllers/notificationController");
 const { passport } = require("../controllers/oauthController");
+const {verifyToken} = require("../middleware/auth.middleware");
 // local storage for save post images
 var storage = multer.diskStorage({
   destination: function (req, file, callback) {
@@ -34,10 +35,9 @@ var storage2 = multer.diskStorage({
 var upload = multer({ storage: storage });
 var profile_upload = multer({ storage: storage2 });
 
-
-router.get("",async(req,res)=>{
-  return res.send("welcome to instagram backend")
-})
+router.get("", async (req, res) => {
+  return res.send("welcome to instagram backend");
+});
 
 // auth routes
 router.post(
@@ -51,12 +51,12 @@ router.post(
   authController.login
 );
 router.post("/otpverify", authController.otpverify);
-router.get("/userdetails/:userId", authController.userdetails);
-router.get("/getallusers", authController.getAllUsers);
-router.get("/searchuser/:searchKey", authController.searchUser);
+router.get("/userdetails/:userId", verifyToken, authController.userdetails);
+router.get("/getallusers", verifyToken, authController.getAllUsers);
+router.get("/searchuser/:searchKey",verifyToken, authController.searchUser);
 
 // profile routes
-router.get("/getuserprofile/:userId", userProfileController.getUserProfileInfo);
+router.get("/getuserprofile/:userId",verifyToken, userProfileController.getUserProfileInfo);
 router.post(
   "/createprofile",
   profile_upload.single("file"),
@@ -64,19 +64,19 @@ router.post(
 );
 
 //post routes
-router.post("/createpost", upload.array("files", 4), postController.createPost);
-router.get("/getuserpost/:userId", postController.getAllPosts);
-router.delete("/deletepost/:postId", postController.deletePost);
+router.post("/createpost",verifyToken, upload.array("files", 4), postController.createPost);
+router.get("/getuserpost/:userId",verifyToken, postController.getAllPosts);
+router.delete("/deletepost/:postId",verifyToken, postController.deletePost);
 //feed
-router.post("/getfeeds", postController.getFeeds);
-router.get("/getsinglepost/:postId", postController.getSinglePost);
+router.post("/getfeeds", verifyToken,postController.getFeeds);
+router.get("/getsinglepost/:postId", verifyToken,postController.getSinglePost);
 
 //liked-disliked post routes
 router.get(
-  "/like-dislike-post/:postId/:userId",
+  "/like-dislike-post/:postId/:userId",verifyToken,
   likedPostController.LikeDislikePost
 );
-router.get("/getliked/:userId", likedPostController.getAllLiked);
+router.get("/getliked/:userId", verifyToken,likedPostController.getAllLiked);
 
 // comment routes
 router.post(
@@ -86,9 +86,9 @@ router.post(
 );
 
 // userFollowers routes
-router.post("/do-undo-following", userFollowerController.do_undo_Following);
-router.get("/getfollowers/:userId", userFollowerController.getAllFollowers);
-router.get("/getfollowing/:userId", userFollowerController.getAllFollowing);
+router.post("/do-undo-following", verifyToken,userFollowerController.do_undo_Following);
+router.get("/getfollowers/:userId",verifyToken, userFollowerController.getAllFollowers);
+router.get("/getfollowing/:userId", verifyToken,userFollowerController.getAllFollowing);
 router.post(
   "/updateFollowingRequest",
   userFollowerController.updateFollowingRequest
@@ -112,12 +112,11 @@ router.get(
   "/getlikedNotification/:userId",
   notificationController.getLikedNotification
 );
-router.get("/readNotification/:userId", notificationController.readNotification);
+router.get(
+  "/readNotification/:userId",
+  notificationController.readNotification
+);
 router.get("/newNotification/:userId", notificationController.newNotification);
-
-
-
-
 
 // Oauth routes
 router.get(
@@ -127,7 +126,9 @@ router.get(
 
 router.get(
   "/auth/github/callback",
-  passport.authenticate("github", { failureRedirect: "http://localhost:4200/login" }),
+  passport.authenticate("github", {
+    failureRedirect: "http://localhost:4200/login",
+  }),
   function (req, res) {
     var headers = {};
     // IE8 does not allow domains to be specified, just the *
@@ -135,9 +136,10 @@ router.get(
     headers["Access-Control-Allow-Origin"] = "*";
     headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, DELETE, OPTIONS";
     headers["Access-Control-Allow-Credentials"] = false;
-    headers["Access-Control-Max-Age"] = '86400'; // 24 hours
-    headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept";
-    console.log("--------> log in via github")
+    headers["Access-Control-Max-Age"] = "86400"; // 24 hours
+    headers["Access-Control-Allow-Headers"] =
+      "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept";
+    console.log("--------> log in via github");
     // Successful authentication, redirect home.
     res.redirect("http://localhost:4200");
   }

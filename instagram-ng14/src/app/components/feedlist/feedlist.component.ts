@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { environment } from 'src/environments/environment.development';
-import { CommanService } from '../comman/comman.service';
+import { CommanService } from '../shared/comman.service';
 import { FeedlistService } from './feedlist.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -74,8 +74,10 @@ export class FeedlistComponent {
       console.log(res['allusers'])
       this.allUsers = res['allusers'].map((user: any) => {
         user.userFollowers.find((element: any) => {
+          console.log("ele : ",element)
           if (element.followerId == this.user.id) {
-            user.isAlreadyFollowed = true
+            if(element.status == 'Accept') user.isAlreadyFollowed = 'follow';
+            else user.isAlreadyFollowed = 'pending';
           }
         })
         return user
@@ -112,8 +114,8 @@ export class FeedlistComponent {
 
   doUndoFollowing(userId: any, event: any) {
     console.log(event.target.textContent)
-    if (event.target.textContent == 'follow') {
-      event.target.textContent = 'unfollow';
+    if (event.target.textContent === 'follow') {
+      event.target.textContent = 'requested';
       event.target.style.backgroundColor = 'rgb(75 85 99)';
       console.log("1")
       this.toastr.success('Sent Follow request to user', 'Success!');

@@ -23,7 +23,7 @@ export class EditProfileComponent {
   defaultImg = "src/assets/Logo-facebook.png";
   imageUrl = environment.apiURL;
   profile_img: any = undefined;
-
+  newimg:any;
   constructor(
     private profileservice: ProfileService,
     private router: Router,
@@ -87,6 +87,12 @@ export class EditProfileComponent {
     this.file = event.target.files[0];
     //this.product.photo = event.target.files[0]['name'];
     console.log("#####", this.file)
+    const reader = new FileReader();
+      reader.readAsDataURL(this.file);
+      console.log(reader.result as string)
+      reader.onload = () => {
+        this.newimg = reader.result as string;
+      };
   }
 
   createProfile(data: any) {

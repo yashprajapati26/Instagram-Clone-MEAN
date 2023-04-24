@@ -29,8 +29,15 @@ const findOne = async (data) => {
       },
       {
         model: cmtPost,
-		as: "parent_cmt",
-        attributes: ["id", "postId", "cmtBy", "parentId"],
+        as: "parent_cmt",
+        attributes: [
+          "id",
+          "postId",
+          "cmtBy",
+          "comment",
+          "parentId",
+          "createdAt",
+        ],
       },
     ],
   });
@@ -76,7 +83,14 @@ const findAll = async (condition) => {
         {
           model: cmtPost,
           as: "parent_cmt",
-          attributes: ["id", "postId", "cmtBy", "comment", "parentId"],
+          attributes: [
+            "id",
+            "postId",
+            "cmtBy",
+            "comment",
+            "parentId",
+            "createdAt",
+          ],
         },
       ],
     })

@@ -16,7 +16,7 @@ export class LoginComponent {
     password: new FormControl("Yash@123", Validators.required),
   })
   submitted: boolean = false
-  msg:any
+  msg: any
 
   constructor(private router: Router, private authservice: AuthService, private ngxLoader: NgxUiLoaderService) { }
 
@@ -26,7 +26,6 @@ export class LoginComponent {
     console.log("login with github")
     this.authservice.doLoginViaGithub().subscribe((res: any) => {
       console.log("------github login----------", res);
-
     })
   }
 
@@ -45,7 +44,7 @@ export class LoginComponent {
           }
           else { this.router.navigate(['profile']); }
         }
-      },(err:any)=>{
+      }, (err: any) => {
         this.msg = err.error.msg
       })
     }

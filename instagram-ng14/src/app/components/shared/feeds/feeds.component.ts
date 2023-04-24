@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment.development';
 import { FeedlistService } from '../../feedlist/feedlist.service';
 import { PostService } from '../../posts/post.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-feeds',
@@ -21,8 +22,9 @@ export class FeedsComponent implements OnChanges {
   @Input('user') user: any;
 
   imageUrl = environment.apiURL;
-  sliderImageWidth: Number = 545;
-  sliderImageHeight: Number = 425;
+  sliderImageWidth: Number = 585;
+  sliderImageHeight: Number = 435;
+  userId :any;
 
   cmtForm = new FormGroup({
     postId: new FormControl('', Validators.required),
@@ -35,13 +37,14 @@ export class FeedsComponent implements OnChanges {
   constructor(
     private router: Router,
     private feedlistservice: FeedlistService,
-    private postservice: PostService
+    private postservice: PostService,
+    private authservice:AuthService
   ) {
     console.log("feeds : ", this.feeds)
+    this.userId = this.authservice.getUserId();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // throw new Error('Method not implemented.');
     if (changes['feeds']) {
       this.checkLiked();
       this.SetSliderImages();
@@ -49,7 +52,6 @@ export class FeedsComponent implements OnChanges {
   }
 
   SetSliderImages() {
-    // {{feed.postImages[0].imagePath | json}}
     this.feeds = this.feeds?.map((feed: any) => {
       feed.imageObject = [];
       feed.postImages.map((obj: any) => {
@@ -63,11 +65,9 @@ export class FeedsComponent implements OnChanges {
 
   checkLiked() {
     console.log(this.user)
-
     this.feeds = this.feeds?.map((element: any) => {
       element.likedPosts.find((ele: any) => {
-        // console.log(ele , "ele")
-        if (ele.likedBy == this.user['id']) {
+        if (ele.likedBy == this.userId) {
           element.isAlreadyLiked = true;
         }
       });
@@ -135,7 +135,5 @@ export class FeedsComponent implements OnChanges {
       console.log(2);
       replyBox?.setAttribute('hidden', 'true');
     }
-
-    console.log('reply on comment ');
   }
 }

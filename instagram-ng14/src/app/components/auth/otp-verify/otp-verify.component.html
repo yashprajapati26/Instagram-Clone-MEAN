@@ -1,21 +1,46 @@
 <div class="h-screen bg-gray-200 flex flex-col justify-center items-center">
-  <div *ngIf="msg" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 text-xs rounded relative my-2" role="alert">
+  <div
+    *ngIf="msg"
+    class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 text-xs rounded relative my-2"
+    role="alert"
+  >
     <strong class="font-bold mr-1">Error!</strong>
-    <span class="block sm:inline">{{msg}}</span>
+    <span class="block sm:inline">{{ msg }}</span>
   </div>
-    <div class="bg-white mb-3 border border-gray-300 w-80 pt-8 pb-4 flex flex-col items-center">
-       <h5 class="font-bold">OTP VERIFICATION</h5>
-       <img class="img-responsive" src="../../../../assets/otp.png">
-       <p class="font-bold">Just one more step</p>
-       <p class="text-xs">sent 4 digit otp on your register mobile number</p>
-      
-        <form [formGroup]="otpForm" (ngSubmit)="submit(otpForm.value)" class="w-64 flex flex-col gap-1 mt-4" method="post">
-            <input type="text" class="w-full rounded border bg-gray-100 p-2 text-xs mb-1" placeholder="Enter otp" formControlName="otp">
-            <span class="mr-2 text-xs text-red-500" *ngIf="submitted && otpForm.controls.otp?.errors?.['required']">*This Field is required</span>
-            <button type="submit" class="mt-2 text-sm text-center bg-blue-600 text-white py-1 rounded font-medium">Submit</button>
-        </form>
-    </div>
-    <div class="m-3 text-sm">
-       <a class="text-blue-600"> Resend OTP?</a>
-    </div>
+  <div
+    class="bg-white mb-3 border border-gray-300 w-80 pt-8 pb-4 flex flex-col items-center"
+  >
+    <h5 class="font-bold">OTP VERIFICATION</h5>
+    <img class="img-responsive" src="../../../../assets/otp.png" />
+    <p class="font-bold">Just one more step</p>
+    <p class="text-xs">sent 4 digit otp on your register mobile number</p>
+
+    <form
+      [formGroup]="otpForm"
+      (ngSubmit)="submit(otpForm.value)"
+      class="w-64 flex flex-col gap-1 mt-4"
+      method="post"
+    >
+      <input
+        type="text"
+        class="w-full rounded border bg-gray-100 p-2 text-xs mb-1"
+        placeholder="Enter otp"
+        formControlName="otp"
+      />
+      <span
+        class="mr-2 text-xs text-red-500"
+        *ngIf="submitted && otpForm.controls.otp?.errors?.['required']"
+        >*This Field is required</span
+      >
+      <button
+        type="submit"
+        class="mt-2 text-sm text-center bg-blue-600 text-white py-1 rounded font-medium"
+      >
+        Submit
+      </button>
+    </form>
+  </div>
+  <div class="m-3 text-sm">
+    <a class="text-blue-600"> Resend OTP?</a>
+  </div>
 </div>
