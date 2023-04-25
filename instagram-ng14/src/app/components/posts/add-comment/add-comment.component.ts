@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment.development';
 import { AuthService } from '../../auth/auth.service';
+import { FeedlistService } from '../../feedlist/feedlist.service';
 import { PostService } from '../post.service';
 
 @Component({
@@ -14,7 +15,6 @@ export class AddCommentComponent {
   sliderImageWidth: Number = 545;
   sliderImageHeight: Number = 425;
 
-  html = ""
   post: any
   imageUrl = environment.apiURL
   loggedUser: any | undefined;
@@ -22,6 +22,8 @@ export class AddCommentComponent {
   replies: any;
   postId: any;
   comments: any;
+  userId = localStorage.getItem("userId")
+
   cmtForm = new FormGroup({
     postId: new FormControl("", Validators.required),
     cmtBy: new FormControl("", Validators.required),
@@ -31,7 +33,7 @@ export class AddCommentComponent {
   })
   nestedCmts: any[] = []
   new: any;
-  constructor(private postservice: PostService, private activateRoute: ActivatedRoute, private authservice: AuthService) { }
+  constructor(private postservice: PostService, private activateRoute: ActivatedRoute, private authservice: AuthService, private feedlistservice: FeedlistService) { }
 
   ngOnInit() {
     this.postId = this.activateRoute.snapshot.params['id']
@@ -71,14 +73,15 @@ export class AddCommentComponent {
       });
       console.log("new : ", this.comments)
       this.SetSliderImages();
+      this.checkLiked();
+
     })
   }
 
 
 
   fatchLoginUserDetails(): void {
-    let userId = localStorage.getItem("userId")
-    this.authservice.getUserDetails(userId).subscribe((res: any) => {
+    this.authservice.getUserDetails(this.userId).subscribe((res: any) => {
       this.loggedUser = res['user']
     })
   }
@@ -109,25 +112,70 @@ export class AddCommentComponent {
   }
 
   openReplySection(cmtId: any) {
-    console.log("cmt Id:",cmtId)
+    console.log("cmt Id:", cmtId)
     let replyBox = document.getElementById("cmt-" + cmtId)
     if (replyBox?.hasAttribute("hidden")) {
-      // console.log(1)
       replyBox?.removeAttribute("hidden")
     }
     else {
-      // console.log(2)
       replyBox?.setAttribute("hidden", "true")
     }
-    // this.fatchReplies(7)
   }
 
-  // fatchReplies(cmtId: any) {
-  //   let cmt_id = cmtId
-  //   let replies = this.post.cmtPosts.filter((comment: any) => comment.parentId === cmt_id).sort((a: any, b: any) =>
-  //     new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-  //   );
-  // }
+  checkLiked() {
+    console.log(this.post)
+    this.post.likedPosts.filter((ele: any) => {
+        if (ele.likedBy == this.userId) {
+          this.post.isAlreadyLiked = true;
+        }
+        return ele
+      });
+    console.log(this.post)
+  }
+
+  likedPost(event: any) {
+    let Id = event.target.id || event.srcElement.id || event.currentTarget.id;
+    let btn = document.getElementById(Id);
+    let count = document.getElementById("like-" + Id.split('-')[1]);
+    console.log("like : ", count?.innerText)
+    let splitArray = Id.split('-');
+    let postId = splitArray[1];
+
+    if (btn?.getAttribute('fill') != 'red') {
+      btn?.setAttribute('fill', 'red');
+      let no = null
+      no = count?.innerText
+      if (no) no = (parseInt(no) + 1).toString()
+      if (count) count.innerText = no ? no : ""
+    } else {
+      btn?.setAttribute('fill', 'none');
+      let no = null
+      no = count?.innerText
+      if (no) no = (parseInt(no) - 1).toString()
+      if (count) count.innerText = no ? no : ""
+    }
+
+    let userId = localStorage.getItem('userId');
+    let data = { userId: userId, postId: postId };
+
+    this.feedlistservice.likedDislikePost(data).subscribe((res: any) => {
+      console.log(res);
+    });
+  }
+
+
+  showReplies(id:number,event:any){
+    let reply = document.getElementById('replies-' + id);
+    if (reply?.hasAttribute("hidden")) {
+      reply?.removeAttribute("hidden")
+      event.target.textContent = "hide replies"
+    }
+    else {
+      reply?.setAttribute("hidden", "true")
+      event.target.textContent = "show replies"
+    }
+  }
+
 
 
 }

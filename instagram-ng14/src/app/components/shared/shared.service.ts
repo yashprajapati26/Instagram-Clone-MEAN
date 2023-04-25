@@ -11,6 +11,8 @@ export class CommanService {
   constructor(private http:HttpClient) { }
 
   public searchSubject = new Subject<number>();
+  public allusersSubject = new Subject<number>();
+
   public NoOfNotification = new Subject<number>();
 
   sendSearchKey(data: any) {
@@ -19,6 +21,14 @@ export class CommanService {
 
   reciveSearchKey(): Observable<number> {
     return this.searchSubject.asObservable();
+  }
+
+  sendAllUsers(data: any) {
+    this.allusersSubject.next(data)
+  }
+
+  reciveAllUsers(): Observable<number> {
+    return this.allusersSubject.asObservable();
   }
 
   sendNotificationNo(data:any){

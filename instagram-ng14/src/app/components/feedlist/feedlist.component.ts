@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { environment } from 'src/environments/environment.development';
-import { CommanService } from '../shared/comman.service';
+import { CommanService } from '../shared/shared.service';
 import { FeedlistService } from './feedlist.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -32,6 +32,7 @@ export class FeedlistComponent {
     this.fatchUserDetails();
     this.fatchFeed();
     this.fatchAllUsers();
+    this.reciveAllUsers();
 
     // this.allUsers = this.allUsers.filter((item:any) => item.id !== this.user.id);
 
@@ -90,6 +91,12 @@ export class FeedlistComponent {
       })
       this.ngxLoader.stop();
 
+    });
+  }
+
+  reciveAllUsers(){
+    this.commanservice.reciveAllUsers().subscribe((res: any) => {
+      this.allUsers = res;
     });
   }
 

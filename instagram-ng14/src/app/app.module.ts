@@ -31,8 +31,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   // fgsType: SPINNER.chasingDots, // foreground spinner type
   pbDirection: PB_DIRECTION.leftToRight, // progress bar direction
   pbThickness: 5, // progress bar thickness
-  // pbColor: "red",
-  bgsColor: "red",
+  pbColor: "#DD2A7B",
+  fgsColor:"#DD2A7B"
 
 };
 @NgModule({

@@ -9,7 +9,8 @@
     <h3 *ngIf="!object.read">New Notifications</h3>
     <div class="flex justify-between items-center">
       <div class="flex items-center">
-        <img class="rounded-full w-8 h-8 flex mr-3" src="{{imageUrl}}/{{object.userFollower.user.userProfile.profile_img}}" />
+        <img *ngIf="object.userFollower.user.userProfile.profile_img; else elseBlock" class="rounded-full w-8 h-8 flex mr-3" src="{{imageUrl}}/{{object.userFollower.user.userProfile.profile_img}}" />
+        <ng-template #elseBlock><img class="rounded-full w-8 h-8 flex mr-3" src="../../../../assets/default.png" /></ng-template>
         <p *ngIf="object.userFollower.status == 'Pending'">
           <span class="font-bold">
             {{ object.userFollower.user.username }}

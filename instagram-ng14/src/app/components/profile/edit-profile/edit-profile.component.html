@@ -64,7 +64,7 @@
   <div class="flex items-center justify-center mb-1">
     <div (click)="file_input.click()" class="relative w-24 h-24 rounded-full overflow-hidden profile_img">
       <img *ngIf="profile_img" (click)="file_input.click()" class="absolute h-full w-full object-cover"
-        src="{{ imageUrl }}/{{ profile_img }}" alt="profile_img" />
+        [src]="profileImageUrl" alt="profile_img" />
       <img *ngIf="!profile_img" (click)="file_input.click()" class="absolute
       h-full w-full object-cover" src="../../../../assets/default.png" alt="default" />
       <input (change)="selectFiles($event)" type="file" name="profile" #file_input hidden />

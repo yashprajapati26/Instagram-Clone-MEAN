@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { AuthService } from '../../auth/auth.service';
-import { CommanService } from '../comman.service';
+import { CommanService } from '../shared.service';
 
 @Component({
   selector: 'app-header',

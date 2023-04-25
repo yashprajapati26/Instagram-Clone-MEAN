@@ -23,7 +23,7 @@ export class EditProfileComponent {
   defaultImg = "src/assets/Logo-facebook.png";
   imageUrl = environment.apiURL;
   profile_img: any = undefined;
-  newimg:any;
+  profileImageUrl:any;
   constructor(
     private profileservice: ProfileService,
     private router: Router,
@@ -70,6 +70,8 @@ export class EditProfileComponent {
       console.log(res)
       this.userProfile = res['userProfile']
       this.profile_img = this.userProfile.profile_img;
+      this.profileImageUrl = this.imageUrl+"/" + this.profile_img
+      console.log("new img: " + this.profileImageUrl)
       this.profileForm.patchValue({
         bio: this.userProfile?.bio,
         dob: this.userProfile?.dob,
@@ -91,7 +93,7 @@ export class EditProfileComponent {
       reader.readAsDataURL(this.file);
       console.log(reader.result as string)
       reader.onload = () => {
-        this.newimg = reader.result as string;
+        this.profileImageUrl = reader.result as string;
       };
   }
 

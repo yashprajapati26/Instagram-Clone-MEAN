@@ -6,8 +6,8 @@
   <div class="fixed left-0 top-0 right-0 bottom-0 pt-24 flex justify-center items-start">
     <div class="block rounded-lg dark:bg-neutral-700 w-96 bg-white border bottom-4">
       <div class="border-b-2 border-neutral-100 px-6 py-3 dark:border-neutral-600 dark:text-neutral-50 bg-slate-200">
-        Search Result for {{searchKey|json}}
-      </div> 
+        <span>Search Result for {{searchKey|json}}</span><span class="text-red-600 float-right cursor-pointer" (click)="closeSearchBox()">X</span>
+      </div>
       <div class="p-6">
         <ul *ngIf="searchUsers; else noRecord">
           <li *ngFor="let user of searchUsers">
@@ -20,11 +20,17 @@
               <a>
                 <p class="font-bold text-sm">{{ user.username }}</p>
               </a>
-              <button *ngIf="!user.isAlreadyFollowed; else unfollow" (click)="doUndoFollowing(user.id, $event)" class="ml-auto text-xs font-bold text-white bg-blue-600  py-1 px-auto w-16 rounded">follow</button>
-              <ng-template #unfollow>
-                <button (click)="doUndoFollowing(user.id, $event)" class="ml-auto text-xs font-bold  text-white bg-gray-600  py-1 px-auto w-16 rounded">unfollow 
-                </button>
-            </ng-template>
+
+              <button *ngIf="user.isAlreadyFollowed == 'follow'" (click)="doUndoFollowing(user.id, $event)"
+                id="user-{{ user.id }}"
+                class="ml-auto text-xs font-bold text-white bg-gray-600  py-1 px-auto w-16 rounded">unfollow</button>
+              <button *ngIf="user.isAlreadyFollowed == 'pending'" (click)="doUndoFollowing(user.id, $event)"
+                id="user-{{ user.id }}"
+                class="ml-auto text-xs font-bold text-white bg-gray-600  py-1 px-auto w-16 rounded">requested</button>
+              <button *ngIf="!user.isAlreadyFollowed" (click)="doUndoFollowing(user.id, $event)" id="user-{{ user.id }}"
+                class="ml-auto text-xs font-bold text-white bg-blue-600  py-1 px-auto w-16 rounded">follow</button>
+
+
             </div>
           </li>
         </ul>
@@ -32,7 +38,7 @@
           <p>No Records Found</p>
         </ng-template>
       </div>
-      
+
     </div>
   </div>
 </div>
