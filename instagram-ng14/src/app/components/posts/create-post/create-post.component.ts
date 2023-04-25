@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PostService } from '../post.service';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-create-post',
@@ -17,16 +18,20 @@ export class CreatePostComponent {
   filesToUpload: Array<File> = [];
   msg: any;
   userId: any = localStorage.getItem('userId')
-  imageUrls:Array<string> = []
-  isHidden = false
-  constructor(private postservice: PostService, private router : Router) { }
+  imageUrls: Array<string> = []
+  isHidden:boolean = false
+  sliderImageWidth: Number = 585;
+  sliderImageHeight: Number = 435;
+  imageObject: any = [];
+  imageUrl = environment.apiURL;
 
+  constructor(private postservice: PostService, private router: Router) { }
+
+  ngOnInit() { }
 
   createPost(data: any) {
-    console.log(data)
     const formData: any = new FormData();
     const files: Array<File> = this.filesToUpload;
-    console.log(files);
     formData.append("content", data['content'])
     formData.append("userId", this.userId)
 
@@ -35,7 +40,6 @@ export class CreatePostComponent {
     }
     if (this.postForm.valid) {
       this.postservice.createPost(formData).subscribe((res: any) => {
-        console.log(res)
         this.msg = res['msg']
         this.router.navigate(['feed']);
       },
@@ -46,18 +50,15 @@ export class CreatePostComponent {
   }
 
   selectFiles(event: any) {
-    console.log(event)
     this.filesToUpload = <Array<File>>event.target.files;
     for (let i = 0; i < this.filesToUpload.length; i++) {
       const reader = new FileReader();
       reader.readAsDataURL(this.filesToUpload[i]);
-      console.log(reader.result as string)
-      reader.onload = () => {
+      reader.onload = async () => {
         this.imageUrls[i] = reader.result as string;
       };
     }
-    this.isHidden = true
-    console.log("#####", this.filesToUpload)
   }
+
 
 }

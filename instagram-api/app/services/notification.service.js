@@ -94,6 +94,7 @@ const findAndCountAll = async (attributes, condition, limit, offset, sorting) =>
 
 Notification.belongsTo(likedPost, {
   foreignKey: "notificationId",
+  onDelete: 'cascade'
 });
 Notification.belongsTo(CmtPost, {
   foreignKey: "notificationId",

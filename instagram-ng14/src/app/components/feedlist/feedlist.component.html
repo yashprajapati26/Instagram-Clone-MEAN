@@ -1,50 +1,71 @@
 <app-header></app-header>
 
 <div class="flex gap-4 mb-6">
-  <div class="min-h-screen w-full lg:w-4/5" infiniteScroll [infiniteScrollDistance]="0.5"
-    (scrolled)="fatchFeed()">
-    <!-- post -->
-    <app-feeds [feeds]="feeds" [user]="user"> </app-feeds>
-  </div>
+  <div class="min-h-screen w-full lg:w-4/5" infiniteScroll [infiniteScrollDistance]="0.5" (scrolled)="fatchFeed()">
+    <div class="border border-b-gray-400  bg-white">
+      <div class="flex hide-scrollbar overflow-x-auto p-1">
+        <div class="">
+          <img class="object-fill h-20 w-20 rounded-full border border-gray-500 p-0.5 mx-1 opacity-50"
+            src="{{ imageUrl }}/{{ user?.userProfile?.profile_img }}" />
+          <span class="text-xs mx-4">Your story</span>
+        </div>
+        <div *ngFor="let storyUser of allUsers" class="text-center">
+          <img *ngIf="storyUser?.userProfile?.profile_img; else elseBlock"
+            class="object-fill h-20 w-20 rounded-full border border-red-500 p-0.5 mx-1"
+            src="{{ imageUrl }}/{{ storyUser?.userProfile?.profile_img }}" />
+          <span class="text-xs">{{storyUser.username}}</span>
+          <ng-template #elseBlock><img class="h-20 w-20 rounded-full border border-red-500 p-0.5 mx-1"
+              src="../../../../assets/default.png" /></ng-template>
+        </div>
+      
 
-  <!-- username -->
-  <div class="hidden lg:block w-1/5 fixed right-0">
-    <div class="flex w-96 p-4">
-      <div class="rounded-full p-1 flex items-center">
-        <img *ngIf="user?.userProfile?.profile_img; else elseBlock"
-          class="h-16 w-16 rounded-full border border-gray-100 shadow-sm"
-          src="{{ imageUrl }}/{{ user?.userProfile?.profile_img }}" alt="user image" />
-        <ng-template #elseBlock><img class="h-8 w-8 rounded-full" src="../../../../assets/default.png" /></ng-template>
-      </div>
-      <div class="m-3">
-        <p *ngIf="user" class="font-bold text-sm">{{ user.username }}</p>
-        <p *ngIf="user" class="text-sm">
-          {{ user.firstname }} {{ user.lastname }}
-        </p>
-      </div>
-    </div>
-    <hr />
-    <p class="text-sm font-bold mx-3 p-3">Suggetion for you</p>
-    <hr />
-
-    <div *ngFor="let singleuser of allUsers" class="mx-2 flex flex-row items-center align-items justify-between px-3 mt-2">
-      <div class="flex items-center justify-between">
-        <img *ngIf="singleuser?.userProfile?.profile_img; else elseBlock2" class="rounded-full w-8 h-7 flex mr-3"
-          src="{{ imageUrl }}/{{ singleuser?.userProfile?.profile_img }}" />
-        <ng-template #elseBlock2><img class="rounded-full w-8 h-7 flex mr-3" src="../../../../assets/default.png" />
-        </ng-template>
-        <a>
-          <p class="font-bold text-sm">{{ singleuser.username }}</p>
-        </a>
-      </div>
-      <button *ngIf="singleuser.isAlreadyFollowed == 'follow'" (click)="doUndoFollowing(singleuser.id, $event)"
-        id="user-{{ singleuser.id }}" class="text-xs font-bold text-white bg-gray-600 py-1 px-auto w-16 rounded">unfollow</button>
-      <button *ngIf="singleuser.isAlreadyFollowed == 'pending'" (click)="doUndoFollowing(singleuser.id, $event)"
-        id="user-{{ singleuser.id }}" class="text-xs font-bold text-white bg-gray-600 py-1 px-auto w-16 rounded">requested</button>
-        
-      <button *ngIf="!singleuser.isAlreadyFollowed" (click)="doUndoFollowing(singleuser.id, $event)"
-        id="user-{{ singleuser.id }}" class="text-xs font-bold text-white bg-blue-600 py-1 px-auto w-16 rounded">follow</button>
     </div>
   </div>
+  <!-- post -->
+  <app-feeds [feeds]="feeds" [user]="user"> </app-feeds>
 </div>
 
+<!-- username -->
+<div class="hidden lg:block w-1/5 fixed right-0">
+  <div class="flex w-96 p-4 items-center">
+    <div class="rounded-full p-1 flex items-center">
+      <img *ngIf="user?.userProfile?.profile_img; else elseBlock"
+        class="h-16 w-16 rounded-full border border-gray-100 shadow-sm"
+        src="{{ imageUrl }}/{{ user?.userProfile?.profile_img }}" alt="user image" />
+      <ng-template #elseBlock><img class="h-8 w-8 rounded-full" src="../../../../assets/default.png" />
+      </ng-template>
+    </div>
+    <div class="m-3">
+      <p *ngIf="user" class="font-bold text-sm">{{ user.username }}</p>
+      <p *ngIf="user" class="text-sm">
+        {{ user.firstname }} {{ user.lastname }}
+      </p>
+    </div>
+  </div>
+  <hr />
+  <p class="text-sm font-bold mx-3 p-3">Suggetion for you</p>
+  <hr />
+
+  <div *ngFor="let singleuser of allUsers"
+    class="mx-2 flex flex-row items-center align-items justify-between px-3 mt-2">
+    <div class="flex items-center justify-between">
+      <img *ngIf="singleuser?.userProfile?.profile_img; else elseBlock2" class="rounded-full w-8 h-7 flex mr-3"
+        src="{{ imageUrl }}/{{ singleuser?.userProfile?.profile_img }}" />
+      <ng-template #elseBlock2><img class="rounded-full w-8 h-7 flex mr-3" src="../../../../assets/default.png" />
+      </ng-template>
+      <a>
+        <a class="font-bold text-sm" routerLink="/userprofile/{{ singleuser.username }}/{{
+              singleuser.id
+            }}">{{ singleuser.username }}</a>
+      </a>
+    </div>
+    <button *ngIf="singleuser.isAlreadyFollowed == 'follow'" (click)="doUndoFollowing(singleuser.id, $event)"
+      id="user-{{ singleuser.id }}" class="text-xs font-bold text-white bg-gray-600 py-1 px-auto w-16 rounded">unfollow</button>
+    <button *ngIf="singleuser.isAlreadyFollowed == 'pending'" (click)="doUndoFollowing(singleuser.id, $event)"
+      id="user-{{ singleuser.id }}" class="text-xs font-bold text-white bg-gray-600 py-1 px-auto w-16 rounded">requested</button>
+
+    <button *ngIf="!singleuser.isAlreadyFollowed" (click)="doUndoFollowing(singleuser.id, $event)"
+      id="user-{{ singleuser.id }}" class="text-xs font-bold text-white bg-blue-600 py-1 px-auto w-16 rounded">follow</button>
+  </div>
+</div>
+</div>

@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 import { ProfileService } from '../profile.service';
 import { environment } from 'src/environments/environment.development';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-edit-profile',
@@ -29,7 +30,8 @@ export class EditProfileComponent {
     private router: Router,
     private formBuilder: FormBuilder,
     private activateRoute: ActivatedRoute,
-    private authservice: AuthService
+    private authservice: AuthService,
+    private ngxLoader: NgxUiLoaderService,
   ) {
     let userID = this.authservice.getUserId()
     this.fatchUserProfileDetails(userID);
@@ -98,6 +100,8 @@ export class EditProfileComponent {
   }
 
   createProfile(data: any) {
+    this.ngxLoader.start()
+
     const formData = new FormData();
     const formValues = this.profileForm.getRawValue();
     console.log("formValues", formValues)
@@ -107,10 +111,13 @@ export class EditProfileComponent {
     if (this.file) {
       formData.append('file', this.file, this.file.name);
     }
+
     this.profileservice.createProfile(formData).subscribe(
       (res: any) => {
         console.log(res);
         this.router.navigate(['feed'])
+    this.ngxLoader.stop()
+
       },
       (err: any) => {
         console.log(err);

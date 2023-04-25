@@ -18,7 +18,8 @@ export class FeedlistComponent {
   allUsers: any;
   replyToggle: boolean = false;
   searchUsers: any;
-  limit :any = 0;
+  limit: any = 0;
+  userId: any;
 
   constructor(
     private router: Router,
@@ -52,18 +53,16 @@ export class FeedlistComponent {
   fatchFeed() {
     this.ngxLoader.start();
     this.limit = this.limit + 5;
-    let params = {'offset':0,'limit':this.limit}
+    let params = { 'offset': 0, 'limit': this.limit }
     this.feedlistservice.getFeeds(params).subscribe((res: any) => {
-      console.log('feed:', res);
       this.feeds = res['feeds'];
       this.ngxLoader.stop();
     });
   }
 
   fatchUserDetails() {
-    let userId = localStorage.getItem('userId');
-    this.feedlistservice.getUserDetails(userId).subscribe((res: any) => {
-      console.log("user : ", res);
+    this.userId = localStorage.getItem('userId');
+    this.feedlistservice.getUserDetails(this.userId).subscribe((res: any) => {
       this.user = res['user'];
     });
   }
@@ -72,20 +71,17 @@ export class FeedlistComponent {
     this.ngxLoader.start();
 
     this.feedlistservice.getAllUsers().subscribe((res: any) => {
-      console.log(res['allusers'])
       this.allUsers = res['allusers'].map((user: any) => {
         user.userFollowers.find((element: any) => {
-          console.log("ele : ",element)
-          if (element.followerId == this.user.id) {
-            if(element.status == 'Accept') user.isAlreadyFollowed = 'follow';
+          if (element.followerId == this.userId) {
+            if (element.status == 'Accept') user.isAlreadyFollowed = 'follow';
             else user.isAlreadyFollowed = 'pending';
           }
         })
         return user
       })
       this.allUsers = this.allUsers.filter((obj: any) => {
-        console.log(obj.id, this.user.id)
-        if (obj.id !== this.user.id) {
+        if (obj.id != this.userId) {
           return obj
         }
       })
@@ -94,7 +90,7 @@ export class FeedlistComponent {
     });
   }
 
-  reciveAllUsers(){
+  reciveAllUsers() {
     this.commanservice.reciveAllUsers().subscribe((res: any) => {
       this.allUsers = res;
     });
@@ -107,32 +103,22 @@ export class FeedlistComponent {
 
   openReplySection(cmtId: any) {
     let replyBox = document.getElementById(cmtId);
-    console.log(replyBox);
     if (replyBox?.hasAttribute('hidden')) {
-      console.log(1);
       replyBox?.removeAttribute('hidden');
     } else {
-      console.log(2);
       replyBox?.setAttribute('hidden', 'true');
     }
-
-    console.log('reply on comment ');
   }
 
   doUndoFollowing(userId: any, event: any) {
-    console.log(event.target.textContent)
     if (event.target.textContent === 'follow') {
       event.target.textContent = 'requested';
       event.target.style.backgroundColor = 'rgb(75 85 99)';
-      console.log("1")
       this.toastr.success('Sent Follow request to user', 'Success!');
-
     } else {
       event.target.textContent = 'follow';
       event.target.style.backgroundColor = 'rgb(37 99 235)';
-
       this.toastr.warning('unfollow user', 'Success!');
-
     }
     let data = {
       userId: userId,

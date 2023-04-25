@@ -41,6 +41,11 @@ const routes: Routes = [
     component: ProfileComponent
   },
   {
+    path:'userprofile/:name/:id',
+    canActivate:[AuthguardGuard],
+    component: ProfileComponent
+  },
+  {
     path:'feed',
     canActivate:[AuthguardGuard],
     component: FeedlistComponent

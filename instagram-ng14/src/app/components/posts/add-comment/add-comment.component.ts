@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment.development';
 import { AuthService } from '../../auth/auth.service';
 import { FeedlistService } from '../../feedlist/feedlist.service';
 import { PostService } from '../post.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-comment',
@@ -33,7 +34,12 @@ export class AddCommentComponent {
   })
   nestedCmts: any[] = []
   new: any;
-  constructor(private postservice: PostService, private activateRoute: ActivatedRoute, private authservice: AuthService, private feedlistservice: FeedlistService) { }
+  constructor(private postservice: PostService,
+    private activateRoute: ActivatedRoute,
+    private authservice: AuthService,
+    private feedlistservice: FeedlistService,
+    private toastr: ToastrService
+  ) { }
 
   ngOnInit() {
     this.postId = this.activateRoute.snapshot.params['id']
@@ -95,6 +101,7 @@ export class AddCommentComponent {
       this.msg = res['msg']
       this.fatchPost(this.postId)
     })
+    this.toastr.success('comment added sucessfully', 'Comment');
     this.cmtForm.reset();
   }
 
@@ -107,7 +114,10 @@ export class AddCommentComponent {
     console.log(this.cmtForm.value)
     this.postservice.createComment(this.cmtForm.value).subscribe((res: any) => {
       this.msg = res['msg']
+      this.fatchPost(this.postId)
+
     })
+    this.toastr.success('comment added sucessfully', 'Comment');
     this.cmtForm.reset();
   }
 
@@ -125,11 +135,11 @@ export class AddCommentComponent {
   checkLiked() {
     console.log(this.post)
     this.post.likedPosts.filter((ele: any) => {
-        if (ele.likedBy == this.userId) {
-          this.post.isAlreadyLiked = true;
-        }
-        return ele
-      });
+      if (ele.likedBy == this.userId) {
+        this.post.isAlreadyLiked = true;
+      }
+      return ele
+    });
     console.log(this.post)
   }
 
@@ -164,7 +174,7 @@ export class AddCommentComponent {
   }
 
 
-  showReplies(id:number,event:any){
+  showReplies(id: number, event: any) {
     let reply = document.getElementById('replies-' + id);
     if (reply?.hasAttribute("hidden")) {
       reply?.removeAttribute("hidden")

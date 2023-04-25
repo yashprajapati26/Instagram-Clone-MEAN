@@ -25,7 +25,8 @@ export class NotificationComponent {
     private authservice: AuthService,
     private ngxLoader: NgxUiLoaderService,
     private commanservice: CommanService,
-    private toastr: ToastrService) {
+    private toastr: ToastrService
+    ) {
     this.userId = this.authservice.getUserId()
     this.getNotification();
   }

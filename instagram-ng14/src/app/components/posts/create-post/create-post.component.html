@@ -1,17 +1,82 @@
 <app-header></app-header>
+
+<!-- <div class="flex justify-center items-center">
+  <div
+    class="h-96 w-2/3 m-3 flex border rounded overflow-hidden shadow-lg border-gray-300 p-2"
+  >
+    <div
+      class="w-1/2 flex justify-center items-center border border-r-gray-400"
+    >
+      <img
+        [hidden]="isHidden"
+        (click)="file_input.click()"
+        id="defaultimg"
+        src="../../../../assets/image.png"
+        class="opacity-25 h-20"
+      />
+
+      <ng-image-slider
+        *ngIf="imageObject"
+        class="img-responsive"
+        [images]="imageObject"
+        [infinite]="false"
+        [manageImageRatio]="true"
+        [autoSlide]="1"
+        [animationSpeed]="0.1"
+        slideImage="1"
+        [imageSize]="{ width: sliderImageWidth, height: sliderImageHeight }"
+        #nav
+      ></ng-image-slider>
+      <p class="opacity-30 h-20">Select Photos from gallary</p>
+      <input
+        (change)="selectFiles($event)"
+        formControlName="files"
+        name="files"
+        type="file"
+        multiple
+        #file_input
+        hidden
+      />
+    </div>
+    <div class="w-1/2 mr-2 md:relative">
+      <div class="flex items-center px-4 py-3">
+        
+        <img
+          class="h-8 w-8 rounded-full"
+          src="../../../../assets/default.png"
+        />
+
+        <div class="ml-3">
+          <span class="text-sm font-semibold antialiased block leading-tight"
+            >yashprajapati26</span
+          >
+          <span class="text-gray-600 text-xs block">yash prajapati</span>
+        </div>
+      </div>
+      <textarea
+        class="ml-2 rounded-md border border-gray-400 p-2 min-w-full"
+        placeholder="write a caption..."
+      ></textarea>
+      <button
+        class="p-2 bg-blue-700 text-white rounded-md md:absolute md:bottom-2 md:right-0"
+      >
+        share
+      </button>
+    </div>
+  </div>
+</div> -->
+
 <div class="h-screen bg-gray-200 flex flex-col  items-center">
     <div class="w-full max-w-2xl mt-10">
         <h3 class="p-3 bg-white shadow-md rounded my-3">Create New Post </h3>
-        <h3 *ngIf="msg" class="p-3 bg-green-500 shadow-md rounded my-3">{{msg}} </h3>
 
         <form [formGroup]="postForm" (ngSubmit)="createPost(postForm.value)" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" enctype="multipart/form-data">
           <div class="mb-6 flex items-center">
             
   
             <img [hidden]="isHidden" (click)="file_input.click()" id="defaultimg" src="../../../../assets/image.png" class="opacity-25 h-20 mx-auto">
-            <!-- <img *ngIf" src="../../../../assets/image.png" class="opacity-25 h-20 mx-auto"> -->
             <div *ngFor="let url of imageUrls; let i=index" class="">  
-              <img [src]="url" class="border border-2	h-20 mx-auto">
+              <img [src]="url" class="border-2 h-20 mx-auto">
             </div>
             
           </div>
@@ -41,4 +106,4 @@
         <a class="text-sm text-blue-600" routerLink="/profile">Back to home !</a>
         
     </div>
-</div>
+</div> 

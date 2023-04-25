@@ -6,7 +6,9 @@
     <div class="p-2 md:flex md:px-32 py-4 w-full">
       <div class="bg-white border rounded-sm md:w-1/2">
         <div class="flex items-center px-4 py-3">
-          <img class="h-8 w-8 rounded-full" src="{{ imageUrl }}/{{ post.user.userProfile.profile_img }}" />
+          <img *ngIf="post.user.userProfile.profile_img; else default" class="h-8 w-8 rounded-full"
+            src="{{ imageUrl }}/{{ post.user.userProfile.profile_img }}" />
+          <ng-template #default><img class="h-8 w-8 rounded-full" src="../../../../assets/default.png" /></ng-template>
           <div class="ml-3">
             <span class="text-sm font-semibold antialiased block leading-tight">{{ post.user.username }}</span>
             <span class="text-gray-600 text-xs block">{{ post.user.firstName }} {{ post.user.lastName }}</span>
@@ -68,16 +70,24 @@
         </div>
         <div *ngFor="let cmt of comments; let i = index" class="px-4 py-1 flex justify-between">
           <div class="w-full">
-            <span class="font-semibold mr-1 text-sm">
-              {{ cmt.byUser.username }}
-            </span>
-            <span class="text-sm font-normal" id="{{ cmt.id }}">{{ cmt.comment }}
-            </span>
-            <span (click)="openReplySection(cmt.id)"
-              class="cursor-pointer float-right text-xs font-semibold p-1">Reply</span>
+            <div class="flex">
+
+              <img *ngIf="cmt?.byUser?.userProfile?.profile_img; else default" class="h-6 w-6 rounded-full mx-2"
+                src="{{imageUrl}}/{{cmt?.byUser?.userProfile?.profile_img}}" />
+              <ng-template #default><img class="h-6 w-6 rounded-full mx-2" src="../../../../assets/default.png" />
+              </ng-template>
+
+              <span class="font-semibold mr-2 text-sm">
+                {{ cmt.byUser.username }}
+              </span>
+              <span class="text-sm font-normal" id="{{ cmt.id }}">{{ cmt.comment }}
+              </span>
+              <span (click)="openReplySection(cmt.id)"
+                class="cursor-pointer text-xs font-semibold p-1 ml-auto order-last">Reply</span>
+            </div>
             <div class="flex">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="ml-4 w-4 h-4">
+                stroke="currentColor" class="ml-10 w-4 h-4">
                 <path stroke-linecap="round" stroke-linejoin="round"
                   d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
               </svg>
@@ -89,14 +99,15 @@
               </svg>
 
               <span class="text-xs mx-1">{{cmt.createdAt | date}}</span>
-              <svg *ngIf="cmt.reply.length > 0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="ml-4 w-4 h-4">
+              <svg *ngIf="cmt.reply.length > 0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke-width="1.5" stroke="currentColor" class="ml-4 w-4 h-4">
                 <path stroke-linecap="round" stroke-linejoin="round"
                   d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
 
-              <span *ngIf="cmt.reply.length > 0" class="text-xs mx-1" (click)="showReplies(cmt.id,$event)">show replies</span>
+              <span *ngIf="cmt.reply.length > 0" class="text-xs mx-1" (click)="showReplies(cmt.id,$event)">show
+                replies</span>
 
             </div>
 
@@ -104,6 +115,10 @@
               <ng-template #recursiveList let-list>
                 <div *ngFor="let node of list" class="pl-4 py-1">
                   <div class="flex">
+                    <img *ngIf="node.byUser.userProfile.profile_img; else default" class="h-6 w-6 rounded-full"
+                      src="{{imageUrl}}/{{node?.byUser?.userProfile?.profile_img}}" />
+                    <ng-template #default><img class="h-6 w-6 rounded-full" src="../../../../assets/default.png" />
+                    </ng-template>
                     <span class="font-semibold mr-1 ml-2 text-sm">
                       {{ node.byUser.username }}
                     </span>
@@ -116,7 +131,7 @@
                   </div>
                   <div class="flex">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                      stroke="currentColor" class="ml-4 w-4 h-4">
+                      stroke="currentColor" class="ml-10 w-4 h-4">
                       <path stroke-linecap="round" stroke-linejoin="round"
                         d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                     </svg>
@@ -140,9 +155,11 @@
                   <div id="cmt-{{ node.id }}" hidden>
                     <form [formGroup]="cmtForm" (ngSubmit)="addReply(node.id)" class="flex font-semibold text-sm mt-2">
                       <div class="flex items-center px-2 py-3">
-                        <img class="h-8 w-8 rounded-full" src="{{ imageUrl }}/{{
-                              loggedUser?.userProfile?.profile_img
-                            }}" />
+                        <img *ngIf="loggedUser?.userProfile?.profile_img; else default" class="h-8 w-8 rounded-full"
+                          src="{{ imageUrl }}/{{loggedUser?.userProfile?.profile_img}}" />
+                        <ng-template #default><img class="h-8 w-8 rounded-full" src="../../../../assets/default.png" />
+                        </ng-template>
+
                         <div class="ml-1">
                           <span *ngIf="loggedUser"
                             class="text-sm pr-2 font-semibold antialiased block leading-tight">{{ loggedUser.username }}</span>
@@ -169,9 +186,12 @@
             <div id="cmt-{{ cmt.id }}" hidden>
               <form [formGroup]="cmtForm" (ngSubmit)="addReply(cmt.id)" class="flex font-semibold text-sm mt-2">
                 <div class="flex items-center px-2 py-3">
-                  <img class="h-8 w-8 rounded-full" src="{{ imageUrl }}/{{
+                  <img *ngIf=" loggedUser?.userProfile?.profile_img; else default" class="h-8 w-8 rounded-full" src="{{ imageUrl }}/{{
                         loggedUser?.userProfile?.profile_img
                       }}" />
+                  <ng-template #default><img class="h-8 w-8 rounded-full" src="../../../../assets/default.png" />
+                  </ng-template>
+
                   <div class="ml-1">
                     <span *ngIf="loggedUser"
                       class="text-sm pr-2 font-semibold antialiased block leading-tight">{{ loggedUser.username }}</span>
@@ -193,8 +213,12 @@
           <hr />
           <form [formGroup]="cmtForm" (ngSubmit)="addCmt()" class="flex font-semibold text-sm mx-2 mt-2 mb-4">
             <div class="flex items-center px-4 py-3">
-              <img *ngIf="loggedUser" class="h-8 w-8 rounded-full"
+              <img *ngIf="loggedUser.userProfile.profile_img; else default" class="h-8 w-8 rounded-full"
                 src="{{ imageUrl }}/{{ loggedUser.userProfile.profile_img }}" />
+              <ng-template #default><img class="h-8 w-8 rounded-full" src="../../../../assets/default.png" />
+              </ng-template>
+
+
               <div class="ml-1">
                 <span *ngIf="loggedUser"
                   class="text-sm pr-2 font-semibold antialiased block leading-tight">{{ loggedUser.username }}</span>
