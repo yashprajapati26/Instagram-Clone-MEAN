@@ -106,12 +106,11 @@ const findAll = async (condition) => {
 cmtPost.belongsTo(Users);
 cmtPost.belongsTo(post);
 cmtPost.belongsTo(cmtPost, { foreignKey: "parentId", as: "parent_cmt" });
-// cmtPost.hasMany(post);
 
 module.exports = {
-  create: create,
-  findOne: findOne,
-  update: update,
-  deleteRecord: deleteRecord,
-  findAll: findAll,
+  create,
+  findOne,
+  update,
+  deleteRecord,
+  findAll,
 };

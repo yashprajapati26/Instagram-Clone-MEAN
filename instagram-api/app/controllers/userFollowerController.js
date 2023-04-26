@@ -23,7 +23,7 @@ const do_undo_Following = async (req, res) => {
           isExist.id,
           isExist.userId
         );
-        countFollowers(data.userId,data.followerId);
+        countFollowers(data.userId, data.followerId);
 
         return res.status(STATUSCODE.success).json({
           msg: "remove follower",
@@ -131,10 +131,10 @@ const countFollowers = async (userId, followerId) => {
     { no_of_following: noOfFollowing["count"] }
   );
 
- return {
+  return {
     noOfFollower: noOfFollower,
     noOfFollowing: noOfFollowing,
- }
+  };
 };
 
 const updateFollowingRequest = async (req, res) => {
@@ -171,7 +171,7 @@ const updateFollowingRequest = async (req, res) => {
       // update in userId followers user
       let data = countFollowers(userId, followerId);
 
-      return res.status(STATUSCODE.success).json(data)
+      return res.status(STATUSCODE.success).json(data);
     } else {
       return res.status(STATUSCODE.failure);
     }
@@ -204,9 +204,9 @@ const getuser_accepted_followers_following = async (req, res) => {
 };
 
 module.exports = {
-  do_undo_Following: do_undo_Following,
-  getAllFollowers: getAllFollowers,
-  getAllFollowing: getAllFollowing,
-  updateFollowingRequest: updateFollowingRequest,
-  getuser_accepted_followers_following: getuser_accepted_followers_following,
+  do_undo_Following,
+  getAllFollowers,
+  getAllFollowing,
+  updateFollowingRequest,
+  getuser_accepted_followers_following,
 };

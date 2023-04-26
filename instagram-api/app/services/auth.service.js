@@ -83,9 +83,9 @@ Users.hasOne(userProfile, {
 });
 
 module.exports = {
-  create: create,
-  findOne: findOne,
-  update: update,
-  deleteRecord: deleteRecord,
-  findAll: findAll,
+  create,
+  findOne,
+  update,
+  deleteRecord,
+  findAll,
 };

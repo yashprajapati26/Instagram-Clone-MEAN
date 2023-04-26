@@ -30,7 +30,6 @@ const LikeDislikePost = async (req, res) => {
           likedBy: userId,
         });
 
-  
         let message = "liked your post.";
         await notificationController.createNotification(
           "Like",
@@ -70,6 +69,6 @@ const getAllLiked = async (req, res) => {
 };
 
 module.exports = {
-  LikeDislikePost: LikeDislikePost,
-  getAllLiked: getAllLiked,
+  LikeDislikePost,
+  getAllLiked,
 };

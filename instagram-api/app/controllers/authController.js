@@ -48,7 +48,6 @@ const fromNumber = process.env.TWILIO_PHONE_NUMBER;
 const client = require("twilio")(accountSid, authToken);
 
 const signup = async (req, res) => {
-  console.log("signup called ...", req.body);
   try {
     let checkUser = await UserService.findOne(["id", "email"], {
       [Op.or]: [
@@ -115,7 +114,6 @@ const signup = async (req, res) => {
 
 const otpverify = async (req, res) => {
   try {
-    console.log(req);
     let user_otp = req.body.otp;
     let userId = req.body.userId;
     let otpObj = await otpStorageService.findOne(["otp"], { userId: userId });
@@ -244,7 +242,6 @@ const getAllUsers = async (req, res) => {
 searchUser = async (req, res) => {
   try {
     let key = req.params.searchKey;
-    console.log(key);
     let users = await UserService.findAll(["id", "username"], {
       [Op.or]: [
         { username: { [Op.like]: "%" + key + "%" } },
@@ -268,10 +265,10 @@ searchUser = async (req, res) => {
 };
 
 module.exports = {
-  signup: signup,
-  login: login,
-  otpverify: otpverify,
-  userdetails: userdetails,
-  getAllUsers: getAllUsers,
-  searchUser: searchUser,
+  signup,
+  login,
+  otpverify,
+  userdetails,
+  getAllUsers,
+  searchUser,
 };

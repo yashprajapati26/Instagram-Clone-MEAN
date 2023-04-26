@@ -11,17 +11,11 @@ module.exports = {
      */
     await queryInterface.addColumn("users", "isFirstTime", {
       type: Sequelize.BOOLEAN,
-      defaultValue  : 1,
+      defaultValue: 1,
     });
   },
 
   async down(queryInterface, Sequelize) {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
-    await queryInterface.removeColumn("users","isFirstTime");
+    await queryInterface.removeColumn("users", "isFirstTime");
   },
 };

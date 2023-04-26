@@ -33,7 +33,6 @@ const createProfile = async (req, res) => {
       if (req.file) {
         req.body.profile_img = req.file.path;
       }
-      console.log(req.body);
       let userprofile = await userProfileService.update(
         { userId: req.body.userId },
         req.body
@@ -75,6 +74,6 @@ const getUserProfileInfo = async (req, res) => {
 };
 
 module.exports = {
-  getUserProfileInfo: getUserProfileInfo,
-  createProfile: createProfile,
+  getUserProfileInfo,
+  createProfile,
 };

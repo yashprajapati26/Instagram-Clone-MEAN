@@ -12,7 +12,7 @@ const cmtPostController = require("../controllers/cmtPostController");
 const userFollowerController = require("../controllers/userFollowerController");
 const notificationController = require("../controllers/notificationController");
 const { passport } = require("../controllers/oauthController");
-const {verifyToken} = require("../middleware/auth.middleware");
+const { verifyToken } = require("../middleware/auth.middleware");
 // local storage for save post images
 var storage = multer.diskStorage({
   destination: function (req, file, callback) {
@@ -53,10 +53,14 @@ router.post(
 router.post("/otpverify", authController.otpverify);
 router.get("/userdetails/:userId", verifyToken, authController.userdetails);
 router.get("/getallusers", verifyToken, authController.getAllUsers);
-router.get("/searchuser/:searchKey",verifyToken, authController.searchUser);
+router.get("/searchuser/:searchKey", verifyToken, authController.searchUser);
 
 // profile routes
-router.get("/getuserprofile/:userId",verifyToken, userProfileController.getUserProfileInfo);
+router.get(
+  "/getuserprofile/:userId",
+  verifyToken,
+  userProfileController.getUserProfileInfo
+);
 router.post(
   "/createprofile",
   profile_upload.single("file"),
@@ -64,19 +68,25 @@ router.post(
 );
 
 //post routes
-router.post("/createpost",verifyToken, upload.array("files", 4), postController.createPost);
-router.get("/getuserpost/:userId",verifyToken, postController.getAllPosts);
-router.delete("/deletepost/:postId",verifyToken, postController.deletePost);
+router.post(
+  "/createpost",
+  verifyToken,
+  upload.array("files", 4),
+  postController.createPost
+);
+router.get("/getuserpost/:userId", verifyToken, postController.getAllPosts);
+router.delete("/deletepost/:postId", verifyToken, postController.deletePost);
 //feed
-router.post("/getfeeds", verifyToken,postController.getFeeds);
-router.get("/getsinglepost/:postId", verifyToken,postController.getSinglePost);
+router.post("/getfeeds", verifyToken, postController.getFeeds);
+router.get("/getsinglepost/:postId", verifyToken, postController.getSinglePost);
 
 //liked-disliked post routes
 router.get(
-  "/like-dislike-post/:postId/:userId",verifyToken,
+  "/like-dislike-post/:postId/:userId",
+  verifyToken,
   likedPostController.LikeDislikePost
 );
-router.get("/getliked/:userId", verifyToken,likedPostController.getAllLiked);
+router.get("/getliked/:userId", verifyToken, likedPostController.getAllLiked);
 
 // comment routes
 router.post(
@@ -86,9 +96,21 @@ router.post(
 );
 
 // userFollowers routes
-router.post("/do-undo-following", verifyToken,userFollowerController.do_undo_Following);
-router.get("/getfollowers/:userId",verifyToken, userFollowerController.getAllFollowers);
-router.get("/getfollowing/:userId", verifyToken,userFollowerController.getAllFollowing);
+router.post(
+  "/do-undo-following",
+  verifyToken,
+  userFollowerController.do_undo_Following
+);
+router.get(
+  "/getfollowers/:userId",
+  verifyToken,
+  userFollowerController.getAllFollowers
+);
+router.get(
+  "/getfollowing/:userId",
+  verifyToken,
+  userFollowerController.getAllFollowing
+);
 router.post(
   "/updateFollowingRequest",
   userFollowerController.updateFollowingRequest

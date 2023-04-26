@@ -11,13 +11,12 @@ verifyToken = async (req, res, next) => {
   const decoded = await decodeAuthToken(token);
   if (decoded && decoded.id) {
     req.userId = decoded.id;
-    console.log("------------------->>>>", req.userId);
     let user = await authService.findOne(["id", "email"], { id: req.userId });
     if (user) {
       return next();
     } else {
       return res.status(STATUSCODE.unauthorized).json({ msg: "Invalid User" });
-    }                                        
+    }
   } else {
     return res.status(STATUSCODE.unauthorized).json({ msg: "Invalid Token" });
   }

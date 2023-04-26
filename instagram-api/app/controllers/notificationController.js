@@ -125,7 +125,7 @@ const newNotification = async (req, res) => {
     let userId = req.params.userId;
     let objects = await notificationService.findAndCountAll(
       ["id", "type", "read"],
-      { userId: userId , read: 0}
+      { userId: userId, read: 0 }
     );
     if (objects) {
       return res
@@ -135,17 +135,16 @@ const newNotification = async (req, res) => {
   } catch (e) {
     console.log(e);
     return res.status(STATUSCODE.failure).send(e);
-
   }
 };
 
 module.exports = {
-  createNotification: createNotification,
-  deleteNotification: deleteNotification,
-  updateNotification: updateNotification,
-  getLikedNotification: getLikedNotification,
-  getCmtsNotification: getCmtsNotification,
-  getFollowNotification: getFollowNotification,
-  readNotification: readNotification,
-  newNotification: newNotification,
+  createNotification,
+  deleteNotification,
+  updateNotification,
+  getLikedNotification,
+  getCmtsNotification,
+  getFollowNotification,
+  readNotification,
+  newNotification,
 };

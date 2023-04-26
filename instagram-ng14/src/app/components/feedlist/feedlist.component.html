@@ -32,7 +32,7 @@
   <div *ngFor="let singleuser of allUsers"
     class="mx-2 flex flex-row items-center align-items justify-between px-3 mt-2">
     <div class="flex items-center justify-between">
-      <img *ngIf="singleuser?.userProfile?.profile_img; else elseBlock2" class="rounded-full w-8 h-7 flex mr-3"
+      <img *ngIf="singleuser?.userProfile?.profile_img; else elseBlock2" class="rounded-full w-8 h-8 flex mr-3"
         src="{{ imageUrl }}/{{ singleuser?.userProfile?.profile_img }}" />
       <ng-template #elseBlock2><img class="rounded-full w-8 h-7 flex mr-3" src="../../../../assets/default.png" />
       </ng-template>

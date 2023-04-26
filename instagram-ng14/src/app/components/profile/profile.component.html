@@ -30,7 +30,7 @@
           <!-- follow button -->
           <a *ngIf="self" routerLink="/edit-profile"
             class="bg-blue-500 px-2 py-1 text-white font-semibold text-sm rounded text-center sm:inline-block block">Edit</a>
-          <div *ngIf="!self">
+          <div *ngIf="!self" class="cursor-pointer">
             <a *ngIf="!user.isAlreadyFollowed" (click)="doUndoFollowing(userProfile.user.id, $event)"
               class="bg-blue-500 px-2 py-1 text-white font-semibold text-sm rounded text-center sm:inline-block block">follow</a>
             <a *ngIf="user.isAlreadyFollowed=='follow'" (click)="doUndoFollowing(userProfile.user.id, $event)"
@@ -133,7 +133,7 @@
             <article class="post bg-gray-100 text-white relative pb-full md:mb-6">
               <!-- post images-->
               <img routerLink="/view-post/{{ post.id }}" class="w-full h-full absolute left-0 top-0 object-cover"
-                src="{{ imageUrl }}/{{ post.postImages[0].imagePath }}" alt="image" />
+                src="{{ imageUrl }}/{{ post?.postImages[0]?.imagePath }}" alt="image" />
 
               <i class="fas fa-square absolute right-0 top-0 m-1"></i>
               <!-- overlay-->

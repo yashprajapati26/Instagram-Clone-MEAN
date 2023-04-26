@@ -41,11 +41,14 @@ export class ProfileComponent {
       this.fatchUserPost(userId)
       this.fatchUserDetails(userId)
       if(userId != localStorage.getItem('userId'))this.self = false;
+      console.log("other user ")
     }
     else {
       let userID = localStorage.getItem('userId')
       this.fatchUserProfileDetails(userID);
       this.fatchUserPost(userID)
+      console.log("login user ")
+
     }
   }
 

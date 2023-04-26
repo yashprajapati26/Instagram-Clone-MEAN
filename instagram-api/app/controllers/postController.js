@@ -67,7 +67,7 @@ const getFeeds = async (req, res) => {
     const setOffset = req.body.offset ? parseInt(req.body.offset) : 0;
     const setLimit = req.body.limit ? parseInt(req.body.limit) : 3;
 
-    let feeds = await postService.findAll({},setLimit, setOffset);
+    let feeds = await postService.findAll({}, setLimit, setOffset);
     if (feeds) return res.status(STATUSCODE.success).json({ feeds: feeds });
     return res.status(STATUSCODE.failure).json({ msg: "Feeds not found" });
   } catch (e) {
@@ -95,9 +95,9 @@ const getSinglePost = async (req, res) => {
 };
 
 module.exports = {
-  createPost: createPost,
-  getAllPosts: getAllPosts,
-  deletePost: deletePost,
-  getFeeds: getFeeds,
-  getSinglePost: getSinglePost,
+  createPost,
+  getAllPosts,
+  deletePost,
+  getFeeds,
+  getSinglePost,
 };

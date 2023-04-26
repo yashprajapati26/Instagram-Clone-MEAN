@@ -1,8 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { PostService } from '../post.service';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { FeedlistService } from '../../feedlist/feedlist.service';
+import { PostService } from '../post.service';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-post',
@@ -18,18 +21,29 @@ export class CreatePostComponent {
   filesToUpload: Array<File> = [];
   msg: any;
   userId: any = localStorage.getItem('userId')
+  user : any;
   imageUrls: Array<string> = []
   isHidden:boolean = false
-  sliderImageWidth: Number = 585;
-  sliderImageHeight: Number = 435;
+  sliderImageWidth: Number = 300;
+  sliderImageHeight: Number = 300;
   imageObject: any = [];
   imageUrl = environment.apiURL;
+  next:boolean = false;
+  counter:number = 0;
+  @Output() onClose: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(private postservice: PostService, private router: Router) { }
+  constructor(private postservice: PostService, private router: Router, private feedlistservice:FeedlistService,
+    private ngxLoader: NgxUiLoaderService,
+    private toastr: ToastrService
+    ) { }
 
-  ngOnInit() { }
+  ngOnInit() { 
+    this.fatchUserDetails(this.userId);
+  }
 
   createPost(data: any) {
+    this.ngxLoader.start();
+
     const formData: any = new FormData();
     const files: Array<File> = this.filesToUpload;
     formData.append("content", data['content'])
@@ -42,11 +56,22 @@ export class CreatePostComponent {
       this.postservice.createPost(formData).subscribe((res: any) => {
         this.msg = res['msg']
         this.router.navigate(['feed']);
+        this.ngxLoader.stop();
+        this.toastr.success('Post Sucessfully uploded', 'Success!');
+
       },
         (err) => {
           console.log(err)
         })
     }
+  }
+
+  fatchUserDetails(userId: any) {
+    this.feedlistservice.getUserDetails(userId).subscribe((res: any) => {
+      this.user = res['user'];
+     
+
+    })
   }
 
   selectFiles(event: any) {
@@ -55,10 +80,26 @@ export class CreatePostComponent {
       const reader = new FileReader();
       reader.readAsDataURL(this.filesToUpload[i]);
       reader.onload = async () => {
+        let image = reader.result as string;
         this.imageUrls[i] = reader.result as string;
+        this.imageObject.push({image, thumbImage:i});
       };
     }
+    this.isHidden = true;
+    console.log(this.imageObject)
+    this.next = true;
   }
 
+  nextAction(){
+    this.next = true;
+  }
+  countLength(event:any){
+    console.log(event.target.value.length)
+    this.counter = event.target.value.length;
+  }
+  closeModal() {
+    console.log("close call")
+    this.onClose.emit(false);
+  }
 
 }

@@ -153,9 +153,9 @@ Users.hasOne(userProfile, {
 
 // userProfile.belongsTo(Users);
 module.exports = {
-  create: create,
-  findOne: findOne,
-  update: update,
-  deleteRecord: deleteRecord,
-  findAll: findAll,
+  create,
+  findOne,
+  update,
+  deleteRecord,
+  findAll,
 };
