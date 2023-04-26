@@ -17,7 +17,7 @@ export class LoginComponent {
   })
   submitted: boolean = false
   msg: any
-
+  password:string = "password"
   constructor(private router: Router, private authservice: AuthService, private ngxLoader: NgxUiLoaderService) { }
 
   ngOnInit() { }
@@ -25,7 +25,6 @@ export class LoginComponent {
   githubLogin() {
     console.log("login with github")
     this.authservice.doLoginViaGithub().subscribe((res: any) => {
-      console.log("------github login----------", res);
     })
   }
 
@@ -57,6 +56,13 @@ export class LoginComponent {
   }
 
   togglePassword(event: any) {
-    console.log("called", event)
+    
+    if (this.password === 'password') {
+      this.password = 'text';
+      // this.show = true;
+    } else {
+      this.password = 'password';
+      // this.show = false;
+    }
   }
 }

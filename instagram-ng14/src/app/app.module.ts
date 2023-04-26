@@ -23,6 +23,8 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { FeedsComponent } from './components/shared/feeds/feeds.component';
 import { HeaderComponent } from './components/shared/header/header.component';
 import { InterceptorService } from './interceptor/interceptor.service';
+import { AddStoryComponent } from './components/story/add-story/add-story.component';
+import { ListStoryComponent } from './components/story/list-story/list-story.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsPosition: POSITION.bottomCenter,
@@ -50,6 +52,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     AddCommentComponent,
     FeedsComponent,
     NotificationComponent,
+    AddStoryComponent,
+    ListStoryComponent,
   ],
   imports: [
     BrowserModule,

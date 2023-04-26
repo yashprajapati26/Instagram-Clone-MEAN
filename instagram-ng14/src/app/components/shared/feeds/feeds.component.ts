@@ -2,15 +2,14 @@ import {
   Component,
   Input,
   OnChanges,
-  Output,
-  SimpleChanges,
+  SimpleChanges
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment.development';
+import { AuthService } from '../../auth/auth.service';
 import { FeedlistService } from '../../feedlist/feedlist.service';
 import { PostService } from '../../posts/post.service';
-import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-feeds',
@@ -24,7 +23,8 @@ export class FeedsComponent implements OnChanges {
   imageUrl = environment.apiURL;
   sliderImageWidth: Number = 585;
   sliderImageHeight: Number = 435;
-  userId :any;
+  userId: any;
+  msg: any;
 
   cmtForm = new FormGroup({
     postId: new FormControl('', Validators.required),
@@ -32,13 +32,12 @@ export class FeedsComponent implements OnChanges {
     comment: new FormControl('', Validators.required),
     parentId: new FormControl(null, Validators.required),
   });
-  msg: any;
 
   constructor(
     private router: Router,
     private feedlistservice: FeedlistService,
     private postservice: PostService,
-    private authservice:AuthService
+    private authservice: AuthService
   ) {
     console.log("feeds : ", this.feeds)
     this.userId = this.authservice.getUserId();
@@ -64,7 +63,6 @@ export class FeedsComponent implements OnChanges {
   }
 
   checkLiked() {
-    console.log(this.user)
     this.feeds = this.feeds?.map((element: any) => {
       element.likedPosts.find((ele: any) => {
         if (ele.likedBy == this.userId) {
@@ -79,7 +77,6 @@ export class FeedsComponent implements OnChanges {
     let Id = event.target.id || event.srcElement.id || event.currentTarget.id;
     let btn = document.getElementById(Id);
     let count = document.getElementById("like-" + Id.split('-')[1]);
-    console.log("like : ", count?.innerText)
     let splitArray = Id.split('-');
     let postId = splitArray[1];
 
@@ -116,7 +113,6 @@ export class FeedsComponent implements OnChanges {
       cmtBy: this.user.id,
       parentId: cmtId,
     });
-    console.log(this.cmtForm.value);
     this.postservice.createComment(this.cmtForm.value).subscribe((res: any) => {
       this.msg = res['msg'];
     });
@@ -127,12 +123,9 @@ export class FeedsComponent implements OnChanges {
 
   openReplySection(cmtId: any) {
     let replyBox = document.getElementById(cmtId);
-    console.log(replyBox);
     if (replyBox?.hasAttribute('hidden')) {
-      console.log(1);
       replyBox?.removeAttribute('hidden');
     } else {
-      console.log(2);
       replyBox?.setAttribute('hidden', 'true');
     }
   }
