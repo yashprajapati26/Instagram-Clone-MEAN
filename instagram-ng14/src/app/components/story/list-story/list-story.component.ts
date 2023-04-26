@@ -12,16 +12,17 @@ export class ListStoryComponent {
   @Input('allUsers') allUsers: any = [];
   @Input('user') user: any;
   imageUrl = environment.apiURL;
-  addstory:boolean = false;
-  showModal: boolean = true;
+  addstory: boolean = false;
 
-constructor(private router:Router){}
 
-addStory(){
-  this.addstory = !this.addstory
-}
-modalClosed(isClosed:any) {
-  this.showModal = false;
-}
+  constructor(private router: Router) { }
+
+  addStory() {
+    this.addstory = !this.addstory
+  }
+  modalClosed(isClosed: any) {
+    console.log("isClosed : ", isClosed)
+    this.addstory = isClosed;
+  }
 
 }

@@ -18,7 +18,7 @@
                   src="../../../../assets/default.png" />
               </ng-template>
               <a>
-                <p class="font-bold text-sm">{{ user.username }}</p>
+                <a class="font-bold text-sm"  routerLink="/userprofile/{{ user.username }}/{{user.id}}">{{ user.username }}</a>
               </a>
 
               <button *ngIf="user.isAlreadyFollowed == 'follow'" (click)="doUndoFollowing(user.id, $event)"

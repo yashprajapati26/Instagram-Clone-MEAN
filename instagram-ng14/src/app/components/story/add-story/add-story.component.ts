@@ -32,11 +32,12 @@ export class AddStoryComponent {
 
 
   goBackToPrevPage(): void {
-    this.location.back();
+    this.closeModal()
   }
 
   closeModal() {
-    this.onClose.emit(true);
+    console.log("close call")
+    this.onClose.emit(false);
   }
 
 }

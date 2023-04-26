@@ -16,10 +16,10 @@
     </div>
     <div *ngFor="let storyUser of allUsers" class="text-center">
       <img *ngIf="storyUser?.userProfile?.profile_img; else elseBlock"
-        class="object-fill h-20 w-20 rounded-full border border-red-500 p-0.5 mx-1"
+        class="object-fill h-20 w-20 rounded-full border border-red-500 p-0.5 mx-1 cursor-pointer"
         src="{{ imageUrl }}/{{ storyUser?.userProfile?.profile_img }}" />
       <span class="text-xs">{{storyUser.username}}</span>
-      <ng-template #elseBlock><img class="h-20 w-20 rounded-full border border-red-500 p-0.5 mx-1"
+      <ng-template #elseBlock><img class="h-20 w-20 rounded-full border border-red-500 p-0.5 mx-1 cursor-pointer"
           src="../../../../assets/default.png" /></ng-template>
     </div>
   </div>

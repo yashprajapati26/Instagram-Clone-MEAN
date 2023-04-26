@@ -22,6 +22,10 @@ const findOne = async (attributes, data) => {
         model: userProfile,
         attributes: ["id", "userId", "profile_img"],
       },
+      {
+        model: userFollowers,
+        attributes: ["id", "userId", "followerId", "status"],
+      },
       ],
   });
 };
