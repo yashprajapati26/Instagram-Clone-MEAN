@@ -145,6 +145,5 @@ export class FeedsComponent implements OnChanges {
     console.log("--0-----changes...", window.innerWidth)
     console.log("this.postimg?.nativeElement.offsetWidth:", this.postimg?.nativeElement.offsetWidth)
     this.sliderImageWidth = this.postimg?.nativeElement.offsetWidth
-    // this.getScreenHeight = window.innerHeight;
   }
 }

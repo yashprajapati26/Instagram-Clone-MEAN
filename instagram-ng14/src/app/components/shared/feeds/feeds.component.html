@@ -60,7 +60,7 @@
 
         <svg
           *ngIf="!feed.isAlreadyLiked"
-          (click)="likedPost($event)"
+          (click)="likedPost(feed.id)"
           id="feed-{{ feed.id }}"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
