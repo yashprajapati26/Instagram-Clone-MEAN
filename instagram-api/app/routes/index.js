@@ -1,18 +1,20 @@
 const express = require("express");
+const multer = require("multer");
 const router = express.Router();
 const authController = require("../controllers/authController");
 const userProfileController = require("../controllers/userProfileController");
 const postController = require("../controllers/postController");
 const likedPostController = require("../controllers/likedPostController");
-const { celebrate, Segments } = require("celebrate");
-const { signup, login } = require("../validators/auth.validator");
-const { comment } = require("../validators/comment.validator");
-const multer = require("multer");
 const cmtPostController = require("../controllers/cmtPostController");
 const userFollowerController = require("../controllers/userFollowerController");
 const notificationController = require("../controllers/notificationController");
+const storyUserController = require("../controllers/storyUserController");
+const { celebrate, Segments } = require("celebrate");
+const { signup, login } = require("../validators/auth.validator");
+const { comment } = require("../validators/comment.validator");
 const { passport } = require("../controllers/oauthController");
 const { verifyToken } = require("../middleware/auth.middleware");
+
 // local storage for save post images
 var storage = multer.diskStorage({
   destination: function (req, file, callback) {
@@ -139,6 +141,13 @@ router.get(
   notificationController.readNotification
 );
 router.get("/newNotification/:userId", notificationController.newNotification);
+
+// story routes
+
+router.post("/createStory", storyUserController.createStory);
+router.get("/getAllStory", storyUserController.getAllStory);
+
+
 
 // Oauth routes
 router.get(

@@ -13,11 +13,13 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./create-post.component.scss']
 })
 export class CreatePostComponent {
-
+  
   postForm = new FormGroup({
     content: new FormControl("", Validators.required),
     files: new FormControl("")
   })
+
+  @Output() onClose: EventEmitter<boolean> = new EventEmitter();
   filesToUpload: Array<File> = [];
   msg: any;
   userId: any = localStorage.getItem('userId')
@@ -30,7 +32,15 @@ export class CreatePostComponent {
   imageUrl = environment.apiURL;
   next:boolean = false;
   counter:number = 0;
-  @Output() onClose: EventEmitter<boolean> = new EventEmitter();
+
+  textArea: string ="";
+
+  public isEmojiPickerVisible: boolean = false;
+
+  public addEmoji(event: any) {
+    this.textArea = `${this.textArea}${event.emoji.native}`;
+    this.isEmojiPickerVisible = false;
+  }
 
   constructor(private postservice: PostService, private router: Router, private feedlistservice:FeedlistService,
     private ngxLoader: NgxUiLoaderService,

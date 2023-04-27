@@ -22,13 +22,19 @@ export class AddCommentComponent {
   post: any
   imageUrl = environment.apiURL
   loggedUser: any | undefined;
-  msg: any
+  msg: string | undefined;
   replies: any;
   postId: any;
   comments: any;
   userId = localStorage.getItem("userId")
+  textArea: string | undefined;
 
+  public isEmojiPickerVisible: boolean = false;
 
+  public addEmoji(event: any) {
+    this.textArea = `${this.textArea}${event.emoji.native}`;
+    this.isEmojiPickerVisible = false;
+  }
 
   cmtForm = new FormGroup({
     postId: new FormControl("", Validators.required),
@@ -55,13 +61,12 @@ export class AddCommentComponent {
   @HostListener('window:resize', ['$event'])
   onWindowResize() {
     console.log("this.postimg?.nativeElement.offsetWidth:", this.postimg?.nativeElement.offsetWidth)
-    this.sliderImageWidth =this.postimg?.nativeElement.offsetWidth
+    this.sliderImageWidth = this.postimg?.nativeElement.offsetWidth
     // this.getScreenHeight = window.innerHeight;
   }
 
 
   SetSliderImages() {
-    // {{feed.postImages[0].imagePath | json}}
     this.post.imageObject = [];
     this.post.postImages.map((obj: any) => {
       let image = this.imageUrl + '/' + obj.imagePath;
@@ -74,8 +79,6 @@ export class AddCommentComponent {
   fatchPost(postId: any) {
     this.postservice.getPostDetails(postId).subscribe((res: any) => {
       this.post = res['post']
-      console.log(document.getElementById("width"))
-
       this.comments = this.post['cmtPosts']
       this.comments.map((commit: any) => {
         commit.reply = []
@@ -91,7 +94,6 @@ export class AddCommentComponent {
           return element
         }
       });
-      console.log("new : ", this.comments)
       this.SetSliderImages();
       this.checkLiked();
 
@@ -136,7 +138,6 @@ export class AddCommentComponent {
   }
 
   openReplySection(cmtId: any) {
-    console.log("cmt Id:", cmtId)
     let replyBox = document.getElementById("cmt-" + cmtId)
     if (replyBox?.hasAttribute("hidden")) {
       replyBox?.removeAttribute("hidden")
@@ -147,7 +148,6 @@ export class AddCommentComponent {
   }
 
   checkLiked() {
-    console.log(this.post)
     this.post.likedPosts.filter((ele: any) => {
       if (ele.likedBy == this.userId) {
         this.post.isAlreadyLiked = true;
@@ -161,7 +161,6 @@ export class AddCommentComponent {
     let Id = event.target.id || event.srcElement.id || event.currentTarget.id;
     let btn = document.getElementById(Id);
     let count = document.getElementById("like-" + Id.split('-')[1]);
-    console.log("like : ", count?.innerText)
     let splitArray = Id.split('-');
     let postId = splitArray[1];
 

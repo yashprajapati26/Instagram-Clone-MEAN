@@ -91,7 +91,7 @@ export class AppComponent {
         return user
       })
       this.allUsers = this.allUsers.filter((obj: any) => {
-        if (obj.id !== this.userId) {
+        if (obj.id != this.userId) {
           return obj
         }
       })

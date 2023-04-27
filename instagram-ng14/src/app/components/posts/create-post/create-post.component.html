@@ -1,69 +1,173 @@
 <app-header></app-header>
 
 <div
-  class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] min-h-auto bg-gray-400 bg-opacity-40 flex items-center justify-center">
+  class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] min-h-auto bg-gray-400 bg-opacity-40 flex items-center justify-center"
+>
   <div class="relative w-full max-w-2xl h-auto">
     <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-      <form [formGroup]="postForm" (ngSubmit)="createPost(postForm.value)" enctype="multipart/form-data">
-
-        <div class="flex items-center justify-between p-2 border-b rounded-t dark:border-gray-600">
-          <a routerLink="/feed" class="text-xl font-semibold text-gray-900 dark:text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="currentColor" class="w-6 h-6">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+      <form
+        [formGroup]="postForm"
+        (ngSubmit)="createPost(postForm.value)"
+        enctype="multipart/form-data"
+      >
+        <div
+          class="flex items-center justify-between p-2 border-b rounded-t dark:border-gray-600"
+        >
+          <a
+            routerLink="/feed"
+            class="text-xl font-semibold text-gray-900 dark:text-white"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+              />
             </svg>
-
           </a>
-          <h3 class="text-center text-sm font-bold mx-auto">create a new post</h3>
-          <button type="button" (click)="nextAction()"
+          <h3 class="text-center text-sm font-bold mx-auto">
+            create a new post
+          </h3>
+          <button
+            type="button"
+            (click)="nextAction()"
             class="text-blue-500 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-            data-modal-hide="staticModal">
+            data-modal-hide="staticModal"
+          >
             Next
           </button>
         </div>
         <div *ngIf="!next" class="h-1/2">
-          <img [hidden]="isHidden" (click)="file_input.click()" id="defaultimg" src="../../../../assets/postBg.png"
-            class="opacity-25 h-28 mt-20 mx-auto">
-          <input formControlName="files" (change)="selectFiles($event)" name="files" type="file" multiple #file_input
-            hidden>
-          <p (click)="file_input.click()" class="text-center pb-20 pt-2 text-gray-500 font-bold">select photo from
-            gallary</p>
+          <img
+            [hidden]="isHidden"
+            (click)="file_input.click()"
+            id="defaultimg"
+            src="../../../../assets/postBg.png"
+            class="opacity-25 h-28 mt-20 mx-auto"
+          />
+          <input
+            formControlName="files"
+            (change)="selectFiles($event)"
+            name="files"
+            type="file"
+            multiple
+            #file_input
+            hidden
+          />
+          <p
+            (click)="file_input.click()"
+            class="text-center pb-20 pt-2 text-gray-500 font-bold"
+          >
+            select photo from gallary
+          </p>
         </div>
         <div *ngIf="next" class="flex">
           <div class="p-4 w-1/2">
-            <ng-image-slider class="img-responsive" [images]="imageObject" [infinite]="false" [manageImageRatio]="true"
-              [autoSlide]="1" [animationSpeed]="0.1" slideImage="1"
-              [imageSize]="{ width: sliderImageWidth, height: sliderImageHeight }" #nav></ng-image-slider>
+            <ng-image-slider
+              class="img-responsive"
+              [images]="imageObject"
+              [infinite]="false"
+              [manageImageRatio]="true"
+              [autoSlide]="1"
+              [animationSpeed]="0.1"
+              slideImage="1"
+              [imageSize]="{
+                width: sliderImageWidth,
+                height: sliderImageHeight
+              }"
+              #nav
+            ></ng-image-slider>
           </div>
           <div class="w-1/2">
             <div class="flex items-center p-3">
-              <img *ngIf="user?.userProfile?.profile_img; else elseBlock2" class="rounded-full w-7 h-7"
-                src="{{ imageUrl }}/{{ user?.userProfile?.profile_img }}" />
-              <ng-template #elseBlock2><img class="rounded-full w-8 h-7 flex mr-3"
-                  src="../../../../assets/default.png" />
+              <img
+                *ngIf="user?.userProfile?.profile_img; else elseBlock2"
+                class="rounded-full w-7 h-7"
+                src="{{ imageUrl }}/{{ user?.userProfile?.profile_img }}"
+              />
+              <ng-template #elseBlock2
+                ><img
+                  class="rounded-full w-8 h-7 flex mr-3"
+                  src="../../../../assets/default.png"
+                />
               </ng-template>
               <div class="ml-3">
-                <span class="text-sm font-semibold antialiased block leading-tight">{{user.username}}</span>
-                <span class="text-gray-600 text-xs block">{{ user.firstname }} {{ user.lastname }}</span>
+                <span
+                  class="text-sm font-semibold antialiased block leading-tight"
+                  >{{ user.username }}</span
+                >
+                <span class="text-gray-600 text-xs block"
+                  >{{ user.firstname }} {{ user.lastname }}</span
+                >
               </div>
             </div>
-            <div class="px-3">
-              <textarea formControlName="content" (keypress)="countLength($event)" placeholder="write a caption..."
-                class="w-full text-sm border border-gray-300 rounded-sm h-28 p-1 " maxlength='266'></textarea>
-              <span class="float-right text-sm text-gray-500">{{counter}} / 266</span>
+            <div class="px-3 relative">
+              <textarea
+                [(ngModel)]="textArea"
+                formControlName="content"
+                (keypress)="countLength($event)"
+                placeholder="write a caption..."
+                class="w-full text-sm border border-gray-300 rounded-sm h-28 p-1"
+                maxlength="266"
+              ></textarea>
+              <button
+                type="button"
+                class="left-3 bottom-2 text-lg text-gray-400 absolute"
+                (click)="isEmojiPickerVisible = !isEmojiPickerVisible"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-6 h-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z"
+                  />
+                </svg>
+              </button>
+              <span class="float-right text-sm text-gray-500"
+                >{{ counter }} / 266</span
+              >
             </div>
           </div>
         </div>
 
-        <div *ngIf="next"
-          class="flex items-center p-2 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-          <button type="button"
-            class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-md border border-gray-400 text-sm font-medium px-3 py-1.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600 mr-auto">Cancel</button>
-          <button type="submit"
-            class="ml-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-3 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Share</button>
+        <div
+          *ngIf="next"
+          class="flex items-center p-2 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600"
+        >
+          <button
+            type="button"
+            class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-md border border-gray-400 text-sm font-medium px-3 py-1.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600 mr-auto"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="ml-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-3 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Share
+          </button>
         </div>
-
       </form>
     </div>
+    <emoji-mart
+      class="emoji-mart absolute bottom-0"
+      *ngIf="isEmojiPickerVisible"
+      (emojiSelect)="addEmoji($event)"
+      title="Choose your emoji"
+    ></emoji-mart>
   </div>
 </div>

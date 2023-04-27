@@ -1,27 +1,56 @@
-<div class="border border-b-gray-400  bg-white">
+<div class="border border-b-gray-400 bg-white">
   <div class="flex hide-scrollbar overflow-x-auto p-1">
     <div class="relative group">
       <div class="flex items-center justify-center">
         <div
-          class="opacity-0 group-hover:opacity-100  duration-300 absolute flex justify-center items-center z-50 mt-20 text-lg text-black font-semibold">
-          <svg (click)="addStory()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-            stroke="currentColor" class="w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          class="opacity-0 group-hover:opacity-100 duration-300 absolute flex justify-center items-center z-50 mt-20 text-lg text-black font-semibold"
+        >
+          <svg
+            (click)="addStory()"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 4.5v15m7.5-7.5h-15"
+            />
           </svg>
         </div>
       </div>
-      <img class="object-fill h-20 w-20 rounded-full border border-gray-500 p-0.5 mx-1 opacity-50"
-        src="{{ imageUrl }}/{{ user?.userProfile?.profile_img }}" />
+      <img
+        *ngIf="user?.userProfile?.profile_img; else elseBlock"
+        class="object-fill h-20 w-20 rounded-full border border-gray-500 p-0.5 mx-1 opacity-50"
+        src="{{ imageUrl }}/{{ user?.userProfile?.profile_img }}"
+      />
+      <ng-template #elseBlock
+        ><img
+          class="object-fill h-20 w-20 rounded-full border border-gray-500 p-0.5 mx-1 opacity-50"
+          src="../../../../assets/default.png"
+      /></ng-template>
       <span class="text-xs mx-4">Your story</span>
     </div>
     <div *ngFor="let storyUser of allUsers" class="text-center">
-      <img *ngIf="storyUser?.userProfile?.profile_img; else elseBlock"
+      <img
+        *ngIf="storyUser?.userProfile?.profile_img; else elseBlock"
         class="object-fill h-20 w-20 rounded-full border border-red-500 p-0.5 mx-1 cursor-pointer"
-        src="{{ imageUrl }}/{{ storyUser?.userProfile?.profile_img }}" />
-      <span class="text-xs">{{storyUser.username}}</span>
-      <ng-template #elseBlock><img class="h-20 w-20 rounded-full border border-red-500 p-0.5 mx-1 cursor-pointer"
-          src="../../../../assets/default.png" /></ng-template>
+        src="{{ imageUrl }}/{{ storyUser?.userProfile?.profile_img }}"
+      />
+      <span class="text-xs">{{ storyUser.username }}</span>
+      <ng-template #elseBlock
+        ><img
+          class="h-20 w-20 rounded-full border border-red-500 p-0.5 mx-1 cursor-pointer"
+          src="../../../../assets/default.png"
+      /></ng-template>
     </div>
   </div>
 </div>
-<app-add-story *ngIf="addstory" [user]="user" (onClose)="modalClosed($event)"></app-add-story>
+<app-add-story
+  *ngIf="addstory"
+  [user]="user"
+  (onClose)="modalClosed($event)"
+></app-add-story>

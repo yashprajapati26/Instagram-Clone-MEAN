@@ -25,6 +25,7 @@ import { HeaderComponent } from './components/shared/header/header.component';
 import { InterceptorService } from './interceptor/interceptor.service';
 import { AddStoryComponent } from './components/story/add-story/add-story.component';
 import { ListStoryComponent } from './components/story/list-story/list-story.component';
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsPosition: POSITION.bottomCenter,
@@ -66,6 +67,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     InfiniteScrollModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(), // ToastrModule added
+    PickerModule
 
   ],
   providers: [{

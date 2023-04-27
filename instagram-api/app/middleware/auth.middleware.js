@@ -10,6 +10,7 @@ verifyToken = async (req, res, next) => {
   }
   const decoded = await decodeAuthToken(token);
   if (decoded && decoded.id) {
+  
     req.userId = decoded.id;
     let user = await authService.findOne(["id", "email"], { id: req.userId });
     if (user) {

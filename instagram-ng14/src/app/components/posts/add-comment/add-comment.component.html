@@ -30,19 +30,19 @@
 
         <div class="w-auto">
           <ng-image-slider
-          class="img-responsive"
-          [images]="post.imageObject"
-          [infinite]="false"
-          [manageImageRatio]="true"
-          [autoSlide]="1"
-          [animationSpeed]="0.1"
-          slideImage="1"
-          [imageSize]="{
-            width: sliderImageWidth,
-            height: sliderImageHeight
-          }"
-          #nav
-        ></ng-image-slider>
+            class="img-responsive"
+            [images]="post.imageObject"
+            [infinite]="false"
+            [manageImageRatio]="true"
+            [autoSlide]="1"
+            [animationSpeed]="0.1"
+            slideImage="1"
+            [imageSize]="{
+              width: sliderImageWidth,
+              height: sliderImageHeight
+            }"
+            #nav
+          ></ng-image-slider>
         </div>
 
         <div class="flex items-center justify-between mx-4 mt-3 mb-2">
@@ -397,6 +397,12 @@
         <!-- end-show-comment -->
 
         <div class="md:absolute md:bottom-0 w-full pb-10 md:pb-0">
+          <emoji-mart
+            class="emoji-mart"
+            *ngIf="isEmojiPickerVisible"
+            (emojiSelect)="addEmoji($event)"
+            title="Choose your emoji"
+          ></emoji-mart>
           <hr />
           <form
             [formGroup]="cmtForm"
@@ -424,19 +430,44 @@
                 >
               </div>
             </div>
-            <input
-              type="text"
-              class="w-full ml-4 pl-2 mx-2 my-4 border border-gray-300 rounded-full"
-              placeholder="Add new comment"
-              name="comment"
-              formControlName="comment"
-            />
-            <button
-              type="submit"
-              class="mr-2 border bg-gray-200 rounded p-2 my-4"
-            >
-              POST
-            </button>
+
+            <div class="relative flex w-full">
+              <input
+                type="text"
+                class="w-full ml-4 pl-2 mx-2 my-4 border border-gray-300 rounded-full"
+                placeholder="Add new comment"
+                name="comment"
+                [(ngModel)]="textArea"
+                formControlName="comment"
+              />
+              <button type="button"
+                class="right-20 bottom-6 text-lg absolute"
+                (click)="isEmojiPickerVisible = !isEmojiPickerVisible"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-6 h-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z"
+                  />
+                </svg>
+              </button>
+              <br />
+
+              <button
+                type="submit"
+                class="mr-2 border bg-gray-200 rounded p-2 my-4"
+              >
+                POST
+              </button>
+            </div>
           </form>
         </div>
 
