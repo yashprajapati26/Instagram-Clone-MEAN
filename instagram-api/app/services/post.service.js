@@ -3,7 +3,7 @@ const LikedPost = require("../models/likedPost.model");
 const post = require("../models/post.model");
 const postImages = require("../models/postImages.model");
 const Users = require("../models/users.model");
-
+const userProfile = require("../models/userProfile.model");
 const create = async (data) => {
   return await post
     .create(data)
@@ -28,6 +28,10 @@ const findOne = async (data) => {
       {
         model: Users,
         attributes: ["id", "username", "firstName", "lastName"],
+        include: {
+          model: userProfile,
+          attributes: ["id", "profile_img"],
+        },
       },
       {
         model: LikedPost,
@@ -35,9 +39,23 @@ const findOne = async (data) => {
       },
       {
         model: CmtPost,
-        attributes: ["id", "postId", "cmtBy", "comment", "parentId"],
-		include: { model: Users,as:"byUser", attributes: ["id", "username"] },
-
+        attributes: [
+          "id",
+          "postId",
+          "cmtBy",
+          "comment",
+          "parentId",
+          "createdAt",
+        ],
+        include: {
+          model: Users,
+          as: "byUser",
+          attributes: ["id", "username"],
+          include: {
+            model: userProfile,
+            attributes: ["id", "profile_img"],
+          },
+        },
       },
     ],
   });
@@ -67,7 +85,7 @@ const deleteRecord = async (condition) => {
     });
 };
 
-const findAll = async (condition) => {
+const findAll = async (condition, limit, offset) => {
   return await post
     .findAll({
       where: condition,
@@ -79,6 +97,10 @@ const findAll = async (condition) => {
         {
           model: Users,
           attributes: ["id", "username", "firstName", "lastName"],
+          include: {
+            model: userProfile,
+            attributes: ["id", "profile_img"],
+          },
         },
         {
           model: LikedPost,
@@ -86,10 +108,24 @@ const findAll = async (condition) => {
         },
         {
           model: CmtPost,
-          attributes: ["id", "postId", "cmtBy", "comment", "parentId"],
-          include: { model: Users,as:"byUser", attributes: ["id", "username"] },
+          attributes: [
+            "id",
+            "postId",
+            "cmtBy",
+            "comment",
+            "parentId",
+            "createdAt",
+          ],
+          include: {
+            model: Users,
+            as: "byUser",
+            attributes: ["id", "username"],
+          },
         },
       ],
+      order: [["created_at", "DESC"]],
+      limit,
+      offset,
     })
     .then((res) => {
       return res;
@@ -100,23 +136,26 @@ const findAll = async (condition) => {
     });
 };
 
-
-
-
 post.belongsTo(Users);
-// CmtPost.belongsTo(Users);
-CmtPost.belongsTo(Users,{
-	foreignKey: "cmtBy",
-	as : "byUser"
-})
+
+CmtPost.belongsTo(Users, {
+  foreignKey: "cmtBy",
+  as: "byUser",
+});
+
 post.hasMany(postImages);
 post.hasMany(LikedPost);
 post.hasMany(CmtPost);
 
+Users.hasOne(userProfile, {
+  foreignKey: "userId",
+});
+
+// userProfile.belongsTo(Users);
 module.exports = {
-  create: create,
-  findOne: findOne,
-  update: update,
-  deleteRecord: deleteRecord,
-  findAll: findAll,
+  create,
+  findOne,
+  update,
+  deleteRecord,
+  findAll,
 };

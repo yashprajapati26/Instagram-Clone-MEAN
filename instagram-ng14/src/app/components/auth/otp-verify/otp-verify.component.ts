@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+
 
 @Component({
   selector: 'app-otp-verify',
@@ -10,38 +12,31 @@ import { AuthService } from '../auth.service';
 })
 export class OtpVerifyComponent {
   otpForm = new FormGroup({
-    otp : new FormControl("", Validators.required),
+    otp: new FormControl("", Validators.required),
   })
-  submitted:boolean = false
-  msg : any;
-  user : any;
+  submitted: boolean = false
+  msg: any;
+  user: any;
 
-  constructor(private authservice:AuthService, private router:Router){
-    console.log("--user>",this.router.getCurrentNavigation()?.extras);
-    this.user = this.router.getCurrentNavigation()?.extras
+  constructor(private authservice: AuthService, private router: Router, private ngxLoader: NgxUiLoaderService) {
   }
 
-  submit(data:any){
+  submit(data: any) {
     this.submitted = true
-    console.log(data)
-
-    // let formData = new FormData();
-    // formData.append('otp',data['otp']);
-    // formData.append('userId',this.user.id)
-
     let mydata = {
-      'otp':data['otp'],
-      'userId':this.user.id
+      'otp': data['otp'],
+      'userId': localStorage.getItem('userId')
     }
-    
-    if(this.otpForm.valid){
-      this.authservice.doOtpVerify(mydata).subscribe((res:any)=>{
+    if (this.otpForm.valid) {
+      this.ngxLoader.start();
+      this.authservice.doOtpVerify(mydata).subscribe((res: any) => {
+        console.log(res)
         this.router.navigate(['login'])
-      }),
-      (err:any)=>{
-        this.msg = err.error.msg
-      }
+      },(err: any) => {
+          console.log(err)
+          this.msg = err.error.msg
+      })
     }
+    this.ngxLoader.stop();
   }
-
 }

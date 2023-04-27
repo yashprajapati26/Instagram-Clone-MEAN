@@ -1,0 +1,21 @@
+.image-container {
+  position: relative;
+//   display: inline-block;
+}
+
+.heart {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 125px;
+  height: 120px;
+  background-image: url('../../../../assets/heart-icon-rbg.png');
+  background-size: 125px 120px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.heart.active {
+  opacity: 0.5;
+}

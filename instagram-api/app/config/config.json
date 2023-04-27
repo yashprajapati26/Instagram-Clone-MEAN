@@ -1,25 +1,24 @@
-
 {
-	"development": {
-	  "username": "freedb_yash-prajapati",
-	  "password": "4T2cvEE7#F5XBnw",
-	  "database": "freedb_instagramDB",
-	  "host": "sql.freedb.tech",
-	  "dialect": "mysql"
-	},
-	"test": {
-	  "username": "root",
-	  "password": null,
-	  "database": "database_test",
-	  "host": "127.0.0.1",
-	  "dialect": "mysql"
-	},
-	"production": {
-	  "username": "root",
-	  "password": null,
-	  "database": "database_production",
-	  "host": "127.0.0.1",
-	  "dialect": "mysql"
-	}
+  "development": {
+    "username": "mitesh_sathvara",
+    "password": "deep70",
+    "database": "mitesh_sathvara3",
+    "host": "radixusers2.com",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "database_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+
   }
-  
+}

@@ -23,6 +23,8 @@ const do_undo_Following = async (req, res) => {
           isExist.id,
           isExist.userId
         );
+        countFollowers(data.userId, data.followerId);
+
         return res.status(STATUSCODE.success).json({
           msg: "remove follower",
           deleteRecord: deleteRecord,
@@ -102,10 +104,41 @@ const getAllFollowing = async (req, res) => {
   }
 };
 
+const countFollowers = async (userId, followerId) => {
+  const noOfFollower = await userFollowersService.findAndCountAll(
+    ["id", "userId", "followerId", "status"],
+    {
+      userId: userId,
+      status: "Accept",
+    },
+    "createdAt"
+  );
+  let result = await userProfileService.update(
+    { userId: userId },
+    { no_of_followers: noOfFollower["count"] }
+  );
+  // update in followingId user
+  const noOfFollowing = await userFollowersService.findAndCountAll(
+    ["id", "userId", "followerId", "status"],
+    {
+      followerId: followerId,
+      status: "Accept",
+    },
+    "createdAt"
+  );
+  let result2 = await userProfileService.update(
+    { userId: followerId },
+    { no_of_following: noOfFollowing["count"] }
+  );
+
+  return {
+    noOfFollower: noOfFollower,
+    noOfFollowing: noOfFollowing,
+  };
+};
+
 const updateFollowingRequest = async (req, res) => {
   try {
-    console.log(req.body);
-
     let updateStatus = await userFollowersService.update(
       {
         id: req.body.requestId,
@@ -115,59 +148,30 @@ const updateFollowingRequest = async (req, res) => {
       }
     );
 
-    console.log(updateStatus);
     if (updateStatus) {
       // update count
       let userId = req.body.userId;
       let followerId = req.body.followerId;
 
-      if(req.body.status=="Accept"){
-        let condition = { userId : userId, notificationId: req.body.requestId, type:"Follow Request"}
-        let message = "started following you"
-        await notificationController.updateNotification(condition, message)
-      }
-      else{
-          await notificationController.deleteNotification("Follow Request",req.body.requestId,userId)
-      }
-
-      // update in userId followers user
-
-      const noOfFollower = await userFollowersService.findAndCountAll(
-        ["id", "userId", "followerId", "status"],
-        {
+      if (req.body.status == "Accept") {
+        let condition = {
           userId: userId,
-          status: "Accept",
-        },
-        "createdAt"
-      );
-      let result = await userProfileService.update(
-        { userId: userId },
-        { no_of_followers: noOfFollower["count"] }
-      );
-      console.log(result);
-      // update in followingId user
-      const noOfFollowing = await userFollowersService.findAndCountAll(
-        ["id", "userId", "followerId", "status"],
-        {
-          followerId: followerId,
-          status: "Accept",
-        },
-        "createdAt"
-      );
-      let result2 = await userProfileService.update(
-        { userId: followerId },
-        { no_of_following: noOfFollowing["count"] }
-      );
-      console.log(result2);
+          notificationId: req.body.requestId,
+          type: "Follow Request",
+        };
+        let message = "started following you";
+        await notificationController.updateNotification(condition, message);
+      } else {
+        await notificationController.deleteNotification(
+          "Follow Request",
+          req.body.requestId,
+          userId
+        );
+      }
+      // update in userId followers user
+      let data = countFollowers(userId, followerId);
 
-      console.log(noOfFollower);
-      console.log(noOfFollowing);
-
-      return res.status(STATUSCODE.success).json({
-        msg: "Action Complated Sucessfully",
-        noOfFollower: noOfFollower,
-        noOfFollowing: noOfFollowing,
-      });
+      return res.status(STATUSCODE.success).json(data);
     } else {
       return res.status(STATUSCODE.failure);
     }
@@ -200,9 +204,9 @@ const getuser_accepted_followers_following = async (req, res) => {
 };
 
 module.exports = {
-  do_undo_Following: do_undo_Following,
-  getAllFollowers: getAllFollowers,
-  getAllFollowing: getAllFollowing,
-  updateFollowingRequest: updateFollowingRequest,
-  getuser_accepted_followers_following: getuser_accepted_followers_following,
+  do_undo_Following,
+  getAllFollowers,
+  getAllFollowing,
+  updateFollowingRequest,
+  getuser_accepted_followers_following,
 };

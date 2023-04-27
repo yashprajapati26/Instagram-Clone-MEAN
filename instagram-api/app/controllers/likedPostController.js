@@ -8,7 +8,6 @@ const LikeDislikePost = async (req, res) => {
   try {
     let userId = req.params.userId;
     let postId = req.params.postId;
-    console.log(userId, postId);
     if (userId && postId) {
       let isAlreadyLiked = await likedPostService.findOne({
         postId: postId,
@@ -31,7 +30,6 @@ const LikeDislikePost = async (req, res) => {
           likedBy: userId,
         });
 
-  
         let message = "liked your post.";
         await notificationController.createNotification(
           "Like",
@@ -71,6 +69,6 @@ const getAllLiked = async (req, res) => {
 };
 
 module.exports = {
-  LikeDislikePost: LikeDislikePost,
-  getAllLiked: getAllLiked,
+  LikeDislikePost,
+  getAllLiked,
 };

@@ -11,6 +11,7 @@ import { CreatePostComponent } from './components/posts/create-post/create-post.
 import { EditProfileComponent } from './components/profile/edit-profile/edit-profile.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AuthguardGuard } from './guards/authguard.guard';
+import { AddStoryComponent } from './components/story/add-story/add-story.component';
 
 const routes: Routes = [
   {
@@ -41,6 +42,11 @@ const routes: Routes = [
     component: ProfileComponent
   },
   {
+    path:'userprofile/:name/:id',
+    canActivate:[AuthguardGuard],
+    component: ProfileComponent
+  },
+  {
     path:'feed',
     canActivate:[AuthguardGuard],
     component: FeedlistComponent
@@ -56,9 +62,18 @@ const routes: Routes = [
     component: AddCommentComponent
   },
   {
+    path:'view-post/:id',
+    canActivate:[AuthguardGuard],
+    component: AddCommentComponent
+  },
+  {
     path: 'notification',
     canActivate:[AuthguardGuard],
     component: NotificationComponent
+  },
+  {
+    path: 'add-story',
+    component : AddStoryComponent
   },
   {
     path:'**',

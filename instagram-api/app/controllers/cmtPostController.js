@@ -5,10 +5,8 @@ const notificationController = require("./notificationController");
 const createComment = async (req, res) => {
   try {
     let comment = await cmtPostService.create(req.body);
-    console.log(comment)
     if (comment) {
       let cmtObj = await cmtPostService.findOne({ id: comment.id });
-      console.log("-----------------",cmtObj)
       await notificationController.createNotification(
         "Comment",
         cmtObj.id,
@@ -30,5 +28,5 @@ const createComment = async (req, res) => {
 };
 
 module.exports = {
-  createComment: createComment,
+  createComment,
 };

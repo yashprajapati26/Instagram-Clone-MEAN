@@ -1,123 +1,131 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { environment } from 'src/environments/environment.development';
-import { CommanService } from '../comman/comman.service';
+import { CommanService } from '../shared/shared.service';
 import { FeedlistService } from './feedlist.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-feedlist',
   templateUrl: './feedlist.component.html',
-  styleUrls: ['./feedlist.component.scss']
+  styleUrls: ['./feedlist.component.scss'],
 })
 export class FeedlistComponent {
-
   feeds: any;
-  imageUrl = environment.apiURL
+  imageUrl = environment.apiURL;
   user: any;
-  allUsers: any
+  allUsers: any;
   replyToggle: boolean = false;
-  btnName: string = "follow"
-  searchUsers: any
+  searchUsers: any;
+  limit: any = 0;
+  userId: any;
 
-  constructor(private router: Router, private feedlistservice: FeedlistService, private commanservice: CommanService) { }
+  constructor(
+    private router: Router,
+    private feedlistservice: FeedlistService,
+    private commanservice: CommanService,
+    private ngxLoader: NgxUiLoaderService,
+    private toastr: ToastrService
+  ) { }
 
   ngOnInit() {
     this.fatchUserDetails();
     this.fatchFeed();
     this.fatchAllUsers();
+    this.reciveAllUsers();
 
     // this.allUsers = this.allUsers.filter((item:any) => item.id !== this.user.id);
 
-    console.log(this.allUsers)
     this.commanservice.reciveSearchKey().subscribe((res: any) => {
-      this.searchUsers = this.allUsers.filter((user: any) => user.username.includes(res))
-      console.log(this.searchUsers)
-    })
+      this.searchUsers = this.allUsers.filter((user: any) =>
+        user.username.includes(res)
+      );
+      console.log(this.searchUsers);
+    });
   }
 
   closemodel() {
     let model = document.querySelector('.searchmodel');
-    model?.classList.add('hidden')
+    model?.classList.add('hidden');
   }
 
   fatchFeed() {
-    this.feedlistservice.getFeeds().subscribe((res: any) => {
-      console.log("feed:", res)
-      this.feeds = res['feeds']
-    })
+    this.ngxLoader.start();
+    this.limit = this.limit + 5;
+    let params = { 'offset': 0, 'limit': this.limit }
+    this.feedlistservice.getFeeds(params).subscribe((res: any) => {
+      this.feeds = res['feeds'];
+      this.ngxLoader.stop();
+    });
   }
 
   fatchUserDetails() {
-    let userId = localStorage.getItem('userId')
-    this.feedlistservice.getUserDetails(userId).subscribe((res: any) => {
-      console.log(res)
-      this.user = res['user']
-    })
+    this.userId = localStorage.getItem('userId');
+    this.feedlistservice.getUserDetails(this.userId).subscribe((res: any) => {
+      this.user = res['user'];
+    });
   }
 
   fatchAllUsers() {
+    this.ngxLoader.start();
+
     this.feedlistservice.getAllUsers().subscribe((res: any) => {
-      this.allUsers = res['allusers']
-    })
+      this.allUsers = res['allusers'].map((user: any) => {
+        user.userFollowers.find((element: any) => {
+          if (element.followerId == this.userId) {
+            if (element.status == 'Accept') user.isAlreadyFollowed = 'follow';
+            else user.isAlreadyFollowed = 'pending';
+          }
+        })
+        return user
+      })
+      this.allUsers = this.allUsers.filter((obj: any) => {
+        if (obj.id != this.userId) {
+          return obj
+        }
+      })
+      this.ngxLoader.stop();
+
+    });
   }
 
-  likedPost(event: any) {
-
-    let Id = event.target.id || event.srcElement.id || event.currentTarget.id;
-    let btn = document.getElementById(Id);
-
-    let splitArray = Id.split("-");
-    let postId = splitArray[1]
-
-    if (btn?.getAttribute("fill") != "red") {
-      btn?.setAttribute("fill", "red")
-    } else {
-      btn?.setAttribute("fill", "gray")
-    }
-
-    let userId = localStorage.getItem('userId')
-    let data = { userId: userId, postId: postId }
-
-    this.feedlistservice.likedDislikePost(data).subscribe((res: any) => {
-      console.log(res)
-    })
+  reciveAllUsers() {
+    this.commanservice.reciveAllUsers().subscribe((res: any) => {
+      this.allUsers = res;
+    });
   }
 
   addComment(postId: any) {
-    console.log(postId)
-    this.router.navigate(['add-comment', postId])
+    console.log(postId);
+    this.router.navigate(['add-comment', postId]);
   }
 
   openReplySection(cmtId: any) {
-    let replyBox = document.getElementById(cmtId)
-    console.log(replyBox)
-    if (replyBox?.hasAttribute("hidden")) {
-      console.log(1)
-      replyBox?.removeAttribute("hidden")
+    let replyBox = document.getElementById(cmtId);
+    if (replyBox?.hasAttribute('hidden')) {
+      replyBox?.removeAttribute('hidden');
+    } else {
+      replyBox?.setAttribute('hidden', 'true');
     }
-    else {
-      console.log(2)
-      replyBox?.setAttribute("hidden", "true")
-    }
-
-    console.log("reply on comment ")
   }
 
-
-
   doUndoFollowing(userId: any, event: any) {
-    if (event.target.textContent == "follow") {
-      event.target.textContent = "unfollow"
+    if (event.target.textContent === 'follow') {
+      event.target.textContent = 'requested';
+      event.target.style.backgroundColor = 'rgb(75 85 99)';
+      this.toastr.success('Sent Follow request to user', 'Success!');
     } else {
-      event.target.textContent = "follow"
-
+      event.target.textContent = 'follow';
+      event.target.style.backgroundColor = 'rgb(37 99 235)';
+      this.toastr.warning('unfollow user', 'Success!');
     }
     let data = {
       userId: userId,
-      followerId: this.user.id
-    }
-    this.feedlistservice.doFollowing(data).subscribe((res) => {
-      console.log(res)
-    })
+      followerId: this.user.id,
+    };
+    this.feedlistservice.doUndoFollowing(data).subscribe((res) => {
+      console.log(res);
+    });
   }
 }

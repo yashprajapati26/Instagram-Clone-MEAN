@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment.development';
-import { PostService } from '../post.service';
-import jwt_decode from 'jwt-decode';
 import { AuthService } from '../../auth/auth.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FeedlistService } from '../../feedlist/feedlist.service';
+import { PostService } from '../post.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-comment',
@@ -13,11 +14,27 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class AddCommentComponent {
 
+
+  @ViewChild('postimg') postimg: ElementRef | undefined;
+  sliderImageWidth: Number | undefined = 631;
+  sliderImageHeight: Number = 465;
+
   post: any
   imageUrl = environment.apiURL
   loggedUser: any | undefined;
-  msg: any
-  replies:any;
+  msg: string | undefined;
+  replies: any;
+  postId: any;
+  comments: any;
+  userId = localStorage.getItem("userId")
+  textArea: string | undefined;
+
+  public isEmojiPickerVisible: boolean = false;
+
+  public addEmoji(event: any) {
+    this.textArea = `${this.textArea}${event.emoji.native}`;
+    this.isEmojiPickerVisible = false;
+  }
 
   cmtForm = new FormGroup({
     postId: new FormControl("", Validators.required),
@@ -26,26 +43,67 @@ export class AddCommentComponent {
     parentId: new FormControl(null, Validators.required),
 
   })
-
-  constructor(private postservice: PostService, private activateRoute: ActivatedRoute, private authservice: AuthService) { }
+  nestedCmts: any[] = []
+  new: any;
+  constructor(private postservice: PostService,
+    private activateRoute: ActivatedRoute,
+    private authservice: AuthService,
+    private feedlistservice: FeedlistService,
+    private toastr: ToastrService
+  ) { }
 
   ngOnInit() {
-    let postId = this.activateRoute.snapshot.params['id']
-    this.fatchPost(postId)
+    this.postId = this.activateRoute.snapshot.params['id']
+    this.fatchPost(this.postId)
     this.fatchLoginUserDetails()
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    console.log("this.postimg?.nativeElement.offsetWidth:", this.postimg?.nativeElement.offsetWidth)
+    this.sliderImageWidth = this.postimg?.nativeElement.offsetWidth
+    // this.getScreenHeight = window.innerHeight;
+  }
+
+
+  SetSliderImages() {
+    this.post.imageObject = [];
+    this.post.postImages.map((obj: any) => {
+      let image = this.imageUrl + '/' + obj.imagePath;
+      let thumbImage = image;
+      this.post.imageObject.push({ image, thumbImage });
+    });
+    console.log(this.post);
   }
 
   fatchPost(postId: any) {
     this.postservice.getPostDetails(postId).subscribe((res: any) => {
-      console.log(res)
       this.post = res['post']
+      this.comments = this.post['cmtPosts']
+      this.comments.map((commit: any) => {
+        commit.reply = []
+        if (commit.parentId) {
+          let temp = this.comments.find((item: any) => item.id === commit.parentId);
+          temp.reply.push(commit);
+        }
+      });
+
+      this.comments = this.comments.filter((element: any) => {
+        if (element.parentId === null) {
+          console.log(element)
+          return element
+        }
+      });
+      this.SetSliderImages();
+      this.checkLiked();
+
     })
-    
   }
 
+
+
   fatchLoginUserDetails(): void {
-    let userId = localStorage.getItem("userId")
-    this.authservice.getUserDetails(userId).subscribe((res: any) => {
+    this.authservice.getUserDetails(this.userId).subscribe((res: any) => {
       this.loggedUser = res['user']
     })
   }
@@ -55,10 +113,11 @@ export class AddCommentComponent {
       postId: this.post.id,
       cmtBy: this.loggedUser.id,
     })
-    console.log(this.cmtForm.value)
     this.postservice.createComment(this.cmtForm.value).subscribe((res: any) => {
       this.msg = res['msg']
+      this.fatchPost(this.postId)
     })
+    this.toastr.success('comment added sucessfully', 'Comment');
     this.cmtForm.reset();
   }
 
@@ -71,37 +130,75 @@ export class AddCommentComponent {
     console.log(this.cmtForm.value)
     this.postservice.createComment(this.cmtForm.value).subscribe((res: any) => {
       this.msg = res['msg']
+      this.fatchPost(this.postId)
+
     })
+    this.toastr.success('comment added sucessfully', 'Comment');
     this.cmtForm.reset();
   }
 
   openReplySection(cmtId: any) {
-
-    let replyBox = document.getElementById(cmtId)
-
-    console.log(replyBox)
+    let replyBox = document.getElementById("cmt-" + cmtId)
     if (replyBox?.hasAttribute("hidden")) {
-      console.log(1)
       replyBox?.removeAttribute("hidden")
     }
     else {
-      console.log(2)
       replyBox?.setAttribute("hidden", "true")
     }
-
-    console.log("reply on comment ")
-    this.fatchReplies(7)
-
   }
 
-  fatchReplies(cmtId:any){
-    let cmt_id = cmtId
-    console.log("-->",this.post)
-    let replies = this.post.cmtPosts.filter((comment:any) => comment.parentId === cmt_id).sort((a:any, b:any) =>
-      new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-    );
-    console.log("------------------replies------------------------")
-    console.log(replies)
+  checkLiked() {
+    this.post.likedPosts.filter((ele: any) => {
+      if (ele.likedBy == this.userId) {
+        this.post.isAlreadyLiked = true;
+      }
+      return ele
+    });
+    console.log(this.post)
   }
+
+  likedPost(event: any) {
+    let Id = event.target.id || event.srcElement.id || event.currentTarget.id;
+    let btn = document.getElementById(Id);
+    let count = document.getElementById("like-" + Id.split('-')[1]);
+    let splitArray = Id.split('-');
+    let postId = splitArray[1];
+
+    if (btn?.getAttribute('fill') != 'red') {
+      btn?.setAttribute('fill', 'red');
+      let no = null
+      no = count?.innerText
+      if (no) no = (parseInt(no) + 1).toString()
+      if (count) count.innerText = no ? no : ""
+    } else {
+      btn?.setAttribute('fill', 'none');
+      let no = null
+      no = count?.innerText
+      if (no) no = (parseInt(no) - 1).toString()
+      if (count) count.innerText = no ? no : ""
+    }
+
+    let userId = localStorage.getItem('userId');
+    let data = { userId: userId, postId: postId };
+
+    this.feedlistservice.likedDislikePost(data).subscribe((res: any) => {
+      console.log(res);
+    });
+  }
+
+
+  showReplies(id: number, event: any) {
+    let reply = document.getElementById('replies-' + id);
+    if (reply?.hasAttribute("hidden")) {
+      reply?.removeAttribute("hidden")
+      event.target.textContent = "hide replies"
+    }
+    else {
+      reply?.setAttribute("hidden", "true")
+      event.target.textContent = "show replies"
+    }
+  }
+
+
 
 }

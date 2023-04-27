@@ -3,6 +3,7 @@ const likedPost = require("../models/likedPost.model");
 const CmtPost = require("../models/cmtPost.model");
 const userFollowers = require("../models/userFollowers.model");
 const Users = require("../models/users.model");
+const userProfile = require("../models/userProfile.model");
 
 const create = async (data) => {
   return await Notification.create(data)
@@ -15,15 +16,15 @@ const create = async (data) => {
     });
 };
 
-const findOne = async (data) => {
+const findOne = async (attributes, data) => {
   return await Notification.findOne({
-    // attributes: attributes,
+    attributes: attributes,
     where: data,
   });
 };
 
-const update = async (params, data) => {
-  return await Notification.update(data, { where: params })
+const update = async (data, condition) => {
+  return await Notification.update(data, { where: condition })
     .then((res) => {
       return res;
     })
@@ -53,10 +54,37 @@ const findAll = async (condition, modelname) => {
         include: [
           {
             model: Users,
+            attributes: ["id", "firstName", "lastName", "username"],
+            include: {
+              model: userProfile,
+              attributes: ["id", "profile_img"],
+            },
           },
         ],
       },
     ],
+    order: [["created_at", "DESC"]],
+  })
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      console.error(err);
+      throw err;
+    });
+};
+
+const findAndCountAll = async (
+  attributes,
+  condition,
+  limit,
+  offset,
+  sorting
+) => {
+  return await Notification.findAndCountAll({
+    attributes: attributes,
+    where: condition,
+    order: sorting,
   })
     .then((res) => {
       return res;
@@ -69,6 +97,7 @@ const findAll = async (condition, modelname) => {
 
 Notification.belongsTo(likedPost, {
   foreignKey: "notificationId",
+  onDelete: "cascade",
 });
 Notification.belongsTo(CmtPost, {
   foreignKey: "notificationId",
@@ -89,10 +118,15 @@ CmtPost.belongsTo(Users, {
   foreignKey: "cmtBy",
 });
 
+Users.hasOne(userProfile, {
+  foreignKey: "userId",
+});
+
 module.exports = {
-  create: create,
-  findOne: findOne,
-  update: update,
-  deleteRecord: deleteRecord,
-  findAll: findAll,
+  create,
+  findOne,
+  update,
+  deleteRecord,
+  findAll,
+  findAndCountAll,
 };

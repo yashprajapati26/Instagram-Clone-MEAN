@@ -29,8 +29,15 @@ const findOne = async (data) => {
       },
       {
         model: cmtPost,
-		as: "parent_cmt",
-        attributes: ["id", "postId", "cmtBy", "parentId"],
+        as: "parent_cmt",
+        attributes: [
+          "id",
+          "postId",
+          "cmtBy",
+          "comment",
+          "parentId",
+          "createdAt",
+        ],
       },
     ],
   });
@@ -76,7 +83,14 @@ const findAll = async (condition) => {
         {
           model: cmtPost,
           as: "parent_cmt",
-          attributes: ["id", "postId", "cmtBy", "comment", "parentId"],
+          attributes: [
+            "id",
+            "postId",
+            "cmtBy",
+            "comment",
+            "parentId",
+            "createdAt",
+          ],
         },
       ],
     })
@@ -92,12 +106,11 @@ const findAll = async (condition) => {
 cmtPost.belongsTo(Users);
 cmtPost.belongsTo(post);
 cmtPost.belongsTo(cmtPost, { foreignKey: "parentId", as: "parent_cmt" });
-// cmtPost.hasMany(post);
 
 module.exports = {
-  create: create,
-  findOne: findOne,
-  update: update,
-  deleteRecord: deleteRecord,
-  findAll: findAll,
+  create,
+  findOne,
+  update,
+  deleteRecord,
+  findAll,
 };

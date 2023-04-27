@@ -1,35 +1,33 @@
 <div class="flex flex-row">
-  <div class="flex w-3/5 justify-center items-center">
-    <img class="h-max" src="../../../../assets/mobile-rbg.png">
+
+  <div class="hidden md:flex w-3/5 items-center bg-gray-200">
+    <img class="h-max ml-auto mr-10" src="../../../../assets/signuprbg.png" />
   </div>
-  <div class="basis-1/2">
-    <div class="h-screen bg-gray-200 flex flex-col justify-center items-center">
 
+  <div class="grow w-full md:basis-1/2">
+    <div class="h-screen bg-gray-200 flex flex-col justify-center max-md:items-center">
       <div class="bg-white mb-3 border border-gray-300 w-80 pt-8 pb-4 flex flex-col items-center">
-
-        <img class="instagram-logo" src="../../../../assets/Logo-Instagram.png">
-        <h5 class="text-sm">Signup</h5>
-        <div *ngIf="msg" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-            <strong class="font-bold">Error!</strong>
-            <span class="block sm:inline">{{msg}}</span>
-            <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
-              <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
-            </span>
-          </div>
+        <img class="h-20 w-30" src="../../../../assets/Logo-Instagram.png" />
+        <h5 class="text-sm font-semibold">Signup</h5>
+        <div *ngIf="msg" class="bg-red-100 border border-red-400 text-sm text-red-700 px-4 py-3 rounded relative" role="alert">
+          <strong class="font-bold">Error! </strong>
+          <span class="block sm:inline"> {{ msg }}</span>
+         
+        </div>
         <form [formGroup]="signupForm" (ngSubmit)="signup(signupForm.value)" class="w-64 flex flex-col gap-1 mt-8"
           method="post">
           <input type="text" class="w-full rounded border bg-gray-100 p-2 mb-1 text-xs" placeholder="Username"
-          formControlName="username">
-            <span class="mr-2 text-xs text-red-500"
+            formControlName="username" />
+          <span class="mr-2 text-xs text-red-500"
             *ngIf="submitted && signupForm.controls.email?.errors?.['email']">*Username is Invalid</span>
-            <span class="mr-2 text-xs text-red-500"
+          <span class="mr-2 text-xs text-red-500"
             *ngIf="submitted && signupForm.controls.email?.errors?.['required']">*Username is required</span>
 
           <div class="flex">
             <input type="text" class="w-1/2 rounded border bg-gray-100 p-2 text-xs mb-1 mr-1" placeholder="First Name"
-              formControlName="firstname">
+              formControlName="firstname" />
             <input type="text" class="w-1/2 rounded border bg-gray-100 p-2 mb-1 text-xs" placeholder="Last Name"
-              formControlName="lastname">
+              formControlName="lastname" />
           </div>
           <div class="flex">
             <span class="mr-2 text-xs text-red-500" *ngIf="submitted && signupForm.controls.firstname?.errors">*First
@@ -39,35 +37,37 @@
           </div>
 
           <input type="email" class="w-full rounded border bg-gray-100 p-2 mb-1 text-xs" placeholder="Email"
-            formControlName="email">
+            formControlName="email" />
           <span class="mr-2 text-xs text-red-500"
             *ngIf="submitted && signupForm.controls.email?.errors?.['email']">*Email is Invalid</span>
           <span class="mr-2 text-xs text-red-500"
             *ngIf="submitted && signupForm.controls.email?.errors?.['required']">*Email is required</span>
 
           <input type="text" class="w-full rounded border bg-gray-100 p-2 mb-1 text-xs" placeholder="Mobile"
-            formControlName="mobile">
+            formControlName="mobile" />
           <span class="mr-2 text-xs text-red-500"
             *ngIf="submitted && signupForm.controls.mobile?.errors?.['minlength'] || signupForm.controls.mobile?.errors?.['maxlength'] ">*Mobile
             is Invalid</span>
           <span class="mr-2 text-xs text-red-500"
             *ngIf="submitted && signupForm.controls.mobile?.errors?.['required']">*Mobile is required</span>
 
-
           <div class="relative">
-            <input type="text" class="w-full rounded border bg-gray-100 p-2 text-xs" placeholder="Enter Password"
-              formControlName="password">
+            <input [type]="password" class="w-full rounded border bg-gray-100 p-2 text-xs" placeholder="Enter Password"
+              formControlName="password" />
 
             <div (click)="togglePassword($event)"
-              class="absolute right-2 bottom-2 focus:text-gray-500 text-sm font-semibold"><svg
-                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+              class="absolute right-3 bottom-2 focus:text-gray-500 text-sm font-semibold">
+              <svg *ngIf="!visible" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" stroke="currentColor"  class="w-4 h-4">
                 <path d="M10 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" />
                 <path fill-rule="evenodd"
                   d="M.664 10.59a1.651 1.651 0 010-1.186A10.004 10.004 0 0110 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0110 17c-4.257 0-7.893-2.66-9.336-6.41zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
                   clip-rule="evenodd" />
               </svg>
+              <svg *ngIf="visible" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"  stroke="currentColor" class="w-4 h-4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+              </svg>
+              
             </div>
-
           </div>
           <span class="mr-2 text-xs text-red-500"
             *ngIf="submitted && signupForm.controls.password?.errors?.['required']">*Password is required</span>
@@ -75,22 +75,21 @@
             *ngIf="submitted && signupForm.controls.password?.errors?.['pattern']">*Password is must be valid (Ex:
             Abc@1234)</span>
 
-          <button type="submit" class="mt-2 text-sm text-center bg-blue-600 text-white py-1 rounded font-medium">Sign
-            Up</button>
-
-
+          <button type="submit" class="mt-2 text-sm text-center bg-blue-600 text-white py-1 rounded font-medium">
+            Sign Up
+          </button>
         </form>
 
         <h5 class="my-3 text-xs">OR</h5>
 
         <div class="flex">
-          <img class="h-5 mr-1" src="../../../../assets/Logo-facebook.png">
+          <img class="h-5 mr-1" src="../../../../assets/facebook.png" />
           <a class="text-blue-900">Login in with Facebook</a>
         </div>
-
       </div>
-      <div class="m-3 text-sm">
-        Already have account ? Do <a (click)="login()" class="text-blue-600">Login</a>
+      <div class="bg-white mb-3 border border-gray-300 w-80 py-4 text-sm flex flex-row justify-center items-center">
+        Already have an account ? 
+        <a (click)="login()" class="text-blue-600 cursor-pointer ml-1">Login</a>
       </div>
     </div>
   </div>

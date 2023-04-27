@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { AuthService } from '../../auth/auth.service';
-import { CommanService } from '../comman.service';
+import { CommanService } from '../shared.service';
 
 @Component({
   selector: 'app-header',
@@ -12,41 +12,49 @@ import { CommanService } from '../comman.service';
 export class HeaderComponent {
 
 
-  searchKey:string | undefined;
+  searchKey: string = "";
   searchUsers: any;
+  totNotification: any = 0
 
-  constructor(private router:Router,private authservice:AuthService, private commanservice:CommanService){}
+  constructor(private router: Router, private authservice: AuthService, private commanservice: CommanService) { }
 
-  ngOnInit(){
-    console.log("helolo")
+  ngOnInit() {
+    this.commanservice.reciveNotification().subscribe((data: any) => {
+      console.log("---->",data)
+      this.totNotification = data
+    })
   }
 
-  searchUser(){
+  searchUser() {
     console.log(this.searchKey)
-    // this.authservice.searchUser(this.searchKey).subscribe((res:any)=>{
-    //   this.searchUsers = res['users']
-    // })
-    let model = document.querySelector('.searchmodel');
-    model?.classList.remove('hidden')
     this.commanservice.sendSearchKey(this.searchKey)
   }
+  onFocus() {
+    let model = document.querySelector('.searchmodel');
+    model?.classList.remove('hidden')
+  }
+  onFocusout() {
+    let model = document.querySelector('.searchmodel');
+    model?.classList.add('hidden')
+  }
 
-
-  createPost(){
+  createPost() {
     this.router.navigate(['create-post'])
   }
 
-  gotoProfile(){
+  gotoProfile() {
     this.router.navigate(['profile'])
   }
 
-  logout(){
+  logout() {
     this.authservice.removeToken();
     this.router.navigate(['login'])
   }
 
-  notifications(){
+  notifications() {
     this.router.navigate(['notification'])
   }
+
+
 
 }

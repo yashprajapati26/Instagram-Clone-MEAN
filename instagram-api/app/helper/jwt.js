@@ -1,36 +1,36 @@
 const jwt = require("jsonwebtoken");
-const secret_key = process.env.ACCESS_TOKEN_SECRET
+const secret_key = process.env.ACCESS_TOKEN_SECRET;
 
 getAuthToken = async (data) => {
-	return jwt.sign(data, secret_key, {
-		expiresIn: 86400, // 24 hours
-	});
+  return jwt.sign(data, secret_key, {
+    expiresIn: 86400, // 24 hours
+  });
 };
 
 decodeAuthToken = async (token) => {
-	if (token) {
-		try {
-			return jwt.verify(token, secret_key);
-		} catch (error) {
-			return false;
-		}
-	}
-	return false;
+  if (token) {
+    try {
+      return jwt.verify(token, secret_key);
+    } catch (error) {
+      return false;
+    }
+  }
+  return false;
 };
 
 validAuthToken = async (token) => {
-	if (token) {
-		try {
-			return jwt.verify(token, secret_key);
-		} catch (error) {
-			return error;
-		}
-	}
-	return false;
+  if (token) {
+    try {
+      return jwt.verify(token, secret_key);
+    } catch (error) {
+      return error;
+    }
+  }
+  return false;
 };
 
 module.exports = {
-	getAuthToken: getAuthToken,
-	validAuthToken: validAuthToken,
-	decodeAuthToken: decodeAuthToken,
+  getAuthToken,
+  validAuthToken,
+  decodeAuthToken,
 };

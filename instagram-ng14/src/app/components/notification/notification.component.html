@@ -1,26 +1,51 @@
 <app-header></app-header>
 
-<h3 class="font-bold text-2xl p-3 m-3 "> Notifications </h3>
-<hr>
+<h3 class="font-bold text-2xl p-3 m-3">Notifications</h3>
+<hr />
 
 <div class="flex-col">
-
   <div class="p-2 m-2 font-bold">Follow requests</div>
-  <div *ngFor="let object of allFollowers" class="p-3 m-3 border border-gray-300 rounded-md">
-    <h3>New Notifications</h3>
+  <div *ngFor="let object of allFollowers" [ngClass]="{'border-gray-300': object.read==1, 'border-pink-600 shadow-sm shadow-pink-400': object.read==0}" class="p-3 m-3 border border-gray-300 rounded-md">
+    <h3 *ngIf="!object.read">New Notifications</h3>
     <div class="flex justify-between items-center">
-
       <div class="flex items-center">
-        <img class="rounded-full w-8 flex mr-3" src="../../../assets/Logo-facebook.png" />
-        <p *ngIf="object.userFollower.status == 'Pending'"><span class="font-bold"> {{object.userFollower.user.username }} </span> {{object.message }}<span class="text-gray-400">{{object.createdAt | date}}</span></p>
-        <p *ngIf="object.userFollower.status == 'Accept'"><span class="font-bold"> {{object.userFollower.user.username }} </span> {{object.message}} <span class="text-gray-400">{{object.createdAt | date}}</span></p>
+        <img *ngIf="object.userFollower.user.userProfile.profile_img; else elseBlock" class="rounded-full w-8 h-8 flex mr-3" src="{{imageUrl}}/{{object.userFollower.user.userProfile.profile_img}}" />
+        <ng-template #elseBlock><img class="rounded-full w-8 h-8 flex mr-3" src="../../../../assets/default.png" /></ng-template>
+        <p *ngIf="object.userFollower.status == 'Pending'">
+          <span class="font-bold">
+            {{ object.userFollower.user.username }}
+          </span>
+          {{ object.message
+          }}<span class="text-gray-400">{{ object.createdAt | date }}</span>
+        </p>
+        <p *ngIf="object.userFollower.status == 'Accept'">
+          <span class="font-bold">
+            {{ object.userFollower.user.username }}
+          </span>
+          {{ object.message }}
+          <span class="text-gray-400">{{ object.createdAt | date }}</span>
+        </p>
       </div>
 
-      <div *ngIf="object.userFollower.status == 'Pending'" class="flex" id="action-{{object.id}}">
-        <button (click)="actionFollowRequest(object.id,object.followerId,'Accept',$event)" id="accept-{{object.id}}" class="text-sm m-1 px-2 py-1 bg-blue-600 rounded-md text-white">
-          confirm
+      <div *ngIf="object.userFollower.status == 'Pending'" class="flex" id="action-{{ object.id }}">
+        <button (click)="
+            actionFollowRequest(
+              object.userFollower.id,
+              object.userFollower.followerId,
+              'Accept',
+              $event
+            )
+          " id="accept-{{ object.userFollower.id }}" class="text-sm m-1 px-2 py-1 bg-blue-600 rounded-md text-white">
+          Confirm
         </button>
-        <button (click)="actionFollowRequest(object.id,object.followerId,'Reject',$event)" id="delete-{{object.id}}" class="text-sm m-1 px-2 py-1 bg-gray-600 rounded-md text-white">
+        <button (click)="
+            actionFollowRequest(
+              object.userFollower.id,
+              object.userFollower.followerId,
+              'Reject',
+              $event
+            )
+          " id="delete-{{ object.userFollower.id }}" class="text-sm m-1 px-2 py-1 bg-gray-600 rounded-md text-white">
           Delete
         </button>
       </div>
@@ -32,21 +57,21 @@
     </div>
   </div>
 
-  <hr>
+  <hr />
   <div class="p-2 m-2 font-bold">Other Notifications</div>
-
-  <div *ngFor="let like of allLiked"  class="p-3 m-3 border border-gray-300 rounded-md">
-    <h3>New Notifications</h3>
+  <div *ngFor="let like of allLiked" [ngClass]="{'border-gray-300': like.read==1, 'border-pink-600 shadow-sm shadow-pink-400': like.read==0}" class="p-3 m-3 border border-gray-300 rounded-md">
+    <h3 *ngIf="!like.read">New Notifications</h3>
     <div class="flex justify-between items-center">
-
-      <div class="flex items-center">
-        <img class="rounded-full w-8 flex mr-3" src="../../../assets/Logo-facebook.png" />
-        <p><span class="font-bold">{{like.likedPost.user.username}}</span> {{like.message}}<span class="text-gray-400">{{like.createdAt | date}}</span></p>
+      <div *ngIf="like?.likedPost" class="flex items-center">
+        <img *ngIf="like?.likedPost?.user?.userProfile?.profile_img; else elseBlock" class="rounded-full w-8 h-8 flex mr-3" src="{{imageUrl}}/{{like.likedPost.user?.userProfile?.profile_img}}" />
+        <ng-template #elseBlock><img class="h-8 w-8 rounded-full flex mr-3" src="../../../../assets/default.png" /></ng-template>
+        <p>
+          <span class="font-bold">{{ like?.likedPost?.user?.username }}</span>
+          {{ like.message
+          }}<span class="text-gray-400">{{ like.createdAt | date }}</span>
+        </p>
       </div>
-      <!-- <img class="rounded w-8 flex mr-3" src="{{imageUrl}}/{{like.likedPost.post.postImages[0].imagePath}}" /> -->
-      
+     
     </div>
   </div>
-
-
 </div>

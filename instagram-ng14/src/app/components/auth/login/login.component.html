@@ -1,36 +1,49 @@
 <div class="h-screen bg-gray-200 flex flex-col justify-center items-center">
-    
-    <div class="bg-white mb-3 border border-gray-300 w-80 pt-8 pb-4 flex flex-col items-center">
-        <img class="h-20 w-30" src="../../../../assets/Logo-Instagram.png">
-        <h5 class="text-sm">Login</h5>
-        <form [formGroup]="loginForm" (ngSubmit)="login(loginForm.value)" class="w-64 flex flex-col gap-1 mt-8" method="post">
-            <input type="text" class="w-full rounded border bg-gray-100 p-2 text-xs mb-1" placeholder="Enter Username or Email" formControlName="username">
-            <span class="mr-2 text-xs text-red-500" *ngIf="submitted && loginForm.controls.username?.errors?.['required']">*Email or Username is required</span>
+  <div *ngIf="msg" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 text-xs rounded relative my-2"
+    role="alert">
+    <strong class="font-bold mr-1">Error!</strong>
+    <span class="block sm:inline">{{ msg }}</span>
+  </div>
+  <div class="bg-white mb-3 border border-gray-300 w-80 pt-8 pb-4 flex flex-col items-center">
+    <img class="h-20 w-30" src="../../../../assets/Logo-Instagram.png" />
+    <h5 class="text-sm font-semibold">Login</h5>
+    <form [formGroup]="loginForm" (ngSubmit)="login(loginForm.value)" class="w-64 flex flex-col gap-1 mt-8"
+      method="post">
+      <input type="text" class="w-full rounded border bg-gray-100 p-2 text-xs mb-1"
+        placeholder="Enter Username or Email" formControlName="username" />
+      <span class="mr-2 text-xs text-red-500"
+        *ngIf="submitted && loginForm.controls.username?.errors?.['required']">*Email or Username is required</span>
 
-            <div class="relative">
-                <input type="text" class="w-full rounded border bg-gray-100 p-2 text-xs" placeholder="Enter Password" formControlName="password">
-                        
-                <div (click)="togglePassword($event)" class="absolute right-2 bottom-2 focus:text-gray-500 text-sm font-semibold"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                    <path d="M10 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" />
-                    <path fill-rule="evenodd" d="M.664 10.59a1.651 1.651 0 010-1.186A10.004 10.004 0 0110 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0110 17c-4.257 0-7.893-2.66-9.336-6.41zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
-                  </svg>
-                </div>
-                <span class="mr-2 text-xs text-red-500" *ngIf="submitted && loginForm.controls.password?.errors?.['required']">*Password is required</span>
+      <div class="relative">
+        <input [type]="password" class="w-full rounded border bg-gray-100 p-2 text-xs" placeholder="Enter Password"
+          formControlName="password" />
 
-            </div>
-            <button type="submit" class="mt-2 text-sm text-center bg-blue-600 text-white py-1 rounded font-medium">Log In</button>
-        
-        </form>
-        
-        <h5 class="my-3 text-xs">OR</h5>
-
-        <div class="flex">
-            <img class="h-5 mr-1" src="../../../../assets/Logo-facebook.png">
-            <a class="text-blue-900">Login in with Facebook</a>
+        <div (click)="togglePassword($event)"
+          class="absolute right-2 bottom-2 focus:text-gray-500 text-sm font-semibold">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+            <path d="M10 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" />
+            <path fill-rule="evenodd"
+              d="M.664 10.59a1.651 1.651 0 010-1.186A10.004 10.004 0 0110 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0110 17c-4.257 0-7.893-2.66-9.336-6.41zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+              clip-rule="evenodd" />
+          </svg>
         </div>
-        
+        <span class="mr-2 text-xs text-red-500"
+          *ngIf="submitted && loginForm.controls.password?.errors?.['required']">*Password is required</span>
+      </div>
+      <button type="submit" class="mt-2 text-sm text-center bg-blue-600 text-white py-1 rounded font-medium">
+        Log in
+      </button>
+    </form>
+
+    <h5 class="my-3 text-xs">OR</h5>
+
+    <div class="flex">
+      <img class="h-5 mr-1" src="../../../../assets/facebook.png" />
+      <a class="text-blue-900 text-sm">Login in with Facebook</a>
     </div>
-    <div class="m-3 text-sm">
-        Dont have account ? Do <a (click)="signup()" class="text-blue-600">SignUp</a>
-    </div>
+  </div>
+  <div class="m-3 text-sm">
+    Don't have an account ? 
+    <a (click)="signup()" class="text-blue-600 cursor-pointer">SignUp</a>
+  </div>
 </div>

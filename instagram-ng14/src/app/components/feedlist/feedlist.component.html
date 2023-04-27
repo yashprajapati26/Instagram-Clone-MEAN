@@ -1,72 +1,54 @@
 <app-header></app-header>
 
-<div class="grid grid-cols-4 gap-4 mb-6">
-  <div class="overflow-y-scroll max-h-screen col-span-4 md:col-span-3">
-    <!-- post -->
- 
-
-    <app-feeds [feeds]="feeds" [user]="user">
-    </app-feeds>
-
-  </div>
-
-  <!-- username -->
-
-  <div class="hidden md:block col-span-1 justify-center items-center">
-    <div class="flex">
-      <div class="rounded-full p-1 flex items-center">
-        <img class="h-16 rounded-full border border-gray-100 shadow-sm"
-          src="https://randomuser.me/api/portraits/women/81.jpg" alt="user image" />
-      </div>
-      <div class="m-3">
-        <p *ngIf="user" class="font-bold text-sm">{{ user.username }}</p>
-        <p *ngIf="user" class="text-sm">
-          {{ user.firstname }} {{ user.lastname }}
-        </p>
-      </div>
-    </div>
-    <hr />
-    <p class="text-sm font-bold mx-3 p-3">Suggetion for you</p>
-    <hr />
-
-    <div *ngFor="let singleuser of allUsers" class="mx-2 flex flex-row items-center align-items justify-between pt-3">
-      <div class="flex items-center justify-between">
-        <img class="rounded-full w-8 flex mr-3" src="../../../assets/Logo-facebook.png" />
-        <a>
-          <p class="font-bold text-sm">{{ singleuser.username }}</p>
-        </a>
-      </div>
-      <button (click)="doUndoFollowing(singleuser.id,$event)" id="user-{{singleuser.id}}" class="text-xs font-bold text-blue-700">{{btnName}}</button>
-
-    </div>
-  </div>
+<div class="flex gap-4 mb-6">
+  <div class="min-h-screen w-full lg:w-4/5" infiniteScroll [infiniteScrollDistance]="0.5" (scrolled)="fatchFeed()">
+  <!-- story  -->
+  <app-list-story [allUsers]="allUsers" [user]="user"></app-list-story>
+  <!-- feed post -->
+  <app-feeds [feeds]="feeds" [user]="user"> </app-feeds>
 </div>
 
-<div class="searchmodel hidden">
-  <div class="h-screen w-full fixed left-0 top-0 pt-28 flex justify-center items-start bg-black bg-opacity-20">
-    <div class="bg-white rounded shadow-lg md:w-1/3 w-64">
-      <div class="border-b px-4 py-2">
-        <h3>Search Results</h3>
-      </div>
-
-      <div class="p-3">
-        <div *ngFor="let user of searchUsers" class="mx-2 flex flex-row items-center align-items justify-between pt-3">
-          <div class="flex items-center justify-between">
-            <img class="rounded-full w-8 flex mr-3" src="../../../assets/Logo-facebook.png" />
-            <a>
-              <p class="font-bold text-sm"> {{user.username}}</p>
-
-            </a>
-          </div>
-          <button class="text-xs font-bold text-blue-700"> follow </button>
-         
-        </div>
-      </div>
-
-      <div class="flex justify-end items-center w-100 border-t p-3">
-        <button (click)="closemodel()" class="bg-red-600 hover:bg-red-800 px-3 py-1 rounded text-white mr-1">cancel</button>
-      </div>
-
+<!-- username -->
+<div class="hidden lg:block w-1/5 fixed right-0">
+  <div class="flex w-96 p-4 items-center">
+    <div class="rounded-full p-1 flex items-center">
+      <img *ngIf="user?.userProfile?.profile_img; else elseBlock"
+        class="h-16 w-16 rounded-full border border-gray-100 shadow-sm"
+        src="{{ imageUrl }}/{{ user?.userProfile?.profile_img }}" alt="user image" />
+      <ng-template #elseBlock><img class="h-8 w-8 rounded-full" src="../../../../assets/default.png" />
+      </ng-template>
     </div>
+    <div class="m-3">
+      <p *ngIf="user" class="font-bold text-sm">{{ user.username }}</p>
+      <p *ngIf="user" class="text-sm">
+        {{ user.firstname }} {{ user.lastname }}
+      </p>
+    </div>
+  </div>
+  <hr />
+  <!-- suggestion  -->
+  <p class="text-sm font-bold mx-3 p-3">Suggetion for you</p>
+  <hr />
+  <div *ngFor="let singleuser of allUsers"
+    class="mx-2 flex flex-row items-center align-items justify-between px-3 mt-2">
+    <div class="flex items-center justify-between">
+      <img *ngIf="singleuser?.userProfile?.profile_img; else elseBlock2" class="rounded-full w-8 h-8 flex mr-3"
+        src="{{ imageUrl }}/{{ singleuser?.userProfile?.profile_img }}" />
+      <ng-template #elseBlock2><img class="rounded-full w-8 h-8 flex mr-3" src="../../../../assets/default.png" />
+      </ng-template>
+      <a>
+        <a class="font-bold text-sm" routerLink="/userprofile/{{ singleuser.username }}/{{
+              singleuser.id
+            }}">{{ singleuser.username }}</a>
+      </a>
+    </div>
+    <button *ngIf="singleuser.isAlreadyFollowed == 'follow'" (click)="doUndoFollowing(singleuser.id, $event)"
+      id="user-{{ singleuser.id }}" class="text-xs font-bold text-white bg-gray-600 py-1 px-auto w-16 rounded">unfollow</button>
+    <button *ngIf="singleuser.isAlreadyFollowed == 'pending'" (click)="doUndoFollowing(singleuser.id, $event)"
+      id="user-{{ singleuser.id }}" class="text-xs font-bold text-white bg-gray-600 py-1 px-auto w-16 rounded">requested</button>
 
+    <button *ngIf="!singleuser.isAlreadyFollowed" (click)="doUndoFollowing(singleuser.id, $event)"
+      id="user-{{ singleuser.id }}" class="text-xs font-bold text-white bg-blue-600 py-1 px-auto w-16 rounded">follow</button>
+  </div>
+</div>
 </div>

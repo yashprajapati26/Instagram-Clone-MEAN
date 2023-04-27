@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CommanService } from './comman.service';
+import { CommanService } from './shared.service';
 
 describe('CommanService', () => {
   let service: CommanService;

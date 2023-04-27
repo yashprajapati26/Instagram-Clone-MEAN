@@ -9,9 +9,9 @@ export class FeedlistService {
 
   constructor(private http:HttpClient) { }
 
-  getFeeds(){
+  getFeeds(params:any){
     let url = environment.apiURL + "/getfeeds/"
-    return this.http.get(url)
+    return this.http.post(url,params)
   }
 
   likedDislikePost(data:any){
@@ -30,7 +30,7 @@ export class FeedlistService {
     return this.http.get(url)
   }
 
-  doFollowing(data:any){
+  doUndoFollowing(data:any){
     let url = environment.apiURL + "/do-undo-following";
     return this.http.post(url,data)
   }

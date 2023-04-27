@@ -14,6 +14,11 @@ export class ProfileService {
     return this.http.post(url,data)
   }
 
+  getUserDetails(userId:any){
+    let url = environment.apiURL + "/userdetails/"+userId;
+    return this.http.get(url)
+  }
+
   getUserProfileDetails(data:any){
     let url = environment.apiURL + "/getuserprofile/" + data
     return this.http.get(url)

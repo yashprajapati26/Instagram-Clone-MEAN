@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'src/environments/environment.development';
 import { ProfileService } from './profile.service';
+import { PostService } from '../posts/post.service';
+import { ToastrService } from 'ngx-toastr';
+import { FeedlistService } from '../feedlist/feedlist.service';
 
 @Component({
   selector: 'app-profile',
@@ -10,27 +13,46 @@ import { ProfileService } from './profile.service';
 })
 export class ProfileComponent {
 
-  userProfile: any;
-  userId: any;
+  userProfile: any | undefined;
+  userId: string | undefined;
   userPost: any;
   msg: any;
   imageUrl = environment.apiURL
 
   userFollowers: any;
   userFollowing: any;
-  title: any
+  title!: string;
   data: any
+  self: boolean = true;
+  user: any;
 
 
-  constructor(private router: Router, private activateRoute: ActivatedRoute, private profileservice: ProfileService) {
-    // let userID = this.activateRoute.snapshot.params['id'];
-    let userID = localStorage.getItem('userId')
-    this.fatchUserProfileDetails(userID);
-    this.fatchUserPost(userID)
+  constructor(
+    private postService: PostService,
+    private toastr: ToastrService,
+    private router: Router,
+    private activateRoute: ActivatedRoute,
+    private profileservice: ProfileService,
+    private feedlistservice: FeedlistService) {
+    console.log("this.activateRoute.params", this.activateRoute.snapshot)
+    if (this.activateRoute.snapshot.params['name'] && this.activateRoute.snapshot.params['id']) {
+      let userId = this.activateRoute.snapshot.params['id']
+      this.fatchUserProfileDetails(userId);
+      this.fatchUserPost(userId)
+      this.fatchUserDetails(userId)
+      if(userId != localStorage.getItem('userId'))this.self = false;
+      console.log("other user ")
+    }
+    else {
+      let userID = localStorage.getItem('userId')
+      this.fatchUserProfileDetails(userID);
+      this.fatchUserPost(userID)
+      console.log("login user ")
+
+    }
   }
 
   ngOnInit() {
-
   }
 
   show(title: any) {
@@ -40,11 +62,8 @@ export class ProfileComponent {
     this.profileservice.getUserFollowersFollowing(this.userId).subscribe((res: any) => {
       this.userFollowers = res['followers']
       this.userFollowing = res['following']
-      console.log(this.userFollowers)
-      console.log(this.userFollowing)
 
       res = this.userFollowing.filter((item: any) => item.userId = this.userId)
-      console.log("res", res)
 
       this.userFollowers = this.userFollowers.map((ele: any) => {
         this.userFollowing.map((item: any) => {
@@ -56,15 +75,8 @@ export class ProfileComponent {
         });
         return ele
       });
-      console.log(this.userFollowers)
-      // console.log(this.userFollowing)
+      this.data = title == "Following" ? this.userFollowing : this.userFollowers
 
-
-      if (title == "following") {
-        this.data = this.userFollowing
-      } else {
-        this.data = this.userFollowers
-      }
     })
 
 
@@ -78,7 +90,6 @@ export class ProfileComponent {
 
   fatchUserProfileDetails(userId: any) {
     this.profileservice.getUserProfileDetails(userId).subscribe((res: any) => {
-      console.log(res['userProfile'])
       this.userProfile = res['userProfile']
       this.userId = this.userProfile['userId']
     })
@@ -87,10 +98,55 @@ export class ProfileComponent {
 
   fatchUserPost(userId: any) {
     this.profileservice.getUserPost(userId).subscribe((res: any) => {
-      console.log(res)
       if (res['userPost']) this.userPost = res['userPost']
       else this.msg = res['msg']
     })
   }
 
+  deletePost(postId: any) {
+    if(confirm("are you sure you want to delete")){
+    this.postService.deletePost(postId).subscribe((res: any) => {
+      this.fatchUserPost(this.userId)
+      this.router.navigate(['profile'])
+    })
+    this.toastr.success('Post Deleted', 'Deleted!');
+  }
+  }
+
+
+
+  fatchUserDetails(userId: any) {
+    this.feedlistservice.getUserDetails(userId).subscribe((res: any) => {
+      this.user = res['user'];
+      console.log("user", this.user)
+      let logginuser = localStorage.getItem('userId')
+      this.user.userFollowers.find((element: any) => {
+        if (element.followerId == logginuser) {
+          if (element.status == 'Accept') this.user.isAlreadyFollowed = 'follow';
+          else this.user.isAlreadyFollowed = 'pending';
+        }
+      })
+    });
+
+  }
+
+  doUndoFollowing(userId: any, event: any) {
+    if (event.target.textContent === 'follow') {
+      event.target.textContent = 'requested';
+      event.target.style.backgroundColor = 'rgb(75 85 99)';
+      this.toastr.success('Sent Follow request to user', 'Success!');
+    } else {
+      event.target.textContent = 'follow';
+      event.target.style.backgroundColor = 'rgb(37 99 235)';
+      this.toastr.warning('unfollow user', 'Success!');
+    }
+    let logginuser = localStorage.getItem('userId')
+    let data = {
+      userId: userId,
+      followerId: logginuser,
+    };
+    this.feedlistservice.doUndoFollowing(data).subscribe((res) => {
+      console.log(res);
+    });
+  }
 }

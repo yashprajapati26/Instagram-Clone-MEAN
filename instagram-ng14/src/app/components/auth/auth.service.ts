@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -9,6 +9,12 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
 
   constructor(private http:HttpClient) { }
+
+  doLoginViaGithub(){
+  
+    let url = environment.apiURL + "/auth/github";
+    return this.http.get(url)
+  }
 
 
   doLogin(data:object):Observable<any>{
@@ -57,8 +63,5 @@ export class AuthService {
     }
     return null;
   }
-
-
- 
 
 }
