@@ -21,6 +21,8 @@ export class SignupComponent {
   })
   submitted = false
   msg: any
+  password:string = "password"
+  visible:boolean = false
 
   constructor(private router: Router, private authservice: AuthService,
     private ngxLoader: NgxUiLoaderService) { }
@@ -49,7 +51,14 @@ export class SignupComponent {
   }
 
   togglePassword(event: any) {
-    console.log("called", event)
+    
+    if (this.password === 'password') {
+      this.password = 'text';
+      this.visible = true;
+    } else {
+      this.password = 'password';
+      this.visible = false;
+    }
   }
 
 }

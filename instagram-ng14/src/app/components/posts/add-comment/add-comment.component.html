@@ -1,53 +1,98 @@
 <app-header></app-header>
 
-<div *ngIf="post" class="grid grid-cols-4 gap-4 mb-6 ">
-  <div class="bg-gray-100 max-h-screen col-span-4 md:flex md:justify-center md:items-center">
+<div *ngIf="post" class="grid grid-cols-4 gap-4 mb-6">
+  <div
+    class="bg-gray-100 max-h-screen col-span-4 md:flex md:justify-center md:items-center"
+  >
     <!-- post -->
     <div class="p-2 md:flex md:px-32 py-4 w-full">
-      <div class="bg-white border rounded-sm md:w-1/2">
+      <div #postimg id="postimg" class="bg-white border rounded-sm md:w-1/2">
         <div class="flex items-center px-4 py-3">
-          <img *ngIf="post.user.userProfile.profile_img; else default" class="h-8 w-8 rounded-full"
-            src="{{ imageUrl }}/{{ post.user.userProfile.profile_img }}" />
-          <ng-template #default><img class="h-8 w-8 rounded-full" src="../../../../assets/default.png" /></ng-template>
+          <img
+            *ngIf="post.user.userProfile.profile_img; else default"
+            class="h-8 w-8 rounded-full"
+            src="{{ imageUrl }}/{{ post.user.userProfile.profile_img }}"
+          />
+          <ng-template #default
+            ><img
+              class="h-8 w-8 rounded-full"
+              src="../../../../assets/default.png"
+          /></ng-template>
           <div class="ml-3">
-            <span class="text-sm font-semibold antialiased block leading-tight">{{ post.user.username }}</span>
-            <span class="text-gray-600 text-xs block">{{ post.user.firstName }} {{ post.user.lastName }}</span>
+            <span class="text-sm font-semibold antialiased block leading-tight"
+              >{{ post.user.username }} {{ postimg.offsetWidth }}</span
+            >
+            <span class="text-gray-600 text-xs block"
+              >{{ post.user.firstName }} {{ post.user.lastName }}</span
+            >
           </div>
         </div>
 
-        <ng-image-slider class="img-responsive" [images]="post.imageObject" [infinite]="false" [manageImageRatio]="true"
-          [autoSlide]="1" [animationSpeed]="0.1" slideImage="1" [imageSize]="{
+        <div class="w-auto">
+          <ng-image-slider
+          class="img-responsive"
+          [images]="post.imageObject"
+          [infinite]="false"
+          [manageImageRatio]="true"
+          [autoSlide]="1"
+          [animationSpeed]="0.1"
+          slideImage="1"
+          [imageSize]="{
             width: sliderImageWidth,
             height: sliderImageHeight
-          }" #nav></ng-image-slider>
+          }"
+          #nav
+        ></ng-image-slider>
+        </div>
 
         <div class="flex items-center justify-between mx-4 mt-3 mb-2">
           <div class="flex gap-5">
-
-            <svg *ngIf="post.isAlreadyLiked" (click)="likedPost($event)" id="feed-{{ post.id }}"
-              xmlns="http://www.w3.org/2000/svg" fill="red" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-              class="w-7 h-7">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+            <svg
+              *ngIf="post.isAlreadyLiked"
+              (click)="likedPost($event)"
+              id="feed-{{ post.id }}"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="red"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-7 h-7"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+              />
             </svg>
 
-            <svg *ngIf="!post.isAlreadyLiked" (click)="likedPost($event)" id="feed-{{ post.id }}"
-              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="currentColor" class="w-7 h-7">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+            <svg
+              *ngIf="!post.isAlreadyLiked"
+              (click)="likedPost($event)"
+              id="feed-{{ post.id }}"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-7 h-7"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+              />
             </svg>
             <svg fill="#262626" height="24" viewBox="0 0 48 48" width="24">
               <path
-                d="M47.8 3.8c-.3-.5-.8-.8-1.3-.8h-45C.9 3.1.3 3.5.1 4S0 5.2.4 5.7l15.9 15.6 5.5 22.6c.1.6.6 1 1.2 1.1h.2c.5 0 1-.3 1.3-.7l23.2-39c.4-.4.4-1 .1-1.5zM5.2 6.1h35.5L18 18.7 5.2 6.1zm18.7 33.6l-4.4-18.4L42.4 8.6 23.9 39.7z">
-              </path>
+                d="M47.8 3.8c-.3-.5-.8-.8-1.3-.8h-45C.9 3.1.3 3.5.1 4S0 5.2.4 5.7l15.9 15.6 5.5 22.6c.1.6.6 1 1.2 1.1h.2c.5 0 1-.3 1.3-.7l23.2-39c.4-.4.4-1 .1-1.5zM5.2 6.1h35.5L18 18.7 5.2 6.1zm18.7 33.6l-4.4-18.4L42.4 8.6 23.9 39.7z"
+              ></path>
             </svg>
           </div>
           <div class="flex">
             <svg fill="#262626" height="24" viewBox="0 0 48 48" width="24">
               <path
-                d="M43.5 48c-.4 0-.8-.2-1.1-.4L24 29 5.6 47.6c-.4.4-1.1.6-1.6.3-.6-.2-1-.8-1-1.4v-45C3 .7 3.7 0 4.5 0h39c.8 0 1.5.7 1.5 1.5v45c0 .6-.4 1.2-.9 1.4-.2.1-.4.1-.6.1zM24 26c.8 0 1.6.3 2.2.9l15.8 16V3H6v39.9l15.8-16c.6-.6 1.4-.9 2.2-.9z">
-              </path>
+                d="M43.5 48c-.4 0-.8-.2-1.1-.4L24 29 5.6 47.6c-.4.4-1.1.6-1.6.3-.6-.2-1-.8-1-1.4v-45C3 .7 3.7 0 4.5 0h39c.8 0 1.5.7 1.5 1.5v45c0 .6-.4 1.2-.9 1.4-.2.1-.4.1-.6.1zM24 26c.8 0 1.6.3 2.2.9l15.8 16V3H6v39.9l15.8-16c.6-.6 1.4-.9 2.2-.9z"
+              ></path>
             </svg>
           </div>
         </div>
@@ -57,117 +102,234 @@
         </div>
 
         <div class="font-semibold text-sm mx-4 mt-2 mb-4">
-          <span id="like-{{post.id}}">{{ post.likedPosts.length }} </span> likes
+          <span id="like-{{ post.id }}">{{ post.likedPosts.length }} </span>
+          likes
         </div>
-        <div class="px-4 mt-2 text-gray-400 text-xs mb-4">{{post.createdAt|date}}</div>
-
-
+        <div class="px-4 mt-2 text-gray-400 text-xs mb-4">
+          {{ post.createdAt | date }}
+        </div>
       </div>
       <div class="md:w-1/2 bg-white border md:relative">
         <!-- show comment -->
-        <div *ngIf="post.cmtPosts.length > 0" class="px-4 my-1 text-gray-400 md:text-lg">
+        <div
+          *ngIf="post.cmtPosts.length > 0"
+          class="px-4 my-1 text-gray-400 md:text-lg"
+        >
           VIEW ALL COMMENTS
         </div>
-        <div *ngFor="let cmt of comments; let i = index" class="px-4 py-1 flex justify-between">
+        <div
+          *ngFor="let cmt of comments; let i = index"
+          class="px-4 py-1 flex justify-between"
+        >
           <div class="w-full">
             <div class="flex">
-
-              <img *ngIf="cmt?.byUser?.userProfile?.profile_img; else default" class="h-6 w-6 rounded-full mx-2"
-                src="{{imageUrl}}/{{cmt?.byUser?.userProfile?.profile_img}}" />
-              <ng-template #default><img class="h-6 w-6 rounded-full mx-2" src="../../../../assets/default.png" />
+              <img
+                *ngIf="cmt?.byUser?.userProfile?.profile_img; else default"
+                class="h-6 w-6 rounded-full mx-2"
+                src="{{ imageUrl }}/{{ cmt?.byUser?.userProfile?.profile_img }}"
+              />
+              <ng-template #default
+                ><img
+                  class="h-6 w-6 rounded-full mx-2"
+                  src="../../../../assets/default.png"
+                />
               </ng-template>
 
               <span class="font-semibold mr-2 text-sm">
                 {{ cmt.byUser.username }}
               </span>
-              <span class="text-sm font-normal" id="{{ cmt.id }}">{{ cmt.comment }}
+              <span class="text-sm font-normal" id="{{ cmt.id }}"
+                >{{ cmt.comment }}
               </span>
-              <span (click)="openReplySection(cmt.id)"
-                class="cursor-pointer text-xs font-semibold p-1 ml-auto order-last">Reply</span>
+              <span
+                (click)="openReplySection(cmt.id)"
+                class="cursor-pointer text-xs font-semibold p-1 ml-auto order-last"
+                >Reply</span
+              >
             </div>
             <div class="flex">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="ml-10 w-4 h-4">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="ml-10 w-4 h-4"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+                />
               </svg>
               <span class="text-xs mx-1">Like</span>
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="ml-4 w-4 h-4">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="ml-4 w-4 h-4"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
 
-              <span class="text-xs mx-1">{{cmt.createdAt | date}}</span>
-              <svg *ngIf="cmt.reply.length > 0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                stroke-width="1.5" stroke="currentColor" class="ml-4 w-4 h-4">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <span class="text-xs mx-1">{{ cmt.createdAt | date }}</span>
+              <svg
+                *ngIf="cmt.reply.length > 0"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="ml-4 w-4 h-4"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
               </svg>
 
-              <span *ngIf="cmt.reply.length > 0" class="text-xs mx-1" (click)="showReplies(cmt.id,$event)">show
-                replies</span>
-
+              <span
+                *ngIf="cmt.reply.length > 0"
+                class="text-xs mx-1"
+                (click)="showReplies(cmt.id, $event)"
+                >show replies</span
+              >
             </div>
 
-            <div *ngIf="cmt?.reply" id="replies-{{cmt.id}}" hidden>
+            <div
+              *ngIf="cmt?.reply"
+              id="replies-{{ cmt.id }}"
+              class="ml-5 border-l-2"
+              hidden
+            >
               <ng-template #recursiveList let-list>
-                <div *ngFor="let node of list" class="pl-4 py-1">
+                <div *ngFor="let node of list" class="pl-4 py-1 border-l-2">
                   <div class="flex">
-                    <img *ngIf="node.byUser.userProfile.profile_img; else default" class="h-6 w-6 rounded-full"
-                      src="{{imageUrl}}/{{node?.byUser?.userProfile?.profile_img}}" />
-                    <ng-template #default><img class="h-6 w-6 rounded-full" src="../../../../assets/default.png" />
+                    <img
+                      *ngIf="node.byUser.userProfile.profile_img; else default"
+                      class="h-6 w-6 rounded-full"
+                      src="{{ imageUrl }}/{{
+                        node?.byUser?.userProfile?.profile_img
+                      }}"
+                    />
+                    <ng-template #default
+                      ><img
+                        class="h-6 w-6 rounded-full"
+                        src="../../../../assets/default.png"
+                      />
                     </ng-template>
                     <span class="font-semibold mr-1 ml-2 text-sm">
                       {{ node.byUser.username }}
                     </span>
                     <span class="text-sm font-normal" id="{{ node.id }}">{{
-                        node.comment
-                      }}</span><br />
-                    <span (click)="openReplySection(node.id)"
-                      class="cursor-pointer float-right text-xs font-semibold p-1 ml-auto">
-                      Reply</span>
+                      node.comment
+                    }}</span
+                    ><br />
+                    <span
+                      (click)="openReplySection(node.id)"
+                      class="cursor-pointer float-right text-xs font-semibold p-1 ml-auto"
+                    >
+                      Reply</span
+                    >
                   </div>
                   <div class="flex">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                      stroke="currentColor" class="ml-10 w-4 h-4">
-                      <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="ml-10 w-4 h-4"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+                      />
                     </svg>
                     <span class="text-xs mx-1">Like</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                      stroke="currentColor" class="ml-4 w-4 h-4">
-                      <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="ml-4 w-4 h-4"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
                     </svg>
 
-                    <span class="text-xs mx-1">{{cmt.createdAt | date}}</span>
+                    <span class="text-xs mx-1">{{ cmt.createdAt | date }}</span>
                   </div>
                   <div *ngIf="node.reply.length > 0">
-                    <ng-container *ngTemplateOutlet="
-                          recursiveList;
-                          context: { $implicit: node.reply }
-                        "></ng-container>
+                    <ng-container
+                      *ngTemplateOutlet="
+                        recursiveList;
+                        context: { $implicit: node.reply }
+                      "
+                    ></ng-container>
                   </div>
 
                   <!-- reply box for inner reply -->
                   <div id="cmt-{{ node.id }}" hidden>
-                    <form [formGroup]="cmtForm" (ngSubmit)="addReply(node.id)" class="flex font-semibold text-sm mt-2">
+                    <form
+                      [formGroup]="cmtForm"
+                      (ngSubmit)="addReply(node.id)"
+                      class="flex font-semibold text-sm mt-2"
+                    >
                       <div class="flex items-center px-2 py-3">
-                        <img *ngIf="loggedUser?.userProfile?.profile_img; else default" class="h-8 w-8 rounded-full"
-                          src="{{ imageUrl }}/{{loggedUser?.userProfile?.profile_img}}" />
-                        <ng-template #default><img class="h-8 w-8 rounded-full" src="../../../../assets/default.png" />
+                        <img
+                          *ngIf="
+                            loggedUser?.userProfile?.profile_img;
+                            else default
+                          "
+                          class="h-8 w-8 rounded-full"
+                          src="{{ imageUrl }}/{{
+                            loggedUser?.userProfile?.profile_img
+                          }}"
+                        />
+                        <ng-template #default
+                          ><img
+                            class="h-8 w-8 rounded-full"
+                            src="../../../../assets/default.png"
+                          />
                         </ng-template>
 
                         <div class="ml-1">
-                          <span *ngIf="loggedUser"
-                            class="text-sm pr-2 font-semibold antialiased block leading-tight">{{ loggedUser.username }}</span>
+                          <span
+                            *ngIf="loggedUser"
+                            class="text-sm pr-2 font-semibold antialiased block leading-tight"
+                            >{{ loggedUser.username }}</span
+                          >
                         </div>
                       </div>
-                      <input type="text" class="w-full ml-4 pl-2 mx-2 my-4 border border-gray-300 rounded-full"
-                        placeholder="reply to {{ cmt.byUser.username }}" name="comment" formControlName="comment" />
-                      <button type="submit" class="mr-2 border bg-gray-200 rounded p-2 my-4">
+                      <input
+                        type="text"
+                        class="w-full ml-4 pl-2 mx-2 my-4 border border-gray-300 rounded-full"
+                        placeholder="reply to {{ cmt.byUser.username }}"
+                        name="comment"
+                        formControlName="comment"
+                      />
+                      <button
+                        type="submit"
+                        class="mr-2 border bg-gray-200 rounded p-2 my-4"
+                      >
                         POST
                       </button>
                     </form>
@@ -175,31 +337,56 @@
                   <!-- end reply box -->
                 </div>
               </ng-template>
-              <ng-container *ngTemplateOutlet="
-                    recursiveList;
-                    context: { $implicit: cmt.reply }">
+              <ng-container
+                *ngTemplateOutlet="
+                  recursiveList;
+                  context: { $implicit: cmt.reply }
+                "
+              >
               </ng-container>
             </div>
 
-
             <!-- reply box -->
             <div id="cmt-{{ cmt.id }}" hidden>
-              <form [formGroup]="cmtForm" (ngSubmit)="addReply(cmt.id)" class="flex font-semibold text-sm mt-2">
+              <form
+                [formGroup]="cmtForm"
+                (ngSubmit)="addReply(cmt.id)"
+                class="flex font-semibold text-sm mt-2"
+              >
                 <div class="flex items-center px-2 py-3">
-                  <img *ngIf=" loggedUser?.userProfile?.profile_img; else default" class="h-8 w-8 rounded-full" src="{{ imageUrl }}/{{
-                        loggedUser?.userProfile?.profile_img
-                      }}" />
-                  <ng-template #default><img class="h-8 w-8 rounded-full" src="../../../../assets/default.png" />
+                  <img
+                    *ngIf="loggedUser?.userProfile?.profile_img; else default"
+                    class="h-8 w-8 rounded-full"
+                    src="{{ imageUrl }}/{{
+                      loggedUser?.userProfile?.profile_img
+                    }}"
+                  />
+                  <ng-template #default
+                    ><img
+                      class="h-8 w-8 rounded-full"
+                      src="../../../../assets/default.png"
+                    />
                   </ng-template>
 
                   <div class="ml-1">
-                    <span *ngIf="loggedUser"
-                      class="text-sm pr-2 font-semibold antialiased block leading-tight">{{ loggedUser.username }}</span>
+                    <span
+                      *ngIf="loggedUser"
+                      class="text-sm pr-2 font-semibold antialiased block leading-tight"
+                      >{{ loggedUser.username }}</span
+                    >
                   </div>
                 </div>
-                <input type="text" class="w-full ml-4 pl-2 mx-2 my-4 border border-gray-300 rounded-full"
-                  placeholder="reply to {{ cmt.byUser.username }}" name="comment" formControlName="comment" />
-                <button type="submit" class="mr-2 border bg-gray-200 rounded p-2 my-4">
+                <input
+                  type="text"
+                  class="w-full ml-4 pl-2 mx-2 my-4 border border-gray-300 rounded-full"
+                  placeholder="reply to {{ cmt.byUser.username }}"
+                  name="comment"
+                  formControlName="comment"
+                />
+                <button
+                  type="submit"
+                  class="mr-2 border bg-gray-200 rounded p-2 my-4"
+                >
                   POST
                 </button>
               </form>
@@ -211,22 +398,43 @@
 
         <div class="md:absolute md:bottom-0 w-full pb-10 md:pb-0">
           <hr />
-          <form [formGroup]="cmtForm" (ngSubmit)="addCmt()" class="flex font-semibold text-sm mx-2 mt-2 mb-4">
+          <form
+            [formGroup]="cmtForm"
+            (ngSubmit)="addCmt()"
+            class="flex font-semibold text-sm mx-2 mt-2 mb-4"
+          >
             <div class="flex items-center px-4 py-3">
-              <img *ngIf="loggedUser.userProfile.profile_img; else default" class="h-8 w-8 rounded-full"
-                src="{{ imageUrl }}/{{ loggedUser.userProfile.profile_img }}" />
-              <ng-template #default><img class="h-8 w-8 rounded-full" src="../../../../assets/default.png" />
+              <img
+                *ngIf="loggedUser.userProfile.profile_img; else default"
+                class="h-8 w-8 rounded-full"
+                src="{{ imageUrl }}/{{ loggedUser.userProfile.profile_img }}"
+              />
+              <ng-template #default
+                ><img
+                  class="h-8 w-8 rounded-full"
+                  src="../../../../assets/default.png"
+                />
               </ng-template>
 
-
               <div class="ml-1">
-                <span *ngIf="loggedUser"
-                  class="text-sm pr-2 font-semibold antialiased block leading-tight">{{ loggedUser.username }}</span>
+                <span
+                  *ngIf="loggedUser"
+                  class="text-sm pr-2 font-semibold antialiased block leading-tight"
+                  >{{ loggedUser.username }}</span
+                >
               </div>
             </div>
-            <input type="text" class="w-full ml-4 pl-2 mx-2 my-4 border border-gray-300 rounded-full"
-              placeholder="Add new comment" name="comment" formControlName="comment" />
-            <button type="submit" class="mr-2 border bg-gray-200 rounded p-2 my-4">
+            <input
+              type="text"
+              class="w-full ml-4 pl-2 mx-2 my-4 border border-gray-300 rounded-full"
+              placeholder="Add new comment"
+              name="comment"
+              formControlName="comment"
+            />
+            <button
+              type="submit"
+              class="mr-2 border bg-gray-200 rounded p-2 my-4"
+            >
               POST
             </button>
           </form>

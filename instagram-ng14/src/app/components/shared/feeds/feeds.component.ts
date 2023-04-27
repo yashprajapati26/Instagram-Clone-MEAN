@@ -1,8 +1,11 @@
 import {
   Component,
+  ElementRef,
+  HostListener,
   Input,
   OnChanges,
-  SimpleChanges
+  SimpleChanges,
+  ViewChild
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -19,9 +22,10 @@ import { PostService } from '../../posts/post.service';
 export class FeedsComponent implements OnChanges {
   @Input('feeds') feeds: any = [];
   @Input('user') user: any;
+  @ViewChild('postimg') postimg: ElementRef | undefined;
 
   imageUrl = environment.apiURL;
-  sliderImageWidth: Number = 585;
+  sliderImageWidth: Number = 591;
   sliderImageHeight: Number = 435;
   userId: any;
   msg: any;
@@ -73,14 +77,20 @@ export class FeedsComponent implements OnChanges {
     });
   }
 
-  likedPost(event: any) {
-    let Id = event.target.id || event.srcElement.id || event.currentTarget.id;
-    let btn = document.getElementById(Id);
-    let count = document.getElementById("like-" + Id.split('-')[1]);
-    let splitArray = Id.split('-');
-    let postId = splitArray[1];
+  likeHover(feedId: any) {
+    let heart = document.getElementById('heart-' + feedId);
+    heart?.classList.add("active")
+    setTimeout(() => {
+      heart?.classList.remove('active');
+    }, 1000);
+  }
 
+  likedPost(feedId: any) {
+    let postId = feedId
+    let btn = document.getElementById("feed-" + postId);
+    let count = document.getElementById("like-" + postId);
     if (btn?.getAttribute('fill') != 'red') {
+      this.likeHover(feedId)
       btn?.setAttribute('fill', 'red');
       let no = null
       no = count?.innerText
@@ -128,5 +138,13 @@ export class FeedsComponent implements OnChanges {
     } else {
       replyBox?.setAttribute('hidden', 'true');
     }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    console.log("--0-----changes...", window.innerWidth)
+    console.log("this.postimg?.nativeElement.offsetWidth:", this.postimg?.nativeElement.offsetWidth)
+    this.sliderImageWidth = this.postimg?.nativeElement.offsetWidth
+    // this.getScreenHeight = window.innerHeight;
   }
 }

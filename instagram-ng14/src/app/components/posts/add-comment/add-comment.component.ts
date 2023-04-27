@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment.development';
@@ -13,8 +13,11 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./add-comment.component.scss']
 })
 export class AddCommentComponent {
-  sliderImageWidth: Number = 545;
-  sliderImageHeight: Number = 425;
+
+
+  @ViewChild('postimg') postimg: ElementRef | undefined;
+  sliderImageWidth: Number | undefined = 631;
+  sliderImageHeight: Number = 465;
 
   post: any
   imageUrl = environment.apiURL
@@ -24,6 +27,8 @@ export class AddCommentComponent {
   postId: any;
   comments: any;
   userId = localStorage.getItem("userId")
+
+
 
   cmtForm = new FormGroup({
     postId: new FormControl("", Validators.required),
@@ -47,6 +52,14 @@ export class AddCommentComponent {
     this.fatchLoginUserDetails()
   }
 
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    console.log("this.postimg?.nativeElement.offsetWidth:", this.postimg?.nativeElement.offsetWidth)
+    this.sliderImageWidth =this.postimg?.nativeElement.offsetWidth
+    // this.getScreenHeight = window.innerHeight;
+  }
+
+
   SetSliderImages() {
     // {{feed.postImages[0].imagePath | json}}
     this.post.imageObject = [];
@@ -56,12 +69,13 @@ export class AddCommentComponent {
       this.post.imageObject.push({ image, thumbImage });
     });
     console.log(this.post);
-
   }
 
   fatchPost(postId: any) {
     this.postservice.getPostDetails(postId).subscribe((res: any) => {
       this.post = res['post']
+      console.log(document.getElementById("width"))
+
       this.comments = this.post['cmtPosts']
       this.comments.map((commit: any) => {
         commit.reply = []

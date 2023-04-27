@@ -34,7 +34,7 @@
     <div class="flex items-center justify-between">
       <img *ngIf="singleuser?.userProfile?.profile_img; else elseBlock2" class="rounded-full w-8 h-8 flex mr-3"
         src="{{ imageUrl }}/{{ singleuser?.userProfile?.profile_img }}" />
-      <ng-template #elseBlock2><img class="rounded-full w-8 h-7 flex mr-3" src="../../../../assets/default.png" />
+      <ng-template #elseBlock2><img class="rounded-full w-8 h-8 flex mr-3" src="../../../../assets/default.png" />
       </ng-template>
       <a>
         <a class="font-bold text-sm" routerLink="/userprofile/{{ singleuser.username }}/{{
