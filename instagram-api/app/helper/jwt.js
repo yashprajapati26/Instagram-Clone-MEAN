@@ -3,7 +3,7 @@ const secret_key = process.env.ACCESS_TOKEN_SECRET;
 
 getAuthToken = async (data) => {
   return jwt.sign(data, secret_key, {
-    expiresIn: 86400, // 24 hours
+    expiresIn: 8760, // 1 hours
   });
 };
 

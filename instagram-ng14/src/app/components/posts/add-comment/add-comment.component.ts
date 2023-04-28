@@ -96,7 +96,9 @@ export class AddCommentComponent {
       });
       this.SetSliderImages();
       this.checkLiked();
-
+    }, (err: any) => {
+      this.toastr.error('something wrong', 'feeds loading');
+      console.log(err)
     })
   }
 
@@ -116,6 +118,9 @@ export class AddCommentComponent {
     this.postservice.createComment(this.cmtForm.value).subscribe((res: any) => {
       this.msg = res['msg']
       this.fatchPost(this.postId)
+    }, (err: any) => {
+      this.toastr.error('comment not added', 'Comment');
+      console.log(err)
     })
     this.toastr.success('comment added sucessfully', 'Comment');
     this.cmtForm.reset();
@@ -131,10 +136,12 @@ export class AddCommentComponent {
     this.postservice.createComment(this.cmtForm.value).subscribe((res: any) => {
       this.msg = res['msg']
       this.fatchPost(this.postId)
-
+      this.toastr.success('comment added sucessfully', 'Comment');
+      this.cmtForm.reset();
+    }, (err: any) => {
+      this.toastr.error('comment not added', 'Comment');
+      console.log(err)
     })
-    this.toastr.success('comment added sucessfully', 'Comment');
-    this.cmtForm.reset();
   }
 
   openReplySection(cmtId: any) {

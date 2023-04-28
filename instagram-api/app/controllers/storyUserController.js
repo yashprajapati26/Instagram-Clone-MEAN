@@ -4,7 +4,12 @@ const storyUserModel = require("../models/storyUser.model");
 
 const createStory = async (req, res) => {
   try {
-    let createstory = await storyUserService.create(req.body);
+    let data = req.body;
+    console.log("#############################",req.body);
+    data["imagePath"] = req.file.path;
+    console.log("----------------------------->",data);
+  
+    let createstory = await storyUserService.create(data);
     if (createstory) {
       return res
         .status(STATUSCODE.success)

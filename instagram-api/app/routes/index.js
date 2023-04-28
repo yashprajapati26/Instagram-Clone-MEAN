@@ -34,8 +34,18 @@ var storage2 = multer.diskStorage({
   },
 });
 
+var storage3 = multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, "./public/storys");
+  },
+  filename: function (req, file, callback) {
+    callback(null, "story" + Date.now() + file.originalname);
+  },
+});
+
 var upload = multer({ storage: storage });
 var profile_upload = multer({ storage: storage2 });
+var story = multer({ storage: storage3 });
 
 router.get("", async (req, res) => {
   return res.send("welcome to instagram backend");
@@ -144,7 +154,7 @@ router.get("/newNotification/:userId", notificationController.newNotification);
 
 // story routes
 
-router.post("/createStory", storyUserController.createStory);
+router.post("/createStory",  story.single("file"), storyUserController.createStory);
 router.get("/getAllStory", storyUserController.getAllStory);
 
 

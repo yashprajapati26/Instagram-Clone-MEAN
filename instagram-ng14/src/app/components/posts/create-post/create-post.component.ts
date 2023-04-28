@@ -13,7 +13,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./create-post.component.scss']
 })
 export class CreatePostComponent {
-  
+
   postForm = new FormGroup({
     content: new FormControl("", Validators.required),
     files: new FormControl("")
@@ -23,18 +23,17 @@ export class CreatePostComponent {
   filesToUpload: Array<File> = [];
   msg: any;
   userId: any = localStorage.getItem('userId')
-  user : any;
+  user: any;
   imageUrls: Array<string> = []
-  isHidden:boolean = false
+  isHidden: boolean = false
   sliderImageWidth: Number = 300;
   sliderImageHeight: Number = 300;
   imageObject: any = [];
   imageUrl = environment.apiURL;
-  next:boolean = false;
-  counter:number = 0;
+  next: boolean = false;
+  counter: number = 0;
 
-  textArea: string ="";
-
+  textArea: string = "";
   public isEmojiPickerVisible: boolean = false;
 
   public addEmoji(event: any) {
@@ -42,23 +41,21 @@ export class CreatePostComponent {
     this.isEmojiPickerVisible = false;
   }
 
-  constructor(private postservice: PostService, private router: Router, private feedlistservice:FeedlistService,
+  constructor(private postservice: PostService, private router: Router, private feedlistservice: FeedlistService,
     private ngxLoader: NgxUiLoaderService,
     private toastr: ToastrService
-    ) { }
+  ) { }
 
-  ngOnInit() { 
+  ngOnInit() {
     this.fatchUserDetails(this.userId);
   }
 
   createPost(data: any) {
     this.ngxLoader.start();
-
     const formData: any = new FormData();
     const files: Array<File> = this.filesToUpload;
     formData.append("content", data['content'])
     formData.append("userId", this.userId)
-
     for (let i = 0; i < files.length; i++) {
       formData.append("files", files[i], files[i]['name']);
     }
@@ -68,19 +65,18 @@ export class CreatePostComponent {
         this.router.navigate(['feed']);
         this.ngxLoader.stop();
         this.toastr.success('Post Sucessfully uploded', 'Success!');
-
-      },
-        (err) => {
-          console.log(err)
-        })
+      }, (err) => {
+        console.log(err)
+        this.router.navigate(['feed']);
+        this.ngxLoader.stop();
+        this.toastr.error('Post uploding fail', 'Failure!');
+      })
     }
   }
 
   fatchUserDetails(userId: any) {
     this.feedlistservice.getUserDetails(userId).subscribe((res: any) => {
       this.user = res['user'];
-     
-
     })
   }
 
@@ -92,7 +88,7 @@ export class CreatePostComponent {
       reader.onload = async () => {
         let image = reader.result as string;
         this.imageUrls[i] = reader.result as string;
-        this.imageObject.push({image, thumbImage:i});
+        this.imageObject.push({ image, thumbImage: image });
       };
     }
     this.isHidden = true;
@@ -100,10 +96,10 @@ export class CreatePostComponent {
     this.next = true;
   }
 
-  nextAction(){
+  nextAction() {
     this.next = true;
   }
-  countLength(event:any){
+  countLength(event: any) {
     console.log(event.target.value.length)
     this.counter = event.target.value.length;
   }
