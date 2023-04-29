@@ -59,16 +59,25 @@
 
   <hr />
   <div class="p-2 m-2 font-bold">Other Notifications</div>
-  <div *ngFor="let like of allLiked" [ngClass]="{'border-gray-300': like.read==1, 'border-pink-600 shadow-sm shadow-pink-400': like.read==0}" class="p-3 m-3 border border-gray-300 rounded-md">
-    <h3 *ngIf="!like.read">New Notifications</h3>
+  <div *ngFor="let ele of allnotifications" [ngClass]="{'border-gray-300': ele.read==1, 'border-pink-600 shadow-sm shadow-pink-400': ele.read==0}" class="p-3 m-3 border border-gray-300 rounded-md">
+    <h3 *ngIf="!ele.read">New Notifications</h3>
     <div class="flex justify-between items-center">
-      <div *ngIf="like?.likedPost" class="flex items-center">
-        <img *ngIf="like?.likedPost?.user?.userProfile?.profile_img; else elseBlock" class="rounded-full w-8 h-8 flex mr-3" src="{{imageUrl}}/{{like.likedPost.user?.userProfile?.profile_img}}" />
+      <div *ngIf="ele?.likedPost" class="flex items-center">
+        <img *ngIf="ele?.likedPost?.user?.userProfile?.profile_img; else elseBlock" class="rounded-full w-8 h-8 flex mr-3" src="{{imageUrl}}/{{ele.likedPost.user?.userProfile?.profile_img}}" />
         <ng-template #elseBlock><img class="h-8 w-8 rounded-full flex mr-3" src="../../../../assets/default.png" /></ng-template>
         <p>
-          <span class="font-bold">{{ like?.likedPost?.user?.username }}</span>
-          {{ like.message
-          }}<span class="text-gray-400">{{ like.createdAt | date }}</span>
+          <span class="font-bold">{{ ele?.likedPost?.user?.username }}</span>
+          {{ ele.message
+          }}<span class="text-gray-400">{{ ele.createdAt | date }}</span>
+        </p>
+      </div>
+      <div *ngIf="ele?.cmtPost" class="flex items-center">
+        <img *ngIf="ele?.cmtPost?.user?.userProfile?.profile_img; else elseBlock" class="rounded-full w-8 h-8 flex mr-3" src="{{imageUrl}}/{{ele.cmtPost.user?.userProfile?.profile_img}}" />
+        <ng-template #elseBlock><img class="h-8 w-8 rounded-full flex mr-3" src="../../../../assets/default.png" /></ng-template>
+        <p>
+          <span class="font-bold">{{ ele?.cmtPost?.user?.username }}</span>
+          {{ ele.message
+          }}<span class="text-gray-400">{{ ele.createdAt | date }}</span>
         </p>
       </div>
      

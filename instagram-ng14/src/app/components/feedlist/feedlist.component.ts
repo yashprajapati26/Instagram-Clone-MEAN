@@ -87,6 +87,10 @@ export class FeedlistComponent {
       })
       this.ngxLoader.stop();
 
+    }, (err: any) => {
+      console.log(err);
+      this.ngxLoader.stop();
+      this.router.navigate(['login'])
     });
   }
 

@@ -49,12 +49,15 @@ export class NotificationComponent {
       this.ngxLoader.start()
       console.log("like notification : ", res);
       this.allLiked = res['likesNotifications'];
-      console.log(res);
+      this.allLiked = this.allLiked.filter((ele:any)=> ele.likedPost != null);
     })
     this.notificationservice.getCmtsNotification(this.userId).subscribe((res: any) => {
       console.log("cmts notification : ", res)
       this.allCmts = res['cmtsNotifications']
-      console.log(res)
+      this.allCmts = this.allCmts.filter((ele:any)=> ele.cmtPost != null);
+      this.allnotifications = this.allLiked.concat(this.allCmts)
+     
+      console.log("all : ", this.allLiked.concat(this.allCmts))
     })
     this.notificationservice.getFollowNotification(this.userId).subscribe((res: any) => {
       console.log("follow notification : ", res)
@@ -63,6 +66,8 @@ export class NotificationComponent {
       this.ngxLoader.stop();
       this.sendNotification();
     })
+
+
 
   }
 

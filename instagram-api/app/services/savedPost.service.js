@@ -1,11 +1,10 @@
-const storyUser = require("../models/storyUser.model");
-const userProfile = require("../models/userProfile.model");
+const savedPost = require("../models/savedPost.model");
 const Users = require("../models/users.model");
 const create = async (data) => {
-  return await storyUser
+  return await savedPost
     .create(data)
-    .then((story) => {
-      return story;
+    .then((res) => {
+      return res;
     })
     .catch((err) => {
       console.log(err);
@@ -14,7 +13,7 @@ const create = async (data) => {
 };
 
 const deleteRecord = async (condition) => {
-  return await storyUser
+  return await savedPost
     .destroy({
       where: condition,
     })
@@ -28,19 +27,13 @@ const deleteRecord = async (condition) => {
 };
 
 const findAll = async (condition) => {
-  return await storyUser
+  return await savedPost
     .findAll({
       where: condition,
       include: [
         {
           model: Users,
           attributes: ["id", "username", "firstName", "lastName", "email"],
-          include: [
-            {
-              model: userProfile,
-              attributes: ["id", "profile_img"],
-            },
-          ],
         },
       ],
       order: [["created_at", "DESC"]],
@@ -54,8 +47,8 @@ const findAll = async (condition) => {
     });
 };
 
-storyUser.belongsTo(Users);
-userProfile.belongsTo(Users);
+savedPost.belongsTo(Users);
+
 module.exports = {
   create,
   deleteRecord,

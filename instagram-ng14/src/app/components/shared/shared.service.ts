@@ -43,7 +43,11 @@ export class CommanService {
 
   searchUser(searchkey:any){
     let url = environment.apiURL + "/searchuser/" + searchkey
-    console.log(url)
     return this.http.get(url)
+  }
+
+  savePost(data:any){
+    let url = environment.apiURL + "/savepost";
+    return this.http.post(url,data)
   }
 }

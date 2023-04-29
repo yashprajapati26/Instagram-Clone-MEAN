@@ -5,9 +5,7 @@ const storyUserModel = require("../models/storyUser.model");
 const createStory = async (req, res) => {
   try {
     let data = req.body;
-    console.log("#############################",req.body);
     data["imagePath"] = req.file.path;
-    console.log("----------------------------->",data);
   
     let createstory = await storyUserService.create(data);
     if (createstory) {
@@ -39,7 +37,6 @@ const getAllStory = async (req, res) => {
       .status(STATUSCODE.failure)
       .json({ msg: "Story not created successfully" });
   } catch (e) {
-    console.log(e);
     return res.status(STATUSCODE.internal).json({
       msg: "something wrong",
       error: e,

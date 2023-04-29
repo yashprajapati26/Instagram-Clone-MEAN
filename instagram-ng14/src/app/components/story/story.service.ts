@@ -15,4 +15,10 @@ export class StoryService {
     return this.http.post(url, data)
   }
 
+  listStory():Observable<any> {
+    let url = environment.apiURL + "/getAllStory";
+    return this.http.get(url)
+    
+  }
+
 }

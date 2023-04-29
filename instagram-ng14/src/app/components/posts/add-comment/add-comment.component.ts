@@ -27,7 +27,7 @@ export class AddCommentComponent {
   postId: any;
   comments: any;
   userId = localStorage.getItem("userId")
-  textArea: string | undefined;
+  textArea: string = "";
 
   public isEmojiPickerVisible: boolean = false;
 
@@ -60,7 +60,6 @@ export class AddCommentComponent {
 
   @HostListener('window:resize', ['$event'])
   onWindowResize() {
-    console.log("this.postimg?.nativeElement.offsetWidth:", this.postimg?.nativeElement.offsetWidth)
     this.sliderImageWidth = this.postimg?.nativeElement.offsetWidth
     // this.getScreenHeight = window.innerHeight;
   }

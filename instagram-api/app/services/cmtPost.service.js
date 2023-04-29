@@ -78,6 +78,7 @@ const findAll = async (condition) => {
         },
         {
           model: Users,
+          as: "cmt_by",
           attributes: ["id", "username", "firstname", "lastname", "email"],
         },
         {
@@ -103,7 +104,7 @@ const findAll = async (condition) => {
     });
 };
 
-cmtPost.belongsTo(Users);
+cmtPost.belongsTo(Users, { foreignKey: "cmtBy", as: "cmt_by" });
 cmtPost.belongsTo(post);
 cmtPost.belongsTo(cmtPost, { foreignKey: "parentId", as: "parent_cmt" });
 

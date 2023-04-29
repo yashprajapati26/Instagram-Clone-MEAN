@@ -13,6 +13,8 @@ import { environment } from 'src/environments/environment.development';
 import { AuthService } from '../../auth/auth.service';
 import { FeedlistService } from '../../feedlist/feedlist.service';
 import { PostService } from '../../posts/post.service';
+import { CommanService } from '../shared.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-feeds',
@@ -41,7 +43,10 @@ export class FeedsComponent implements OnChanges {
     private router: Router,
     private feedlistservice: FeedlistService,
     private postservice: PostService,
-    private authservice: AuthService
+    private authservice: AuthService,
+    private commanservice: CommanService,
+    private toastr: ToastrService
+
   ) {
     console.log("feeds : ", this.feeds)
     this.userId = this.authservice.getUserId();
@@ -140,10 +145,17 @@ export class FeedsComponent implements OnChanges {
     }
   }
 
+  savePost(PostId: number) {
+    console.log("saved : ", PostId);
+    let data = { "postId": PostId, "userId": this.userId }
+    this.commanservice.savePost(data).subscribe((res: any) => {
+      console.log(res)
+      this.toastr.success("Post Saved successfully", "Saved")
+    })
+  }
+
   @HostListener('window:resize', ['$event'])
   onWindowResize() {
-    console.log("--0-----changes...", window.innerWidth)
-    console.log("this.postimg?.nativeElement.offsetWidth:", this.postimg?.nativeElement.offsetWidth)
     this.sliderImageWidth = this.postimg?.nativeElement.offsetWidth
   }
 }

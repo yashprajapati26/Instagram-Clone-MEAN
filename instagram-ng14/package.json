@@ -21,6 +21,7 @@
     "@coreui/coreui": "^4.2.6",
     "@ctrl/ngx-emoji-mart": "^7.1.0",
     "@material/dialog": "^14.0.0",
+    "angular-responsive-carousel": "^2.1.2",
     "jquery": "^3.6.4",
     "jwt-decode": "^3.1.2",
     "ng-image-slider": "^7.0.0",
