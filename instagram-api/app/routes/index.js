@@ -9,6 +9,7 @@ const cmtPostController = require("../controllers/cmtPostController");
 const userFollowerController = require("../controllers/userFollowerController");
 const notificationController = require("../controllers/notificationController");
 const storyUserController = require("../controllers/storyUserController");
+const savedPostController = require("../controllers/savedPostController");
 const { celebrate, Segments } = require("celebrate");
 const { signup, login } = require("../validators/auth.validator");
 const { comment } = require("../validators/comment.validator");
@@ -156,6 +157,12 @@ router.get("/newNotification/:userId", notificationController.newNotification);
 
 router.post("/createStory",  story.single("file"), storyUserController.createStory);
 router.get("/getAllStory", storyUserController.getAllStory);
+
+//saved Post routes
+
+router.post("/savedUnsavedPost", savedPostController.savePost);
+router.post("/deletePost", savedPostController.removePost);
+router.get("/listSavedPosts/:userId", savedPostController.listSavedPosts);
 
 
 

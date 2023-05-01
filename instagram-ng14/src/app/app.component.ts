@@ -55,6 +55,7 @@ export class AppComponent {
     this.notificationservice.getNewNotification(this.userId).subscribe((res: any) => {
       this.newCount = res['count']
       this.sendNotification()
+      console.log("new count :",this.newCount)
     })
   }
 

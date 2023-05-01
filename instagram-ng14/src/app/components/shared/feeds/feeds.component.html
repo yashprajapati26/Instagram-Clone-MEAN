@@ -96,12 +96,12 @@
           ></path>
         </svg>
       </div>
-      <div class="flex">
-        <svg (click)="savePost(feed.id)" fill="#262626" height="24" viewBox="0 0 48 48" width="24">
-          <path
-            d="M43.5 48c-.4 0-.8-.2-1.1-.4L24 29 5.6 47.6c-.4.4-1.1.6-1.6.3-.6-.2-1-.8-1-1.4v-45C3 .7 3.7 0 4.5 0h39c.8 0 1.5.7 1.5 1.5v45c0 .6-.4 1.2-.9 1.4-.2.1-.4.1-.6.1zM24 26c.8 0 1.6.3 2.2.9l15.8 16V3H6v39.9l15.8-16c.6-.6 1.4-.9 2.2-.9z"
-          ></path>
+      <div class="flex cursor-pointer">
+  
+        <svg (click)="savePost(feed.id,$event)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  stroke="currentColor" class="w-7 h-7" [ngStyle]="{'fill':feed.saved === true ? 'black' : 'white' }">
+          <path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z" clip-rule="evenodd" />
         </svg>
+        
       </div>
     </div>
     <div class="font-semibold text-sm mx-4 mt-2 mb-4">

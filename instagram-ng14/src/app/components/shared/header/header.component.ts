@@ -20,7 +20,7 @@ export class HeaderComponent {
 
   ngOnInit() {
     this.commanservice.reciveNotification().subscribe((data: any) => {
-      console.log("---->",data)
+      console.log("new notification count---->",data)
       this.totNotification = data
     })
   }

@@ -31,6 +31,7 @@ export class FeedsComponent implements OnChanges {
   sliderImageHeight: Number = 435;
   userId: any;
   msg: any;
+  savedPosts: any;
 
   cmtForm = new FormGroup({
     postId: new FormControl('', Validators.required),
@@ -54,6 +55,7 @@ export class FeedsComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['feeds']) {
+      this.listSavedPost();
       this.checkLiked();
       this.SetSliderImages();
     }
@@ -145,13 +147,43 @@ export class FeedsComponent implements OnChanges {
     }
   }
 
-  savePost(PostId: number) {
+  savePost(PostId: number, event: any) {
+    let btn = event.target
+    console.log("save btn : ", btn)
+    if (btn?.getAttribute('fill') != 'black') {
+      btn?.setAttribute('fill', 'black');
+    }
+    else {
+      btn?.setAttribute('fill', 'white');
+    }
     console.log("saved : ", PostId);
     let data = { "postId": PostId, "userId": this.userId }
-    this.commanservice.savePost(data).subscribe((res: any) => {
+
+    this.commanservice.savedUnsavedPost(data).subscribe((res: any) => {
       console.log(res)
+      if(res.removed){
+        this.toastr.error("Post remove successfully", "Removed")
+
+      }else{
       this.toastr.success("Post Saved successfully", "Saved")
+      }
     })
+  }
+
+  listSavedPost() {
+    this.commanservice.fatchAllSavedPosts(this.userId).subscribe((res: any) => {
+      console.log(res)
+      this.savedPosts = res['allSaved']
+      this.feeds = this.feeds?.map((feed: any) => {
+        this.savedPosts?.find((ele: any) => {
+          if (ele.postId == feed.id) {
+            feed.saved = true;
+          }
+        });
+        return feed;
+      })
+    })
+    console.log("feeds=== : ",this.feeds)
   }
 
   @HostListener('window:resize', ['$event'])

@@ -100,12 +100,17 @@
       </div>
       <!-- Modal body -->
       <div class="h-full">
+        <ngx-ui-loader [hasProgressBar]="true" [loaderId]="listStory"></ngx-ui-loader>
+
         <carousel
           [images]="images"
           [cellsToShow]="1"
           [loop]="true"
           [autoplay]="true"
-          [autoplayInterval]="3000"
+          [autoplayInterval]="2000"
+          [pauseOnHover]="true"
+          [objectFit]="'cover'"
+          [cellWidth]="'100%'"
         >
         </carousel>
       </div>

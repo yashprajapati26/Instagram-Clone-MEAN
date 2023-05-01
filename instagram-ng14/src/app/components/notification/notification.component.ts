@@ -26,14 +26,14 @@ export class NotificationComponent {
     private ngxLoader: NgxUiLoaderService,
     private commanservice: CommanService,
     private toastr: ToastrService
-    ) {
+  ) {
     this.userId = this.authservice.getUserId()
     this.getNotification();
   }
 
   ngOnInit() {
   }
-  
+
   ngOnDestroy() {
     this.readNorification();
   }
@@ -47,34 +47,27 @@ export class NotificationComponent {
   getNotification() {
     this.notificationservice.getLikedNotification(this.userId).subscribe((res: any) => {
       this.ngxLoader.start()
-      console.log("like notification : ", res);
       this.allLiked = res['likesNotifications'];
-      this.allLiked = this.allLiked.filter((ele:any)=> ele.likedPost != null);
+      this.allLiked = this.allLiked.filter((ele: any) => ele.likedPost != null);
     })
     this.notificationservice.getCmtsNotification(this.userId).subscribe((res: any) => {
-      console.log("cmts notification : ", res)
       this.allCmts = res['cmtsNotifications']
-      this.allCmts = this.allCmts.filter((ele:any)=> ele.cmtPost != null);
+      this.allCmts = this.allCmts.filter((ele: any) => ele.cmtPost != null);
       this.allnotifications = this.allLiked.concat(this.allCmts)
-     
-      console.log("all : ", this.allLiked.concat(this.allCmts))
+      this.allnotifications = this.allnotifications.sort((a: any, b: any) => {
+        return <any>new Date(b.createdAt) - <any>new Date(a.createdAt);
+      });
     })
     this.notificationservice.getFollowNotification(this.userId).subscribe((res: any) => {
-      console.log("follow notification : ", res)
       this.allFollowers = res['followNotifications']
       console.log(res)
+      this.allFollowers = this.allFollowers.filter((ele: any) => ele.userFollower != null);
+
       this.ngxLoader.stop();
-      this.sendNotification();
     })
 
+ }
 
-
-  }
-
-
-  sendNotification() {
-    
-  }
 
   actionFollowRequest(requestId: any, followerId: any, status: any, event: any) {
     let userId = this.authservice.getUserId()

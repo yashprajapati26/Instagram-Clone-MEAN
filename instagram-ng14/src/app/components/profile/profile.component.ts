@@ -5,6 +5,8 @@ import { ProfileService } from './profile.service';
 import { PostService } from '../posts/post.service';
 import { ToastrService } from 'ngx-toastr';
 import { FeedlistService } from '../feedlist/feedlist.service';
+import { CommanService } from '../shared/shared.service';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-profile',
@@ -25,22 +27,25 @@ export class ProfileComponent {
   data: any
   self: boolean = true;
   user: any;
-
+  savedPost: any;
 
   constructor(
     private postService: PostService,
     private toastr: ToastrService,
+    private ngxLoader: NgxUiLoaderService,
+
     private router: Router,
     private activateRoute: ActivatedRoute,
     private profileservice: ProfileService,
-    private feedlistservice: FeedlistService) {
-    console.log("this.activateRoute.params", this.activateRoute.snapshot)
+    private feedlistservice: FeedlistService,
+    private commanService: CommanService) {
+      
     if (this.activateRoute.snapshot.params['name'] && this.activateRoute.snapshot.params['id']) {
       let userId = this.activateRoute.snapshot.params['id']
       this.fatchUserProfileDetails(userId);
       this.fatchUserPost(userId)
       this.fatchUserDetails(userId)
-      if(userId != localStorage.getItem('userId'))this.self = false;
+      if (userId != localStorage.getItem('userId')) this.self = false;
       console.log("other user ")
     }
     else {
@@ -48,7 +53,6 @@ export class ProfileComponent {
       this.fatchUserProfileDetails(userID);
       this.fatchUserPost(userID)
       console.log("login user ")
-
     }
   }
 
@@ -104,13 +108,13 @@ export class ProfileComponent {
   }
 
   deletePost(postId: any) {
-    if(confirm("are you sure you want to delete")){
-    this.postService.deletePost(postId).subscribe((res: any) => {
-      this.fatchUserPost(this.userId)
-      this.router.navigate(['profile'])
-    })
-    this.toastr.success('Post Deleted', 'Deleted!');
-  }
+    if (confirm("are you sure you want to delete")) {
+      this.postService.deletePost(postId).subscribe((res: any) => {
+        this.fatchUserPost(this.userId)
+        this.router.navigate(['profile'])
+      })
+      this.toastr.success('Post Deleted', 'Deleted!');
+    }
   }
 
 
@@ -148,5 +152,14 @@ export class ProfileComponent {
     this.feedlistservice.doUndoFollowing(data).subscribe((res) => {
       console.log(res);
     });
+  }
+
+  savedPostList() {
+    this.ngxLoader.start();
+    this.commanService.fatchAllSavedPosts(this.userId).subscribe((res: any) => {
+      this.savedPost = res['allSaved']
+      console.log("savedPost ", this.savedPost)
+      this.ngxLoader.stop();
+    })
   }
 }

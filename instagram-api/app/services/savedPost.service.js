@@ -1,5 +1,22 @@
+const Post = require("../models/post.model");
+const postImages = require("../models/postImages.model");
 const savedPost = require("../models/savedPost.model");
 const Users = require("../models/users.model");
+
+const findOne = async (data) => {
+  return await savedPost
+    .findOne({
+      // attributes: attributes,
+      where: data,
+    })
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      throw err;
+    });
+};
+
 const create = async (data) => {
   return await savedPost
     .create(data)
@@ -32,8 +49,14 @@ const findAll = async (condition) => {
       where: condition,
       include: [
         {
-          model: Users,
-          attributes: ["id", "username", "firstName", "lastName", "email"],
+          model: Post,
+          attributes: ["id", "userId", "content"],
+          include: [
+            {
+              model: postImages,
+              attributes: ["id", "postId", "imagePath"],
+            },
+          ],
         },
       ],
       order: [["created_at", "DESC"]],
@@ -48,8 +71,12 @@ const findAll = async (condition) => {
 };
 
 savedPost.belongsTo(Users);
+savedPost.belongsTo(Post);
+
+postImages.belongsTo(Post)
 
 module.exports = {
+  findOne,
   create,
   deleteRecord,
   findAll,

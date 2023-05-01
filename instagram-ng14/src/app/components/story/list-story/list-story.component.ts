@@ -2,6 +2,7 @@ import { Component, EventEmitter, HostListener, Input, Output } from '@angular/c
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { StoryService } from '../story.service';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-list-story',
@@ -19,7 +20,9 @@ export class ListStoryComponent {
   sliderImageHeight: Number = 465;
   isvisible = false;
   images: any = []
-  constructor(private router: Router, private storyservice: StoryService) {
+  constructor(private router: Router,
+    private ngxLoader: NgxUiLoaderService,
+    private storyservice: StoryService) {
     this.getAllStory()
   }
 
@@ -52,8 +55,11 @@ export class ListStoryComponent {
   }
 
   viewStory() {
+    this.ngxLoader.startLoader("listStory");
+
     this.isvisible = true
 
+    this.ngxLoader.stopLoader("listStory");
   }
   goBackToPrevPage(): void {
     this.closeModal()

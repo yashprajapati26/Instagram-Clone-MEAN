@@ -46,8 +46,13 @@ export class CommanService {
     return this.http.get(url)
   }
 
-  savePost(data:any){
-    let url = environment.apiURL + "/savepost";
+  savedUnsavedPost(data:any){
+    let url = environment.apiURL + "/savedUnsavedPost";
     return this.http.post(url,data)
+  }
+
+  fatchAllSavedPosts(userId:any){
+    let url = environment.apiURL + "/listSavedPosts/" + userId;
+    return this.http.get(url)
   }
 }
