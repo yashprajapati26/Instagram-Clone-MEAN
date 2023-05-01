@@ -12,6 +12,7 @@ import { EditProfileComponent } from './components/profile/edit-profile/edit-pro
 import { ProfileComponent } from './components/profile/profile.component';
 import { AuthguardGuard } from './guards/authguard.guard';
 import { AddStoryComponent } from './components/story/add-story/add-story.component';
+import { ForgetPasswordComponent } from './components/auth/forget-password/forget-password.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,10 @@ const routes: Routes = [
   {
     path:'otpVerification',
     component: OtpVerifyComponent
+  },
+  {
+    path:'forget-password',
+    component: ForgetPasswordComponent
   },
   {
     path:'edit-profile',
@@ -73,6 +78,7 @@ const routes: Routes = [
   },
   {
     path: 'add-story',
+    canActivate:[AuthguardGuard],
     component : AddStoryComponent
   },
   {

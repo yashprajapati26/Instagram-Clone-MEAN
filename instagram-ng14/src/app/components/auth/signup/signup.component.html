@@ -75,7 +75,7 @@
             *ngIf="submitted && signupForm.controls.password?.errors?.['pattern']">*Password is must be valid (Ex:
             Abc@1234)</span>
 
-          <button type="submit" class="mt-2 text-sm text-center bg-blue-600 text-white py-1 rounded font-medium">
+          <button type="submit" class="mt-2 text-sm text-center bg-sky-500 font-bold text-white py-1 rounded-md">
             Sign Up
           </button>
         </form>
@@ -89,7 +89,7 @@
       </div>
       <div class="bg-white mb-3 border border-gray-300 w-80 py-4 text-sm flex flex-row justify-center items-center">
         Already have an account ? 
-        <a (click)="login()" class="text-blue-600 cursor-pointer ml-1">Login</a>
+        <a (click)="login()" class="text-blue-600 cursor-pointer ml-1 font-bold">Login</a>
       </div>
     </div>
   </div>

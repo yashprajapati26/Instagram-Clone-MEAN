@@ -10,6 +10,19 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
+  footer = ["Meta",
+    "About",
+    "Blog",
+    "Jobs",
+    "Help",
+    "API",
+    "Privacy",
+    "Terms",
+    "Top accounts",
+    "Locations",
+    "Instagram Lite",
+    "Contact uploading and non-users",
+    "Meta", "Verified"]
 
   loginForm = new FormGroup({
     username: new FormControl("yashprajapati26", Validators.required),
@@ -17,7 +30,7 @@ export class LoginComponent {
   })
   submitted: boolean = false
   msg: any
-  password:string = "password"
+  password: string = "password"
   constructor(private router: Router, private authservice: AuthService, private ngxLoader: NgxUiLoaderService) { }
 
   ngOnInit() { }
@@ -56,7 +69,7 @@ export class LoginComponent {
   }
 
   togglePassword(event: any) {
-    
+
     if (this.password === 'password') {
       this.password = 'text';
       // this.show = true;

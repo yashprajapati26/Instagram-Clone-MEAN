@@ -27,6 +27,7 @@ import { AddStoryComponent } from './components/story/add-story/add-story.compon
 import { ListStoryComponent } from './components/story/list-story/list-story.component';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import {IvyCarouselModule} from 'angular-responsive-carousel';
+import { ForgetPasswordComponent } from './components/auth/forget-password/forget-password.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsPosition: POSITION.bottomCenter,
@@ -56,6 +57,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     NotificationComponent,
     AddStoryComponent,
     ListStoryComponent,
+    ForgetPasswordComponent,
   ],
   imports: [
     BrowserModule,

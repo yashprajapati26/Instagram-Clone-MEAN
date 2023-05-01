@@ -30,20 +30,27 @@
         <span class="mr-2 text-xs text-red-500"
           *ngIf="submitted && loginForm.controls.password?.errors?.['required']">*Password is required</span>
       </div>
-      <button type="submit" class="mt-2 text-sm text-center bg-blue-600 text-white py-1 rounded font-medium">
+      <button type="submit" class="mt-2 bg-sky-500 text-sm text-center text-white py-1 rounded-md font-bold ">
         Log in
       </button>
     </form>
-
     <h5 class="my-3 text-xs">OR</h5>
 
     <div class="flex">
-      <img class="h-5 mr-1" src="../../../../assets/facebook.png" />
-      <a class="text-blue-900 text-sm">Login in with Facebook</a>
+      <img class="h-4 mr-1" src="../../../../assets/facebook.png" />
+      <a class="text-blue-900 text-sm font-semibold">Login in with Facebook</a>
     </div>
+    <a class="m-2 text-xs cursor-pointer" routerLink="/forget-password">Forgotten your password?</a>
   </div>
   <div class="m-3 text-sm">
     Don't have an account ? 
-    <a (click)="signup()" class="text-blue-600 cursor-pointer">SignUp</a>
+    <a (click)="signup()" class="text-blue-600 cursor-pointer font-bold">SignUp</a>
+  </div>
+
+
+  <div class="hidden md:flex"><p class="px-3 text-xs text-gray-500 mt-28 -mb-6" *ngFor="let temp of footer">{{temp}}</p></div>
+  <div class="flex mt-10">
+    <p class="px-3 text-xs text-gray-500 ">English(UK)</p>
+  <p class="px-3 text-xs text-gray-500 ">© 2023 Instagram from Meta</p>
   </div>
 </div>
