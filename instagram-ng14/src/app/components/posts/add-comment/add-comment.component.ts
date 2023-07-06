@@ -6,6 +6,8 @@ import { AuthService } from '../../auth/auth.service';
 import { FeedlistService } from '../../feedlist/feedlist.service';
 import { PostService } from '../post.service';
 import { ToastrService } from 'ngx-toastr';
+import { User } from 'src/app/interfaces/user.interface';
+import { Post } from 'src/app/interfaces/post.interface';
 
 @Component({
   selector: 'app-add-comment',
@@ -19,12 +21,12 @@ export class AddCommentComponent {
   sliderImageWidth: Number | undefined = 631;
   sliderImageHeight: Number = 465;
 
-  post: any
+  post !: Post;
   imageUrl = environment.apiURL
-  loggedUser: any | undefined;
+  loggedUser !: User ;
   msg: string | undefined;
   replies: any;
-  postId: any;
+  postId!: number;
   comments: any;
   userId = localStorage.getItem("userId")
   textArea: string = "";
@@ -37,8 +39,8 @@ export class AddCommentComponent {
   }
 
   cmtForm = new FormGroup({
-    postId: new FormControl("", Validators.required),
-    cmtBy: new FormControl("", Validators.required),
+    postId: new FormControl(0, Validators.required),
+    cmtBy: new FormControl(0, Validators.required),
     comment: new FormControl("", Validators.required),
     parentId: new FormControl(null, Validators.required),
 
@@ -67,18 +69,18 @@ export class AddCommentComponent {
 
   SetSliderImages() {
     this.post.imageObject = [];
-    this.post.postImages.map((obj: any) => {
+    this.post.postImages?.map((obj: any) => {
       let image = this.imageUrl + '/' + obj.imagePath;
       let thumbImage = image;
-      this.post.imageObject.push({ image, thumbImage });
+      this.post?.imageObject.push({ image, thumbImage });
     });
     console.log(this.post);
   }
 
   fatchPost(postId: any) {
     this.postservice.getPostDetails(postId).subscribe((res: any) => {
-      this.post = res['post']
-      this.comments = this.post['cmtPosts']
+      this.post = res['post'];
+      this.comments = this.post?.cmtPosts
       this.comments.map((commit: any) => {
         commit.reply = []
         if (commit.parentId) {
@@ -112,7 +114,7 @@ export class AddCommentComponent {
   addCmt() {
     this.cmtForm.patchValue({
       postId: this.post.id,
-      cmtBy: this.loggedUser.id,
+      cmtBy: this.loggedUser?.id,
     })
     this.postservice.createComment(this.cmtForm.value).subscribe((res: any) => {
       this.msg = res['msg']
@@ -128,7 +130,7 @@ export class AddCommentComponent {
   addReply(cmtId: any) {
     this.cmtForm.patchValue({
       postId: this.post.id,
-      cmtBy: this.loggedUser.id,
+      cmtBy: this.loggedUser?.id,
       parentId: cmtId
     })
     console.log(this.cmtForm.value)
@@ -154,7 +156,7 @@ export class AddCommentComponent {
   }
 
   checkLiked() {
-    this.post.likedPosts.filter((ele: any) => {
+    this.post.likedPosts?.filter((ele: any) => {
       if (ele.likedBy == this.userId) {
         this.post.isAlreadyLiked = true;
       }

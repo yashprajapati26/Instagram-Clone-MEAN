@@ -16,6 +16,10 @@ export class AuthService {
     return this.http.get(url)
   }
 
+  doLoginViaGoogle(){
+    let url = environment.apiURL + "/auth/google";
+    return this.http.get(url)
+  }
 
   doLogin(data:object):Observable<any>{
     let url = environment.apiURL + "/login"

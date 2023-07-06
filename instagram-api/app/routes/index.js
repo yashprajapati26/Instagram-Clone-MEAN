@@ -15,6 +15,35 @@ const { signup, login } = require("../validators/auth.validator");
 const { comment } = require("../validators/comment.validator");
 const { passport } = require("../controllers/oauthController");
 const { verifyToken } = require("../middleware/auth.middleware");
+const GoogleStrategy = require("passport-google-oauth2").Strategy;
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser(async (id, done) => {
+  done(null, id);
+});
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID, // Your Credentials here.
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET, // Your Credentials here.
+      callbackURL: process.env.GOOGLE_CALLBACK_URL,
+      passReqToCallback: true,
+    },
+    async (request, accessToken, refreshToken, profile, done) => {
+      if (profile) {
+        let user = await User.create({
+          username: profile.email,
+          password: null,
+        });
+        return done(null, profile);
+      } else return done(null, false);
+    }
+  )
+);
 
 // local storage for save post images
 var storage = multer.diskStorage({
@@ -167,6 +196,44 @@ router.get("/listSavedPosts/:userId", savedPostController.listSavedPosts);
 
 
 // Oauth routes
+
+
+
+// const isLoggedIn = (req, res, next) => {
+//   if(req.isAuthenticated()){
+//       return next()
+//   }
+//   return res.status(400).json({"statusCode" : 400, "message" : "not authenticated"})
+// }
+
+
+
+
+router.get(
+  "/auth/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+  })
+);
+
+router.get(
+  "auth/google/callback",
+  passport.authenticate("google", {
+    failureRedirect: "/login?error=true",
+  }),
+  (req, res) => {
+    console.log(req.user);
+    res.status(200).json({profile: req.user})
+
+  }
+);
+
+
+
+
+
+
+
 router.get(
   "/auth/github",
   passport.authenticate("github", { scope: ["user:email"] })

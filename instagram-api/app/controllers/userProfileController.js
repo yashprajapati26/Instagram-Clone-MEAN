@@ -52,7 +52,9 @@ const createProfile = async (req, res) => {
 
 const getUserProfileInfo = async (req, res) => {
   try {
-    let userProfile = await userProfileService.findOne({
+    let userProfile = await userProfileService.findOne(
+      ["id","userId","profile_img","bio","dob","gender","city","country","no_of_followers","no_of_following"]
+      ,{
       userId: req.params.userId,
     });
     if (userProfile) {

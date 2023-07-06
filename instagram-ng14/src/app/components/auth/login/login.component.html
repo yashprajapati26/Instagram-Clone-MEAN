@@ -37,20 +37,29 @@
     <h5 class="my-3 text-xs">OR</h5>
 
     <div class="flex">
-      <img class="h-4 mr-1" src="../../../../assets/facebook.png" />
-      <a class="text-blue-900 text-sm font-semibold">Login in with Facebook</a>
+      <a>
+        <img class="h-6 mx-2 rounded-full border" src="../../../../assets/facebook.png" />
+      </a>
+      <a (click)="googleLogin()">
+        <img class="h-6 mx-2 rounded-full border" src="../../../../assets/google.png" />
+      </a>
+      <a (click)="githubLogin()">
+        <img class="h-6 mx-2 rounded-full border" src="../../../../assets/github.png" />
+      </a>
     </div>
     <a class="m-2 text-xs cursor-pointer" routerLink="/forget-password">Forgotten your password?</a>
   </div>
   <div class="m-3 text-sm">
-    Don't have an account ? 
+    Don't have an account ?
     <a (click)="signup()" class="text-blue-600 cursor-pointer font-bold">SignUp</a>
   </div>
 
 
-  <div class="hidden md:flex"><p class="px-3 text-xs text-gray-500 mt-28 -mb-6" *ngFor="let temp of footer">{{temp}}</p></div>
+  <div class="hidden md:flex">
+    <p class="px-3 text-xs text-gray-500 mt-28 -mb-6" *ngFor="let temp of footer">{{temp}}</p>
+  </div>
   <div class="flex mt-10">
     <p class="px-3 text-xs text-gray-500 ">English(UK)</p>
-  <p class="px-3 text-xs text-gray-500 ">© 2023 Instagram from Meta</p>
+    <p class="px-3 text-xs text-gray-500 ">© 2023 Instagram from Meta</p>
   </div>
 </div>

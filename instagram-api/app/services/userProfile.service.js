@@ -12,9 +12,9 @@ const create = async (data) => {
     });
 };
 
-const findOne = async (data) => {
+const findOne = async (attributes,data) => {
   return await userProfile.findOne({
-    // attributes: attributes,
+    attributes: attributes,
     where: data,
     include: [
       {

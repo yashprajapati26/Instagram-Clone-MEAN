@@ -6,6 +6,7 @@ import { FeedlistService } from '../../feedlist/feedlist.service';
 import { PostService } from '../post.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { ToastrService } from 'ngx-toastr';
+import { User } from 'src/app/interfaces/user.interface';
 
 @Component({
   selector: 'app-create-post',
@@ -22,8 +23,8 @@ export class CreatePostComponent {
   @Output() onClose: EventEmitter<boolean> = new EventEmitter();
   filesToUpload: Array<File> = [];
   msg: any;
-  userId: any = localStorage.getItem('userId')
-  user: any;
+  userId: string | null = localStorage.getItem('userId')
+  user ?: User ;
   imageUrls: Array<string> = []
   isHidden: boolean = false
   sliderImageWidth: Number = 300;
@@ -75,8 +76,10 @@ export class CreatePostComponent {
   }
 
   fatchUserDetails(userId: any) {
+    console.log("------------------>")
     this.feedlistservice.getUserDetails(userId).subscribe((res: any) => {
       this.user = res['user'];
+      console.log("user : ",this.user)
     })
   }
 

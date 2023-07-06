@@ -9,9 +9,9 @@
       <div #postimg id="postimg" class="bg-white border rounded-sm md:w-1/2">
         <div class="flex items-center px-4 py-3">
           <img
-            *ngIf="post.user.userProfile.profile_img; else default"
+            *ngIf="post.user?.userProfile?.profile_img; else default"
             class="h-8 w-8 rounded-full"
-            src="{{ imageUrl }}/{{ post.user.userProfile.profile_img }}"
+            src="{{ imageUrl }}/{{ post.user?.userProfile?.profile_img }}"
           />
           <ng-template #default
             ><img
@@ -20,10 +20,10 @@
           /></ng-template>
           <div class="ml-3">
             <span class="text-sm font-semibold antialiased block leading-tight"
-              >{{ post.user.username }} {{ postimg.offsetWidth }}</span
+              >{{ post.user?.username }} {{ postimg.offsetWidth }}</span
             >
             <span class="text-gray-600 text-xs block"
-              >{{ post.user.firstName }} {{ post.user.lastName }}</span
+              >{{ post.user?.firstname }} {{ post.user?.lastname }}</span
             >
           </div>
         </div>
@@ -97,12 +97,12 @@
           </div>
         </div>
         <div class="font-semibold text-sm mx-4 mt-2 mb-4">
-          {{ post.user.username }}
+          {{ post.user?.username }}
           <span class="text-sm font-normal">{{ post.content }}</span>
         </div>
 
         <div class="font-semibold text-sm mx-4 mt-2 mb-4">
-          <span id="like-{{ post.id }}">{{ post.likedPosts.length }} </span>
+          <span id="like-{{ post.id }}">{{ post.likedPosts?.length }} </span>
           likes
         </div>
         <div class="px-4 mt-2 text-gray-400 text-xs mb-4">
@@ -112,7 +112,7 @@
       <div class="md:w-1/2 bg-white border md:relative">
         <!-- show comment -->
         <div
-          *ngIf="post.cmtPosts.length > 0"
+      
           class="px-4 my-1 text-gray-400 md:text-lg"
         >
           VIEW ALL COMMENTS
@@ -296,12 +296,12 @@
                       <div class="flex items-center px-2 py-3">
                         <img
                           *ngIf="
-                            loggedUser?.userProfile?.profile_img;
+                            loggedUser.userProfile?.profile_img;
                             else default
                           "
                           class="h-8 w-8 rounded-full"
                           src="{{ imageUrl }}/{{
-                            loggedUser?.userProfile?.profile_img
+                            loggedUser.userProfile?.profile_img
                           }}"
                         />
                         <ng-template #default
@@ -358,7 +358,7 @@
                     *ngIf="loggedUser?.userProfile?.profile_img; else default"
                     class="h-8 w-8 rounded-full"
                     src="{{ imageUrl }}/{{
-                      loggedUser?.userProfile?.profile_img
+                      loggedUser.userProfile?.profile_img
                     }}"
                   />
                   <ng-template #default
@@ -436,7 +436,7 @@
               <img
                 *ngIf="loggedUser?.userProfile?.profile_img; else default"
                 class="h-8 w-8 rounded-full"
-                src="{{ imageUrl }}/{{ loggedUser?.userProfile?.profile_img }}"
+                src="{{ imageUrl }}/{{ loggedUser.userProfile?.profile_img }}"
               />
               <ng-template #default
                 ><img

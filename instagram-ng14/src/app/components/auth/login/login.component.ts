@@ -41,7 +41,14 @@ export class LoginComponent {
     })
   }
 
-  login(data: object) {
+  googleLogin(){
+    console.log("login with google")
+    this.authservice.doLoginViaGoogle().subscribe((res:any) => {
+      
+    })
+  }
+
+  login(data: Object) {
     this.ngxLoader.start();
     this.submitted = true
     console.log(data)
