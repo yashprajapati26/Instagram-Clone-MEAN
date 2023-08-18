@@ -7,7 +7,12 @@
   },
   "private": true,
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "start-pm": "pm2 start app.js --name instagram-api-pm2 -i max --watch",
+    "stop-pm": "pm2 stop instagram-api-pm2",
+    "delete-pm" :"pm2 delete instagram-api-pm2",
+    "logs-pm": "pm2 logs instagram-api-pm2" 
+    
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -33,6 +38,7 @@
     "passport-oauth2": "^1.7.0",
     "pg": "^8.10.0",
     "pg-hstore": "^2.3.4",
+    "pm2": "^5.3.0",
     "sequelize": "^6.31.0",
     "twilio": "^4.8.0"
   },
